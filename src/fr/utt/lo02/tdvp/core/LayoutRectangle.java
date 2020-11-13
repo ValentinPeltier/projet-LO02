@@ -1,3 +1,4 @@
+package fr.utt.lo02.tdvp.core;
 
 public class LayoutRectangle extends Layout {
     public void LayoutRectangle() {
