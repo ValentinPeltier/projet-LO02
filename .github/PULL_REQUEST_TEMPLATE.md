@@ -1,0 +1,11 @@
+# Fonctionnalités ajoutées
+
+- 
+- 
+- 
+
+# Bugs fixés
+
+- 
+- 
+- 
