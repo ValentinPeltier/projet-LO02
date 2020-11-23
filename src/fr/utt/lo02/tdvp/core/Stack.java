@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Collections;
 
-class Stack {
+public class Stack {
     private static Stack instance = new Stack();
 
     private LinkedList<Card> cards = new LinkedList<Card>();
