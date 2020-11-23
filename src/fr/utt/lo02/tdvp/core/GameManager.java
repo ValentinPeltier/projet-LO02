@@ -3,10 +3,11 @@ package fr.utt.lo02.tdvp.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.utt.lo02.tdvp.core.player.Player;
 public class GameManager {
     private static GameManager instance = new GameManager();
 
-    private List<PlayerContext> players = new ArrayList<PlayerContext>();
+    private List<Player> players = new ArrayList<Player>();
 
     private GameManager() {}
 
