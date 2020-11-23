@@ -1,6 +1,6 @@
 package fr.utt.lo02.tdvp.core;
 
-class Card {
+public class Card {
     /**
      * The possible shapes of a card
      */
