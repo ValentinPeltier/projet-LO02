@@ -2,17 +2,14 @@ package fr.utt.lo02.tdvp.core.cli;
 
 import java.util.Scanner;
 
-public class Input {
+public abstract class Input {
     private static Scanner scanner = new Scanner(System.in);
 
-    private Input() {}
-
-    /**
-     * Returns the unique scanner of the application
-     * @return The instance of the scanner
-     */
-    public static Scanner getScanner() {
-        return scanner;
+    public static String promptString(String question) {
+        System.out.print("> " + question + " ");
+        String input = scanner.nextLine();
+        System.out.println();
+        return input;
     }
 
     /**
@@ -52,7 +49,7 @@ public class Input {
             System.out.print("\n> " + question + " ");
 
             try {
-                choice = getScanner().nextInt();
+                choice = scanner.nextInt();
 
                 // Check if the choice is valid
                 isValid = choice >= firstIndex && choice < answers.length + firstIndex;
@@ -60,16 +57,18 @@ public class Input {
             catch(Exception e) {
                 // Certainly a InputMismatchException exception. Anyway, the choice cannot be valid.
                 isValid = false;
-
-                // Clear the scanner buffer
-                getScanner().nextLine();
             }
+
+            // Clear the scanner buffer
+            scanner.nextLine();
 
             // Inform the user that the choice is invalid
             if(!isValid) {
                 System.out.println("Choix invalide.\n");
             }
         } while(!isValid); // Ask until the answer is valid
+
+        System.out.println();
 
         return choice;
     }
