@@ -95,5 +95,5 @@ public class Card {
 
         return shape + color + filled;
     }
-    
+
 }

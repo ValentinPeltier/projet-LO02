@@ -18,7 +18,7 @@ import fr.utt.lo02.tdvp.core.variant.VariantSecondChance;
 public class GameManager {
     private static GameManager instance = new GameManager();
 
-    private List<PlayerContext> players = new ArrayList<PlayerContext>();
+    private List<Player> players = new ArrayList<Player>();
 
     private Variant variant;
 
@@ -155,9 +155,9 @@ public class GameManager {
 
     public void playGame() {
         // The game must be in 3 rounds
-    	for(int i = 0; i < 3; i++) {
+        for(int i = 0; i < 3; i++) {
             // Loop for each player
-    		for(PlayerContext player: players) {
+            for(Player player: players) {
                 player.play();
 
                 if (Stack.getInstance().isEmpty()) {
@@ -166,6 +166,6 @@ public class GameManager {
             }
 
             // TODO: count points
-    	}
+        }
     }
 }
