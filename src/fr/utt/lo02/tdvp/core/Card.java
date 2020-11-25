@@ -63,6 +63,7 @@ public class Card {
      * Parse the card to a string defining the card
      * @return a string defining the card
      */
+    @Override
     public String toString() {
         String shape, color, filled;
 

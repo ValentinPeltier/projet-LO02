@@ -27,8 +27,6 @@ public class PhysicalPlayer extends Player {
      */
     protected void initName() {
         // Ask to type in the player's name
-        System.out.print("Choisissez un nom pour le joueur " + (++initializedCount) + " : ");
-
-        this.name = Input.getScanner().nextLine();
+        this.name = Input.promptString("Choisissez un nom pour le joueur " + (++initializedCount) + " :");
     }
 }

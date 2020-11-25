@@ -11,7 +11,8 @@ public abstract class Player {
     protected Card victoryCard;
 
     /**
-     * Initialize the player by drawing a victory card and choosing a name
+     * Initialize the player by drawing a victory card and choosing a name.
+     * Stack must be initialized and filled with cards.
      */
     public Player() {
         // Draw a victory card
