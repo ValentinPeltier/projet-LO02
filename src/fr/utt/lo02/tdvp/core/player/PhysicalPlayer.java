@@ -1,12 +1,5 @@
 package fr.utt.lo02.tdvp.core.player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-import fr.utt.lo02.tdvp.core.Card;
-import fr.utt.lo02.tdvp.core.GameManager;
-import fr.utt.lo02.tdvp.core.Stack;
 import fr.utt.lo02.tdvp.core.cli.Input;
 
 public class PhysicalPlayer extends Player {
@@ -18,49 +11,8 @@ public class PhysicalPlayer extends Player {
     /**
      * Plays a turn
      */
-    Scanner sc = new Scanner(System.in);
-	GameManager gameManager = GameManager.getInstance();
-	Stack stack = Stack.getInstance();
-	
-	//TEST
-	private List<String> choices = new ArrayList<String>();
-	
 	public void play() {
-		
-		Card drawnCard;
-		
-		int answer;
-		boolean isTurnFinished = false;
-		
-		
-		
-		drawnCard = stack.drawCard();
-		
-		//Liste d'action dans une liste que tu remove
-		choices.add("Voir ma victory Card");
-		choices.add("Poser la carte");
-		choices.add("Déplacer des cartes");
-		choices.add("Voir la carte piochee");
-		
-		
-		while(!isTurnFinished)
-		{			
-			System.out.println("C'est à "+name+" de jouer ! Tu as pioché une carte !");
-	    	
-			for(int i=0; i < choices.size(); i++)
-			{
-				System.out.println(i+1+" - "+choices.get(i));
-			}
-			
-			System.out.println("0 - Finir Le Tour");
-	    	
-	    	answer = sc.nextInt();
-	    	
-		   //IF MACHIN
-		}  	
-    	
-    	
-    	
+        // TODO
     }
 
     /**
