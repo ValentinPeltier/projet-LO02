@@ -84,9 +84,9 @@ public class GameManager {
     private void initializePlayers() {
         // Ask for the number of physical players
         final int physicalPlayersCount = Input.promptChoice(
-            "Nombre de joueurs réels",
+            "Nombre de joueurs reeels",
             new String[] { "1 joueur", "2 joueurs", "3 joueurs" },
-            "Combien de joueurs réels vont jouer ?"
+            "Combien de joueurs reels vont jouer ?"
         );
 
         // Create physical players
@@ -114,9 +114,9 @@ public class GameManager {
             for (int i = 0; i < virtualPlayersCount; i++) {
                 // Ask for the difficulty
                 final int difficulty = Input.promptChoice(
-                    "Difficulté du joueur virtuel " + (i + 1),
+                    "Difficulte du joueur virtuel " + (i + 1),
                     new String[] { "Facile", "Difficile" },
-                    "Quelle sera la difficulté du joueur virtuel " + (i + 1) + " ?");
+                    "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
 
                 // Create virtual player
                 switch(difficulty) {
@@ -139,7 +139,7 @@ public class GameManager {
             "Choix du plateau de jeu",
             new String[] {
                 "Plateau rectangulaire 5x3",
-                "Plateau circulaire de diamètre 5"
+                "Plateau circulaire de diametre 5"
             },
             "Quel plateau de jeu choisissez-vous ?");
 
@@ -154,12 +154,18 @@ public class GameManager {
     }
 
     public void playGame() {
+    	
+    	System.out.println("Que La Partie Commence !");
         // The game must be in 3 rounds
         for(int i = 0; i < 3; i++) {
+        	System.out.println("Round "+(i+1)+" !\n");
             // Loop for each player
             for(Player player: players) {
                 player.play();
-
+                if(this.variant.getClass().getSimpleName()=="VariantRandomSwitch")
+                {
+                	this.variant.execute();
+                }
                 if (Stack.getInstance().isEmpty()) {
                     break;
                 }
@@ -168,4 +174,15 @@ public class GameManager {
             // TODO: count points
         }
     }
+    
+    public Layout getLayout()
+    {
+    	return this.layout;
+    }
+    
+    public Variant getVariant()
+    {
+    	return this.variant;
+    }
+    
 }

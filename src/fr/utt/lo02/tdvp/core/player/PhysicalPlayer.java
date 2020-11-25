@@ -1,5 +1,12 @@
 package fr.utt.lo02.tdvp.core.player;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import fr.utt.lo02.tdvp.core.Card;
+import fr.utt.lo02.tdvp.core.GameManager;
+import fr.utt.lo02.tdvp.core.Stack;
 import fr.utt.lo02.tdvp.core.cli.Input;
 
 public class PhysicalPlayer extends Player {
@@ -11,75 +18,65 @@ public class PhysicalPlayer extends Player {
     /**
      * Plays a turn
      */
-    Scanner sc = new Scanner(System.in);
 	GameManager gameManager = GameManager.getInstance();
 	Stack stack = Stack.getInstance();
-	
-	//TEST
-	private List<String> choices = new ArrayList<String>();
 	
 	public void play() {
 		
 		Card drawnCard;
 		
 		int answer;
-		boolean isTurnFinished = false;
 		
 		drawnCard = stack.drawCard();
 		
+		gameManager.getLayout().display();
 		
-		choices.add("Voir ma victory Card");
-		choices.add("Poser la carte");
-		choices.add("D�placer des cartes");
-		choices.add("Voir la carte pioch�e");
+		System.out.println("\nC'est a "+name+" de jouer ! \nTu viens de Piocher : "+drawnCard+"\n");
 		
+		// Victory Card Choice
+        answer = Input.promptChoice(
+            "Victory Card",
+            new String[] { "Oui", "Non" },
+            "Veux-tu voir ta Victory Card ?"
+        );
+        
+        if(answer == 1)
+        {
+        	displayVictoryCard();
+        }
+        
+        if (gameManager.getVariant().getClass().getSimpleName() == "VariantSecondChance")
+        {
+        	gameManager.getVariant().execute();
+        }
+        
 		
-		while(!isTurnFinished)
-		{			
-			System.out.println("C'est � "+name+" de jouer ! Tu as pioch� une carte !");
-	    	
-			for(int i=0; i < choices.size(); i++)
-			{
-				System.out.println(i+1+" - "+choices.get(i));
-			}
-			
-			System.out.println("0 - Finir Le Tour");
-	    	
-	    	answer = sc.nextInt();
-	    	
-		   //IF STATEMENTS
-	    	if(answer == 0 && !choices.contains("Poser la carte"))
-	    	{
-	    		isTurnFinished = true;
-	    	}
-	    	else if(answer == 0 && choices.contains("Poser la carte"))
-	    	{
-	    		System.out.println("Vous devez d'abord Poser votre carte pour finir le tour !");
-	    	}
-	    	else if(answer == choices.indexOf("Voir ma victory Card"))
-			{
-	    		displayVictoryCard();
-			}
-	    	else if(answer == choices.indexOf("Poser la carte")) 
-	    	{
-	    		//TODO PlaceCard
-	    		choices.remove(choices.indexOf("Poser la carte"));
-	    		choices.remove(choices.indexOf("Voir la carte pioch�e"));
-	    	}
-	    	else if(answer == choices.indexOf("D�placer des cartes"))
-	    	{
-	    		//TODO MoveCard
-	    		choices.remove(choices.indexOf("D�placer des cartes"));
-	    	}
-	    	else if (answer == choices.indexOf("Voir la carte pioch�e"))
-	    	{
-	    		System.out.println("La carte pioch�e est " + drawnCard);	
-	    	}
-	    	else
-	    	{
-	    		System.out.println("Ceci n'est pas une option ! Veuillez choisir une option disponible");
-	    	}	
-		}
+		// Ask first Time
+        answer = Input.promptChoice(
+            "Options",
+            new String[] { "Poser ma carte", "Deplacer des cartes" },
+            "Que voulez vous faire ?"
+        );
+        
+        switch(answer) {
+        	case 1:
+        		//TODO : poser cartes
+        		int answer2 = Input.promptChoice(
+                        "Deplacer une carte",
+                        new String[] {"Oui","Non"},
+                        "Voulez voux deplacer une ou des carte.s ?"
+                    );
+        		if(answer2 == 0)
+        		{
+        			//TODO: deplacer cartes
+        		}
+        		break;
+        	case 2:
+        		//TODO : deplacer cartes
+        		System.out.println("Vous devez maintenant poser votre carte !");
+        		//TODO : poser carte
+        		break;
+        }
 	}
 
     /**

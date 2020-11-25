@@ -54,4 +54,9 @@ public class Stack {
         // Shuffle cards
         Collections.shuffle(cards);
     }
+    
+    public int getSize()
+    {
+    	return cards.size();
+    }
 }
