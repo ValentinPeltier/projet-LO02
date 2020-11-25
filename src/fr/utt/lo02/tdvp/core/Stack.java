@@ -15,7 +15,7 @@ public class Stack {
     }
 
     /**
-     * Get the single instance of the class
+     * Gets the single instance of the class
      * @return the single instance of Stack
      */
     public static Stack getInstance() {
@@ -23,7 +23,15 @@ public class Stack {
     }
 
     /**
-     * Draw a card from the stack. Throw an exception if the stack is empty
+     * Indicates if the stack is empty or not
+     * @return {@code true} if the stack is empty, {@code false} otherwise
+     */
+    public boolean isEmpty() {
+        return cards.size() == 0;
+    }
+
+    /**
+     * Draws a card from the stack. Throw an exception if the stack is empty
      * @return the drawn card
      * @throws NoSuchElementException
      */
@@ -32,7 +40,7 @@ public class Stack {
     }
 
     /**
-     * Fill the stack with all cards and shuffle it
+     * Fills the stack with all cards and shuffle it
      */
     public void reset() {
         // Add every possible card to the stack
@@ -43,7 +51,7 @@ public class Stack {
             }
         }
 
-        // Shuffle
+        // Shuffle cards
         Collections.shuffle(cards);
     }
 }

@@ -69,30 +69,31 @@ public class Card {
 
         // Shape
         switch (this.shape) {
-            case SQUARE: shape = "carré";
+            case SQUARE: shape = "S";
                 break;
-            case TRIANGLE: shape = "triangle";
+            case TRIANGLE: shape = "T";
                 break;
-            case CIRCLE: shape = "cercle";
+            case CIRCLE: shape = "C";
                 break;
             default: shape = this.shape.toString();
         }
 
         // Color
         switch (this.color) {
-            case RED: color = "rouge";
+            case RED: color = "R";
                 break;
-            case GREEN: color = "vert";
+            case GREEN: color = "G";
                 break;
-            case BLUE: color = "bleu";
+            case BLUE: color = "B";
                 break;
             default: color = this.color.toString();
         }
 
         // Filled
-        if (this.filled) filled = "rempli";
-        else filled = "non rempli";
+        if (this.filled) filled = "F";
+        else filled = "E";
 
-        return shape + ", " + color + ", " + filled;
+        return shape + color + filled;
     }
+
 }
