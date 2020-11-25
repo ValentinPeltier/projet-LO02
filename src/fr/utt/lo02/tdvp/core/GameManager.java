@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.utt.lo02.tdvp.core.cli.Input;
+import fr.utt.lo02.tdvp.core.layout.Layout;
+import fr.utt.lo02.tdvp.core.layout.LayoutCircle;
+import fr.utt.lo02.tdvp.core.layout.LayoutRectangle;
 import fr.utt.lo02.tdvp.core.player.PhysicalPlayer;
 import fr.utt.lo02.tdvp.core.player.Player;
 import fr.utt.lo02.tdvp.core.player.VirtualPlayerEasy;
@@ -19,6 +22,8 @@ public class GameManager {
 
     private Variant variant;
 
+    private Layout layout;
+
     private GameManager() {}
 
     /**
@@ -31,7 +36,7 @@ public class GameManager {
 
     /**
      * Initialize a new game.
-     * Choose a variant, a number of players, their names and how many virtual players there should be.
+     * Let the user choose the variant, the players and the desired layout.
      */
     public void initializeGame() {
         // Initialize the variant
@@ -39,6 +44,9 @@ public class GameManager {
 
         // Initialize the players
         initializePlayers();
+
+        // Initialize layout
+        initializeLayout();
     }
 
     /**
@@ -120,6 +128,28 @@ public class GameManager {
                         break;
                 }
             }
+        }
+    }
+
+    /**
+     * Asks the user the desired layout
+     */
+    private void initializeLayout() {
+        final int layoutChoice = Input.promptChoice(
+            "Choix du plateau de jeu",
+            new String[] {
+                "Plateau rectangulaire 5x3",
+                "Plateau circulaire de diamètre 5"
+            },
+            "Quel plateau de jeu choisissez-vous ?");
+
+        switch(layoutChoice) {
+            case 1:
+                this.layout = new LayoutRectangle();
+                break;
+            case 2:
+                this.layout = new LayoutCircle();
+                break;
         }
     }
 
