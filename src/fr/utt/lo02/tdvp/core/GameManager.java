@@ -154,13 +154,18 @@ public class GameManager {
     }
 
     public void playGame() {
-        // TODO
-    	
-    	for(int i = 0; i < 3; i++)// Main loop, The game must be in 3 rounds
-    	{
-    		for(PlayerContext player : players) {//Loop for each player
-    			player.play();
-    		}
+        // The game must be in 3 rounds
+    	for(int i = 0; i < 3; i++) {
+            // Loop for each player
+    		for(PlayerContext player: players) {
+                player.play();
+
+                if (Stack.getInstance().isEmpty()) {
+                    break;
+                }
+            }
+
+            // TODO: count points
     	}
     }
 }
