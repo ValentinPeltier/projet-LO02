@@ -6,6 +6,7 @@ import java.util.List;
 import fr.utt.lo02.tdvp.core.Card;
 import fr.utt.lo02.tdvp.core.GameManager;
 import fr.utt.lo02.tdvp.core.Stack;
+import fr.utt.lo02.tdvp.core.cli.Input;
 import fr.utt.lo02.tdvp.core.layout.Layout;
 import fr.utt.lo02.tdvp.core.layout.Location;
 
@@ -15,7 +16,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
      */
     public void play() {
     	
-    	System.out.println("### A L'IA de jouer ! ###");
+    	System.out.println("### A L'IA de jouer ! ###\n");
     	
     	int choice, choice2;
     	Card drawnCard = Stack.getInstance().drawCard();
@@ -37,14 +38,105 @@ public class VirtualPlayerEasy extends VirtualPlayer {
     		}
     	}
     	
-    	System.out.println("### L'IA a fini de jouer ! ###");
+    	System.out.println("### L'IA a fini de jouer ! ###\n");
     	
     	
     }
     
-    private void moveCard()
-    {
-    	//TODO
+    private void moveCard() {
+    	
+    	
+        Layout layout = GameManager.getInstance().getLayout();
+    	
+        //1st card to move
+        List<Location> possibleLocationsSource = new ArrayList<Location>();
+    	
+    	int xMax = layout.getX();
+    	int yMax = layout.getY();
+    	
+    	for(int x = 0; x < xMax; x++)
+    	{
+    		for(int y = 0; y < yMax; y++)
+        	{
+    			//LOCATION HAS TO BE NON NULL
+        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) != null)
+        		{
+        			possibleLocationsSource.add(new Location(x,y));
+        		}
+        	}
+    	}	
+    	
+    	//Pickup a location randomly for the first Card 
+		int tryLocationIndex = randomInt(0,((int) (possibleLocationsSource.size()-1)));
+		Location tryLocationSource = possibleLocationsSource.get(tryLocationIndex);
+		
+		int x1 = tryLocationSource.getX(); 
+		int y1 = tryLocationSource.getY();   
+		
+		
+		//2nd location
+        List<Location> possibleLocationsDestination = new ArrayList<Location>();  
+    	
+    	for(int x = 0; x < xMax; x++)
+    	{
+    		for(int y = 0; y < yMax; y++)
+        	{
+    			//LOCATION MUST NOT BE THE SAME AS THE SOURCE
+        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) != layout.getCardAt(x1,y1))
+        		{
+        			possibleLocationsDestination.add(new Location(x,y));
+        		}
+        	}
+    	}
+    	
+
+        // Ask for the destination
+        while (true) {
+        	
+        	//Pickup a location randomly for the second Card
+    		tryLocationIndex = randomInt(0,((int) (possibleLocationsSource.size()-1)));
+    		Location tryLocationDestination = possibleLocationsSource.get(tryLocationIndex);
+    		
+    		int x2 = tryLocationDestination.getX(); 
+    		int y2 = tryLocationDestination.getY();   
+    		
+
+            boolean error = false;
+
+            // Is there a card at the destination coordinates ?
+            if (layout.getCardAt(x2, y2) == null) {
+                // Remove the card
+                Card originCard = layout.getCardAt(x1, y1);
+                layout.setCardAt(x1, y1, null);
+
+                // Check if the destination has adjacent cards
+                if (
+                    layout.getCardAt(x2 - 1, y2) == null
+                    && layout.getCardAt(x2 + 1, y2) == null
+                    && layout.getCardAt(x2, y2 - 1) == null
+                    && layout.getCardAt(x2, y2 + 1) == null
+                ) {
+                    error = true;
+                }
+
+                // Replace the card
+                layout.setCardAt(x1, y1, originCard);
+            }
+
+            if (!error) {
+                if(layout.moveCard(x1, y1, x2, y2)) {
+                    // Card has been moved, we are done
+                	System.out.println("L'IA a deplace des cartes\n");
+                    return;
+                }
+                else {
+                    System.out.println("Une erreur est survenue...\n");
+                }
+            }
+            
+            possibleLocationsDestination.remove(tryLocationIndex);
+        }
+        
     }
     
     private void placeCard(Card card)
@@ -86,7 +178,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
             }
             else if (layout.placeCard(tryLocation.getX(), tryLocation.getY(), card)) {
                 // Card has been placed, we are done
-            	System.out.println("L'IA a place une carte");
+            	System.out.println("L'IA a place une carte\n");
                 return;
             }
             else {
