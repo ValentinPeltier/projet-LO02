@@ -187,8 +187,10 @@ public class GameManager {
             System.out.println("### Round " + (round + 1) + " ! ###");
             System.out.println("#################\n");
 
+            boolean roundOver = false;
+
             // If the stack is empty or the layout is full then the round is over
-            for (int turn = 0; !stack.isEmpty() && !this.layout.isFull(); turn++) {
+            for (int turn = 0; !roundOver; turn++) {
                 // Loop for each player
                 for (int playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
                     // Should the variant be executed ?
@@ -199,6 +201,12 @@ public class GameManager {
 
                     // Player turn
                     this.players.get(playerIndex).play();
+
+                    // Is the round over ?
+                    roundOver = stack.isEmpty() || this.layout.isFull();
+                    if (roundOver) {
+                        break;
+                    }
                 }
             }
 
@@ -228,7 +236,7 @@ public class GameManager {
             		playerScore += this.layoutVisitor.getPoints().get("hollow");
             	}
 
-            	player.setScore(playerScore);
+                player.setScore(playerScore);
             }
         }
     }
