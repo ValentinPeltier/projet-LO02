@@ -75,8 +75,8 @@ public class GameManager {
                     public boolean shouldExecute(int round, int playerIndex) {
                         return false;
                     }
-
                     public void execute() {}
+                    public void reset() {}
                 };
                 break;
             case 1:
@@ -179,10 +179,6 @@ public class GameManager {
 
         // The game must be in 4 rounds
         for(int round = 0; round < 4; round++) {
-            // Reset the stack and the layout before the new round
-            stack.reset();
-            this.layout.reset();
-
             System.out.println("#################");
             System.out.println("### Round " + (round + 1) + " ! ###");
             System.out.println("#################\n");
@@ -193,6 +189,11 @@ public class GameManager {
             for (int turn = 0; !roundOver; turn++) {
                 // Loop for each player
                 for (int playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
+                    Player player = this.players.get(playerIndex);
+
+                    // Display name
+                    System.out.println("### A " + player.getName() + " de jouer ! ###\n");
+
                     // Should the variant be executed ?
                     if (this.variant.shouldExecute(turn, playerIndex)) {
                         // Then execute it
@@ -200,10 +201,10 @@ public class GameManager {
                     }
 
                     // Player turn
-                    this.players.get(playerIndex).play();
+                    player.play();
 
                     // Is the round over ?
-                    roundOver = stack.isEmpty() || this.layout.isFull();
+                    roundOver = this.layout.isFull();
                     if (roundOver) {
                         break;
                     }
@@ -215,10 +216,9 @@ public class GameManager {
 
             // TODO: change start player
 
-            // TODO: change victory card
-
-            // Distribute Points
-            for (Player player: players) {
+            // Distribute points and display scores
+            System.out.println("### Scores ###");
+            for (Player player: this.players) {
             	// Get player current score
                 int playerScore = player.getScore();
 
@@ -237,6 +237,20 @@ public class GameManager {
             	}
 
                 player.setScore(playerScore);
+
+                // Display score
+                System.out.println("### " + player.getName() + " : " + player.getScore() + " points");
+            }
+            System.out.println();
+
+            // Reset stack, layout and variant at the end of each round
+            stack.reset();
+            this.layout.reset();
+            this.variant.reset();
+
+            // Draw new victory card for each player
+            for (Player player: this.players) {
+                player.drawVictoryCard();
             }
         }
     }

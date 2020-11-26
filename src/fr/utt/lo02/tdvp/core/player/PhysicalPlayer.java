@@ -132,9 +132,6 @@ public class PhysicalPlayer extends Player {
         // Display layout
         layout.display();
 
-        // Display name
-        System.out.println("### A " + this.name + " de jouer ! ###\n");
-
         // Display drawn card
         System.out.println("Tu viens de piocher : " + drawnCard);
 

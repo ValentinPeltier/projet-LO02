@@ -16,10 +16,15 @@ public abstract class Player {
      */
     public Player() {
         // Draw a victory card
-        this.victoryCard = Stack.getInstance().drawCard();
+        this.drawVictoryCard();
 
         // Initialize player's name
         this.initName();
+    }
+
+    public void drawVictoryCard() {
+        // Draw a victory card
+        this.victoryCard = Stack.getInstance().drawCard();
     }
 
     /**

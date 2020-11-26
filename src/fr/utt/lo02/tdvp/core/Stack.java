@@ -23,14 +23,6 @@ public class Stack {
     }
 
     /**
-     * Indicates if the stack is empty or not
-     * @return {@code true} if the stack is empty, {@code false} otherwise
-     */
-    public boolean isEmpty() {
-        return cards.size() == 0;
-    }
-
-    /**
      * Draws a card from the stack. Throw an exception if the stack is empty
      * @return the drawn card
      * @throws NoSuchElementException
