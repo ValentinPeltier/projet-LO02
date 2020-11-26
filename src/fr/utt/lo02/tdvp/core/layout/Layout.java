@@ -50,6 +50,50 @@ public abstract class Layout {
         return false;
     }
 
+    /**
+     * Try to place a card at specified coordinates
+     * @param x X coordinate of the specified location
+     * @param y Y coordinate of the specified location
+     * @param card The card to place at these coordinates
+     * @return {@code true} if the card has been placed, {@code false} if it cannot be placed
+     */
+    public boolean placeCard(int x, int y, Card card) {
+        // Check if the specified location exists
+        // or if a card is already at this location
+        if (!this.locationExists(x, y) || this.getCardAt(x, y) != null) {
+            return false;
+        }
+
+        return this.setCardAt(x, y, card);
+    }
+
+    /**
+     * Move a card on the layout
+     * @param x1 X coordinate of the card to move
+     * @param y1 Y coordinate of the card to move
+     * @param x2 X coordinate destination
+     * @param y2 Y coordinate destination
+     * @return {@code true} if the card has been moved, {@code false} otherwise
+     */
+    public boolean moveCard(int x1, int y1, int x2, int y2) {
+        // Check if the 2 locations exist
+        if (!this.locationExists(x1, y1) || !this.locationExists(x2, y2)) {
+            return false;
+        }
+
+        // Check if there is a card in the originate coordinates
+        Card originCard = this.getCardAt(x1, y1);
+        if (originCard == null) {
+            return false;
+        }
+
+        Card destinationCard = this.getCardAt(x2, y2);
+        this.setCardAt(x1, y1, destinationCard);
+        this.setCardAt(x2, y2, originCard);
+
+        return true;
+    }
+
     public void display() {
         // Determine min and max coordinates
         int minX = 0, minY = 0, maxX = 0, maxY = 0;
