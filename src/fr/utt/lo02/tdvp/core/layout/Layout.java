@@ -37,7 +37,7 @@ public abstract class Layout {
         return this.locations.get(location);
     }
 
-    private boolean setCardAt(int x, int y, Card card) {
+    public boolean setCardAt(int x, int y, Card card) {
         Location location = new Location(x, y);
 
         // If specified location is on the layout
@@ -150,13 +150,19 @@ public abstract class Layout {
         System.out.println("\n");
     }
 
-    public boolean isEmpty() {
+    public int countCards() {
+        int count = 0;
+
         for (Card card: this.locations.values()) {
             if (card != null) {
-                return false;
+                count++;
             }
         }
 
-        return true;
+        return count;
+    }
+
+    public boolean isEmpty() {
+        return countCards() == 0;
     }
 }
