@@ -165,4 +165,8 @@ public abstract class Layout {
     public boolean isEmpty() {
         return countCards() == 0;
     }
+
+    public boolean isFull() {
+        return countCards() == this.locations.size();
+    }
 }

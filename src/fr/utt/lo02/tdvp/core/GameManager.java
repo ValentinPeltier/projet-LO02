@@ -39,6 +39,10 @@ public class GameManager {
      * Let the user choose the variant, the players and the desired layout.
      */
     public void initializeGame() {
+        System.out.println("###############################");
+        System.out.println("### Paramètres de la partie ###");
+        System.out.println("###############################\n");
+
         // Initialize the variant
         initializeVariant();
 
@@ -61,7 +65,7 @@ public class GameManager {
         }, "Quelle variante choisis-tu ?", 0);
 
         // Set the variant
-        switch(variantChoice) {
+        switch (variantChoice) {
             case 0:
                 // Create a variant that never executes and does nothing
                 this.variant = new Variant() {
@@ -120,7 +124,7 @@ public class GameManager {
                     "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
 
                 // Create virtual player
-                switch(difficulty) {
+                switch (difficulty) {
                     case 1:
                         this.players.add(new VirtualPlayerEasy());
                         break;
@@ -146,7 +150,7 @@ public class GameManager {
             "Quel plateau de jeu choisis-tu ?");
 
         // Create the layout
-        switch(layoutChoice) {
+        switch (layoutChoice) {
             case 1:
                 this.layout = new LayoutRectangle();
                 break;
@@ -161,26 +165,28 @@ public class GameManager {
      * {@code initializeVariant}, {@code initializePlayers} and {@code initializeLayout} must have been called.
      */
     public void playGame() {
+        System.out.println("################################");
         System.out.println("### Que la partie commence ! ###");
+        System.out.println("################################\n");
 
-        // The game must be in 3 rounds
-        for(int i = 0; i < 3; i++) {
-            System.out.println("### Round " + (i + 1) + " ! ###\n");
+        // The game must be in 4 rounds
+        for(int i = 0; i < 4; i++) {
+            System.out.println("#################");
+            System.out.println("### Round " + (i + 1) + " ! ###");
+            System.out.println("#################\n");
 
-            // Loop for each player
-            for(Player player: players) {
-                // Should the variant be executed ?
-                if(this.variant.shouldExecute()) {
-                    // Then execute it
-                	this.variant.execute();
-                }
+            // If the stack is empty or the layout is full then the round is over
+            while (!Stack.getInstance().isEmpty() && !this.layout.isFull()) {
+                // Loop for each player
+                for(Player player: players) {
+                    // Should the variant be executed ?
+                    if(this.variant.shouldExecute()) {
+                        // Then execute it
+                        this.variant.execute();
+                    }
 
-                // Player turn
-                player.play();
-
-                // If the stack is empty then the round is over
-                if (Stack.getInstance().isEmpty()) {
-                    break;
+                    // Player turn
+                    player.play();
                 }
             }
 

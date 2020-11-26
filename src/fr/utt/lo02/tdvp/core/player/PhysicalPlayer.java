@@ -16,7 +16,7 @@ public class PhysicalPlayer extends Player {
         Layout layout = GameManager.getInstance().getLayout();
 
         while(true) {
-            String response = Input.promptString("Où veux-tu poser ta carte ? (e.g. \"B2\")");
+            String response = Input.promptString("Où veux-tu poser ta carte " + card + " ? (e.g. \"B2\")");
             int x = response.charAt(0) - 'A';
             int y = response.charAt(1) - '0';
 
@@ -115,44 +115,29 @@ public class PhysicalPlayer extends Player {
         // Draw a card
         Card drawnCard = Stack.getInstance().drawCard();
 
-        // Display player name
-        System.out.println("### C'est a " + name + " de jouer ! ###\n");
-
         // Display layout
         layout.display();
 
-        // Display drawn card
-        System.out.println("Tu viens de piocher : " + drawnCard + "\n");
+        // Display name
+        System.out.println("### A " + this.name + " de jouer ! ###\n");
 
-		// Ask if the user want to display the victory card
-        int answer = Input.promptChoice(
-            "Voir ta Victory Card",
-            new String[] { "Non", "Oui" },
-            "Veux-tu voir ta Victory Card ?",
-            0
-        );
+        // Display drawn card
+        System.out.println("Tu viens de piocher : " + drawnCard);
 
         // Display victory card
-        if(answer == 1) {
-            this.displayVictoryCard();
-
-            //? layout.display();
-        }
+        System.out.println("Ta Victory Card est : " + this.victoryCard + "\n");
 
         // Ask what action to do if the layout has 2 cards at least
+        int answer = 1;
         if (layout.countCards() > 1) {
             answer = Input.promptChoice(
-                "Options",
+                "Joue",
                 new String[] { "Poser ma carte", "Deplacer une carte" },
                 "Que veux-tu faire ?"
             );
         }
-        else {
-            // Otherwise, the player can only place his/her card
-            answer = 1;
-        }
 
-        switch(answer) {
+        switch (answer) {
             case 1:
                 // Place drawn card
                 this.placeCard(drawnCard);
@@ -173,8 +158,8 @@ public class PhysicalPlayer extends Player {
                         this.moveCard();
                     }
                 }
+                break;
 
-        		break;
             case 2:
                 // Move card
                 this.moveCard();
@@ -185,22 +170,15 @@ public class PhysicalPlayer extends Player {
                 // Place drawn card
                 System.out.println("Tu dois maintenant poser ta carte !");
                 this.placeCard(drawnCard);
-        		break;
+                break;
         }
 	}
-
-    /**
-     * Display the victory card
-     */
-    public void displayVictoryCard() {
-        System.out.println("Ta Victory Card est " + this.victoryCard + "\n");
-    }
 
     /**
      * Prompt the name of the player
      */
     protected void initName() {
         // Ask to type in the player's name
-        this.name = Input.promptString("Choisissez un nom pour le joueur " + (++initializedCount) + " :");
+        this.name = Input.promptString("Choisis un nom pour le joueur " + (++initializedCount) + " :");
     }
 }
