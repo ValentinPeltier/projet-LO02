@@ -10,7 +10,7 @@ public class LayoutRectangle extends Layout {
     public void reset() {
     	for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 3; j++) {
-                locations.replace(new Location(i, j), null);
+                locations.put(new Location(i, j), null);
             }
         }
     }
