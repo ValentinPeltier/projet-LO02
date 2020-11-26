@@ -16,7 +16,14 @@ public class PhysicalPlayer extends Player {
         Layout layout = GameManager.getInstance().getLayout();
 
         while(true) {
-            String response = Input.promptString("Où veux-tu poser ta carte " + card + " ? (e.g. \"B2\")");
+            String response;
+            do {
+                response = Input.promptString("Où veux-tu poser ta carte " + card + " ? (e.g. \"B2\")");
+
+                if (response.length() != 2) {
+                    System.out.println("Emplacement invalide.\n");
+                }
+            } while(response.length() != 2);
             int x = response.charAt(0) - 'A';
             int y = response.charAt(1) - '0';
 
@@ -50,7 +57,14 @@ public class PhysicalPlayer extends Player {
 
         // Ask for the card to move
         while (true) {
-            String response = Input.promptString("Quelle carte veux-tu déplacer ? (e.g. \"B2\")");
+            String response;
+            do {
+                response = Input.promptString("Quelle carte veux-tu déplacer ? (e.g. \"B2\")");
+
+                if (response.length() != 2) {
+                    System.out.println("Emplacement invalide.\n");
+                }
+            } while(response.length() != 2);
             int x1 = response.charAt(0) - 'A';
             int y1 = response.charAt(1) - '0';
 
@@ -147,11 +161,11 @@ public class PhysicalPlayer extends Player {
                     layout.display();
 
                     int answer2 = Input.promptChoice(
-                            "Deplacer une carte",
-                            new String[] { "Non", "Oui" },
-                            "Veux-tu deplacer une carte ?",
-                            0
-                        );
+                        "Deplacer une carte",
+                        new String[] { "Non", "Oui" },
+                        "Veux-tu deplacer une carte ?",
+                        0
+                    );
 
                     if(answer2 == 1) {
                         // Move card
