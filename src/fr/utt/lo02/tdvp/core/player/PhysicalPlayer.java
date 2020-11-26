@@ -18,7 +18,7 @@ public class PhysicalPlayer extends Player {
         while(true) {
             String response;
             do {
-                response = Input.promptString("Où veux-tu poser ta carte " + card + " ? (e.g. \"B2\")");
+                response = Input.promptString("Ou veux-tu poser ta carte " + card + " ? (e.g. \"B2\")");
 
                 if (response.length() != 2) {
                     System.out.println("Emplacement invalide.\n");
@@ -31,7 +31,7 @@ public class PhysicalPlayer extends Player {
                 System.out.println("Emplacement invalide.\n");
             }
             else if (layout.getCardAt(x, y) != null) {
-                System.out.println("Il y a déjà une carte ici !\n");
+                System.out.println("Il y a deja une carte ici !\n");
             }
             else if (
                 !layout.isEmpty()
@@ -40,7 +40,7 @@ public class PhysicalPlayer extends Player {
                 && layout.getCardAt(x, y - 1) == null
                 && layout.getCardAt(x, y + 1) == null
             ) {
-                System.out.println("Il faut que ta carte soit adjacente à une autre !\n");
+                System.out.println("Il faut que ta carte soit adjacente a une autre !\n");
             }
             else if (layout.placeCard(x, y, card)) {
                 // Card has been placed, we are done
@@ -59,7 +59,7 @@ public class PhysicalPlayer extends Player {
         while (true) {
             String response;
             do {
-                response = Input.promptString("Quelle carte veux-tu déplacer ? (e.g. \"B2\")");
+                response = Input.promptString("Quelle carte veux-tu deplacer ? (e.g. \"B2\")");
 
                 if (response.length() != 2) {
                     System.out.println("Emplacement invalide.\n");
@@ -74,7 +74,7 @@ public class PhysicalPlayer extends Player {
             else {
                 // Ask for the destination
                 while (true) {
-                    response = Input.promptString("Où veux-tu déplacer cette carte ? (e.g. \"B2\")");
+                    response = Input.promptString("Ou veux-tu deplacer cette carte ? (e.g. \"B2\")");
                     int x2 = response.charAt(0) - 'A';
                     int y2 = response.charAt(1) - '0';
 
@@ -97,7 +97,7 @@ public class PhysicalPlayer extends Player {
                                 && layout.getCardAt(x2, y2 - 1) == null
                                 && layout.getCardAt(x2, y2 + 1) == null
                             ) {
-                                System.out.println("La carte que tu déplaces doit être adjacente à une autre.\n");
+                                System.out.println("La carte que tu deplaces doit etre adjacente a une autre.\n");
                                 error = true;
                             }
 

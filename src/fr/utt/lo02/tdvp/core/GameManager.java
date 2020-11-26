@@ -43,7 +43,7 @@ public class GameManager {
      */
     public void initializeGame() {
         System.out.println("###############################");
-        System.out.println("### Paramètres de la partie ###");
+        System.out.println("### Parametres de la partie ###");
         System.out.println("###############################\n");
 
         // Initialize the variant

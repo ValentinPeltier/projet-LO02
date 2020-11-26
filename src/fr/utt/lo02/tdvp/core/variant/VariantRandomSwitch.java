@@ -46,6 +46,6 @@ public class VariantRandomSwitch extends Variant {
         layout.setCardAt(location1, layout.getCardAt(location2));
         layout.setCardAt(location2, cardTmp);
 
-        System.out.println("[Variante] 2 cartes aléatoires ont été échangées !\n");
+        System.out.println("[Variante] 2 cartes aleatoires ont ete echangees !\n");
     }
 }
