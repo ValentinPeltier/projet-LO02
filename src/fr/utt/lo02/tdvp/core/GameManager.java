@@ -8,7 +8,6 @@ import fr.utt.lo02.tdvp.core.layout.Layout;
 import fr.utt.lo02.tdvp.core.layout.LayoutCircle;
 import fr.utt.lo02.tdvp.core.layout.LayoutRectangle;
 import fr.utt.lo02.tdvp.core.layout.LayoutVisitor;
-import fr.utt.lo02.tdvp.core.layout.Location;
 import fr.utt.lo02.tdvp.core.player.PhysicalPlayer;
 import fr.utt.lo02.tdvp.core.player.Player;
 import fr.utt.lo02.tdvp.core.player.VirtualPlayerEasy;
@@ -26,7 +25,7 @@ public class GameManager {
 
     private Layout layout;
 
-    private LayoutVisitor visitor;
+    private LayoutVisitor layoutVisitor = new LayoutVisitor();
 
     private GameManager() {}
 
@@ -46,8 +45,6 @@ public class GameManager {
         System.out.println("###############################");
         System.out.println("### Paramètres de la partie ###");
         System.out.println("###############################\n");
-
-        visitor = new LayoutVisitor();
 
         // Initialize the variant
         initializeVariant();
@@ -206,29 +203,29 @@ public class GameManager {
             }
 
             // Count Points
-            this.layout.countPointsAccept(visitor);
-
-            // TODO: reset layout
+            this.layout.countPointsAccept(this.layoutVisitor);
 
             // TODO: change start player
 
-            //Distribute Points
-            for(Player player: players) {
+            // TODO: change victory card
+
+            // Distribute Points
+            for (Player player: players) {
             	// Get player current score
                 int playerScore = player.getScore();
 
             	// Add color points
-                playerScore += this.visitor.getPoints().get(player.getVictoryCard().getColor().toString().toLowerCase());
+                playerScore += this.layoutVisitor.getPoints().get(player.getVictoryCard().getColor().toString().toLowerCase());
 
             	// Add shape points
-                playerScore += this.visitor.getPoints().get(player.getVictoryCard().getShape().toString().toLowerCase());
+                playerScore += this.layoutVisitor.getPoints().get(player.getVictoryCard().getShape().toString().toLowerCase());
 
             	// Add filled points
             	if (player.getVictoryCard().getFilled()) {
-            		playerScore += this.visitor.getPoints().get("filled");
+            		playerScore += this.layoutVisitor.getPoints().get("filled");
                 }
                 else {
-            		playerScore += this.visitor.getPoints().get("hollow");
+            		playerScore += this.layoutVisitor.getPoints().get("hollow");
             	}
 
             	player.setScore(playerScore);
