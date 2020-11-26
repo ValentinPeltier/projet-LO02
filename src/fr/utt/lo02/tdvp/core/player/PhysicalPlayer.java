@@ -4,6 +4,7 @@ import fr.utt.lo02.tdvp.core.Card;
 import fr.utt.lo02.tdvp.core.GameManager;
 import fr.utt.lo02.tdvp.core.Stack;
 import fr.utt.lo02.tdvp.core.cli.Input;
+import fr.utt.lo02.tdvp.core.layout.Layout;
 
 public class PhysicalPlayer extends Player {
     /**
@@ -15,14 +16,21 @@ public class PhysicalPlayer extends Player {
      * Plays a turn
      */
 	public void play() {
-        GameManager gameManager = GameManager.getInstance();
-		Card drawnCard = Stack.getInstance().drawCard();
+        Layout layout = GameManager.getInstance().getLayout();
 
-		gameManager.getLayout().display();
+        // Draw a card
+        Card drawnCard = Stack.getInstance().drawCard();
 
-		System.out.println("C'est a " + name + " de jouer ! \nTu viens de Piocher : "+drawnCard+"\n");
+        // Display player name
+        System.out.println("### C'est a " + name + " de jouer ! ###\n");
 
-		// Display Victory Card Choice
+        // Display layout
+        layout.display();
+
+        // Display drawn card
+        System.out.println("Tu viens de piocher : " + drawnCard + "\n");
+
+		// Ask if the user want to display the victory card
         int answer = Input.promptChoice(
             "Voir ta Victory Card",
             new String[] { "Non", "Oui" },
@@ -30,39 +38,59 @@ public class PhysicalPlayer extends Player {
             0
         );
 
+        // Display victory card
         if(answer == 1) {
-        	this.displayVictoryCard();
+            this.displayVictoryCard();
+
+            //? layout.display();
         }
 
-		// Ask first Time
-        answer = Input.promptChoice(
-            "Options",
-            new String[] { "Poser ma carte", "Deplacer des cartes" },
-            "Que voulez vous faire ?"
-        );
+        // Ask what action to do if the layout has 2 cards at least
+        if (layout.countCards() > 1) {
+            answer = Input.promptChoice(
+                "Options",
+                new String[] { "Poser ma carte", "Deplacer une carte" },
+                "Que veux-tu faire ?"
+            );
+        }
+        else {
+            // Otherwise, the player can only place his/her card
+            answer = 1;
+        }
 
         switch(answer) {
-        	case 1:
-                // TODO : poser cartes
+            case 1:
+                // Place drawn card
+                this.placeCard(drawnCard);
 
-        		int answer2 = Input.promptChoice(
-                        "Deplacer une carte",
-                        new String[] { "Non", "Oui" },
-                        "Voulez-vous deplacer une ou plusieurs carte.s ?",
-                        0
-                    );
+                if (layout.countCards() > 1) {
+                    // Display layout
+                    layout.display();
 
-        		if(answer2 == 1) {
-        			// TODO: deplacer cartes
+                    int answer2 = Input.promptChoice(
+                            "Deplacer une carte",
+                            new String[] { "Non", "Oui" },
+                            "Veux-tu deplacer une carte ?",
+                            0
+                        );
+
+                    if(answer2 == 1) {
+                        // Move card
+                        this.moveCard();
+                    }
                 }
 
         		break;
-        	case 2:
-                // TODO : deplacer cartes
+            case 2:
+                // Move card
+                this.moveCard();
 
-                System.out.println("Vous devez maintenant poser votre carte !");
+                // Display layout
+                layout.display();
 
-        		// TODO : poser carte
+                // Place drawn card
+                System.out.println("Tu dois maintenant poser ta carte !");
+                this.placeCard(drawnCard);
         		break;
         }
 	}

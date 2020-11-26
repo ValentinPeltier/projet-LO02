@@ -58,7 +58,7 @@ public class GameManager {
             "Aucune",
             VariantRandomSwitch.getName() + " (" + VariantRandomSwitch.getDescription() + ")",
             VariantSecondChance.getName() + " (" + VariantSecondChance.getDescription() + ")"
-        }, "Quelle variante voulez-vous choisir ?", 0);
+        }, "Quelle variante choisis-tu ?", 0);
 
         // Set the variant
         switch(variantChoice) {
@@ -143,7 +143,7 @@ public class GameManager {
                 "Plateau rectangulaire 5x3",
                 "Plateau circulaire de diametre 5"
             },
-            "Quel plateau de jeu choisissez-vous ?");
+            "Quel plateau de jeu choisis-tu ?");
 
         // Create the layout
         switch(layoutChoice) {
@@ -169,13 +169,14 @@ public class GameManager {
 
             // Loop for each player
             for(Player player: players) {
-                player.play();
-
                 // Should the variant be executed ?
                 if(this.variant.shouldExecute()) {
                     // Then execute it
                 	this.variant.execute();
                 }
+
+                // Player turn
+                player.play();
 
                 // If the stack is empty then the round is over
                 if (Stack.getInstance().isEmpty()) {
