@@ -7,6 +7,8 @@ import fr.utt.lo02.tdvp.core.cli.Input;
 import fr.utt.lo02.tdvp.core.layout.Layout;
 import fr.utt.lo02.tdvp.core.layout.LayoutCircle;
 import fr.utt.lo02.tdvp.core.layout.LayoutRectangle;
+import fr.utt.lo02.tdvp.core.layout.LayoutVisitor;
+import fr.utt.lo02.tdvp.core.layout.Location;
 import fr.utt.lo02.tdvp.core.player.PhysicalPlayer;
 import fr.utt.lo02.tdvp.core.player.Player;
 import fr.utt.lo02.tdvp.core.player.VirtualPlayerEasy;
@@ -23,6 +25,8 @@ public class GameManager {
     private Variant variant;
 
     private Layout layout;
+
+    private LayoutVisitor visitor;
 
     private GameManager() {}
 
@@ -42,6 +46,8 @@ public class GameManager {
         System.out.println("###############################");
         System.out.println("### Paramètres de la partie ###");
         System.out.println("###############################\n");
+
+        visitor = new LayoutVisitor();
 
         // Initialize the variant
         initializeVariant();
@@ -170,6 +176,8 @@ public class GameManager {
     public void playGame() {
         Stack stack = Stack.getInstance();
 
+        countPointsDebug();
+
         System.out.println("################################");
         System.out.println("### Que la partie commence ! ###");
         System.out.println("################################\n");
@@ -195,7 +203,8 @@ public class GameManager {
                 }
             }
 
-            // TODO: count points
+            // Count Points
+            this.layout.countPointsAccept(visitor);
 
             // Reset stack
             stack.reset();
@@ -221,4 +230,41 @@ public class GameManager {
     public Variant getVariant() {
     	return this.variant;
     }
+
+    //DEBUG
+    private void countPointsDebug()
+    {
+    	/*RECTANGLE
+    	for(int i = 0; i < 5; i++) {
+            for(int j = 0; j < 3; j++) {
+            	this.layout.setCardAt(i, j, Stack.getInstance().drawCard());
+            }
+        }*/
+
+    	/*CIRCULAR*/
+    	this.layout.setCardAt(0, 2, Stack.getInstance().drawCard());
+
+        // Last row
+    	this.layout.setCardAt(4, 2, Stack.getInstance().drawCard());
+
+        // 2nd and 4th rows
+        for (int i = 1; i < 4; i++) {
+        	this.layout.setCardAt(1, i, Stack.getInstance().drawCard());
+        	this.layout.setCardAt(3, i, Stack.getInstance().drawCard());
+        }
+
+        // 3rd row
+        for(int i = 0; i < 5; i++) {
+        	this.layout.setCardAt(2, i, Stack.getInstance().drawCard());
+        }
+
+    	this.layout.display();
+
+    	//DEBUG
+        this.layout.countPointsAccept(this.visitor);
+        //this.visitor.displayPoints();
+        //DEBUG
+
+    }
+    //DEBUG
 }
