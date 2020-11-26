@@ -7,6 +7,7 @@ import fr.utt.lo02.tdvp.core.cli.Input;
 import fr.utt.lo02.tdvp.core.layout.Layout;
 import fr.utt.lo02.tdvp.core.layout.LayoutCircle;
 import fr.utt.lo02.tdvp.core.layout.LayoutRectangle;
+import fr.utt.lo02.tdvp.core.layout.LayoutVisitor;
 import fr.utt.lo02.tdvp.core.player.PhysicalPlayer;
 import fr.utt.lo02.tdvp.core.player.Player;
 import fr.utt.lo02.tdvp.core.player.VirtualPlayerEasy;
@@ -23,6 +24,8 @@ public class GameManager {
     private Variant variant;
 
     private Layout layout;
+
+    private LayoutVisitor layoutVisitor = new LayoutVisitor();
 
     private GameManager() {}
 
@@ -176,12 +179,18 @@ public class GameManager {
 
         // The game must be in 4 rounds
         for(int round = 0; round < 4; round++) {
+            // Reset the stack and the layout before the new round
+            stack.reset();
+            this.layout.reset();
+
             System.out.println("#################");
             System.out.println("### Round " + (round + 1) + " ! ###");
             System.out.println("#################\n");
 
+            boolean roundOver = false;
+
             // If the stack is empty or the layout is full then the round is over
-            for (int turn = 0; !stack.isEmpty() && !this.layout.isFull(); turn++) {
+            for (int turn = 0; !roundOver; turn++) {
                 // Loop for each player
                 for (int playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
                     // Should the variant be executed ?
@@ -192,17 +201,43 @@ public class GameManager {
 
                     // Player turn
                     this.players.get(playerIndex).play();
+
+                    // Is the round over ?
+                    roundOver = stack.isEmpty() || this.layout.isFull();
+                    if (roundOver) {
+                        break;
+                    }
                 }
             }
 
-            // TODO: count points
-
-            // Reset stack
-            stack.reset();
-
-            // TODO: reset layout
+            // Count Points
+            this.layout.countPointsAccept(this.layoutVisitor);
 
             // TODO: change start player
+
+            // TODO: change victory card
+
+            // Distribute Points
+            for (Player player: players) {
+            	// Get player current score
+                int playerScore = player.getScore();
+
+            	// Add color points
+                playerScore += this.layoutVisitor.getPoints().get(player.getVictoryCard().getColor().toString().toLowerCase());
+
+            	// Add shape points
+                playerScore += this.layoutVisitor.getPoints().get(player.getVictoryCard().getShape().toString().toLowerCase());
+
+            	// Add filled points
+            	if (player.getVictoryCard().getFilled()) {
+            		playerScore += this.layoutVisitor.getPoints().get("filled");
+                }
+                else {
+            		playerScore += this.layoutVisitor.getPoints().get("hollow");
+            	}
+
+                player.setScore(playerScore);
+            }
         }
     }
 

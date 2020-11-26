@@ -8,7 +8,10 @@ import java.util.Random;
 import fr.utt.lo02.tdvp.core.Card;
 
 public abstract class Layout {
+
     protected Map<Location, Card> locations = new HashMap<Location, Card>();
+    protected int x;
+    protected int y;
 
     public Location getRandomLocation() {
         Location randomLocation;
@@ -29,6 +32,7 @@ public abstract class Layout {
      * @param y Y coordinate of the specified location
      * @return {@code true} if the specified location exists in this layout, {@code false} otherwise
      */
+
     public boolean locationExists(int x, int y) {
         Location location = new Location(x, y);
 
@@ -190,4 +194,23 @@ public abstract class Layout {
     public boolean isFull() {
         return countCards() == this.locations.size();
     }
+
+    //Accept Visitor => CountPoints
+    public void countPointsAccept(LayoutVisitor visitor) {
+    	visitor.countPointsVisit(this);
+    }
+
+    public int getX() {
+    	return this.x;
+    }
+
+    public int getY() {
+    	return this.y;
+    }
+
+    public Map<Location,Card> getLocations() {
+    	return this.locations;
+    }
+
+    public abstract void reset();
 }

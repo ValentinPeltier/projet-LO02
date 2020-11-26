@@ -64,7 +64,7 @@ public abstract class Input {
 
             // Inform the user that the choice is invalid
             if(!isValid) {
-                System.out.println("Choix invalide.\n");
+                System.out.println("\nChoix invalide.\n");
             }
         } while(!isValid); // Ask until the answer is valid
 

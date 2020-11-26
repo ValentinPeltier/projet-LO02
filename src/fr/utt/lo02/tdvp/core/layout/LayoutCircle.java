@@ -1,9 +1,13 @@
 package fr.utt.lo02.tdvp.core.layout;
 
-import fr.utt.lo02.tdvp.core.Card;
-
 public class LayoutCircle extends Layout {
     public LayoutCircle() {
+    	this.x = 5;
+    	this.y = 5;
+        this.reset();
+    }
+
+    public void reset() {
         // First row
         locations.put(new Location(0, 2), null);
 
@@ -20,9 +24,5 @@ public class LayoutCircle extends Layout {
         for(int i = 0; i < 5; i++) {
             locations.put(new Location(2, i), null);
         }
-    }
-
-    public void countPointsAccept(LayoutVisitor visitor, Card victoryCard) {
-        // TODO
     }
 }
