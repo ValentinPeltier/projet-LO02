@@ -176,14 +176,16 @@ public class GameManager {
     public void playGame() {
         Stack stack = Stack.getInstance();
 
-        countPointsDebug();
-
         System.out.println("################################");
         System.out.println("### Que la partie commence ! ###");
         System.out.println("################################\n");
 
         // The game must be in 4 rounds
         for(int round = 0; round < 4; round++) {
+            // Reset the stack and the layout before the new round
+            stack.reset();
+            this.layout.reset();
+
             System.out.println("#################");
             System.out.println("### Round " + (round + 1) + " ! ###");
             System.out.println("#################\n");
@@ -206,12 +208,31 @@ public class GameManager {
             // Count Points
             this.layout.countPointsAccept(visitor);
 
-            // Reset stack
-            stack.reset();
-
             // TODO: reset layout
 
             // TODO: change start player
+
+            //Distribute Points
+            for(Player player: players) {
+            	// Get player current score
+                int playerScore = player.getScore();
+
+            	// Add color points
+                playerScore += this.visitor.getPoints().get(player.getVictoryCard().getColor().toString().toLowerCase());
+
+            	// Add shape points
+                playerScore += this.visitor.getPoints().get(player.getVictoryCard().getShape().toString().toLowerCase());
+
+            	// Add filled points
+            	if (player.getVictoryCard().getFilled()) {
+            		playerScore += this.visitor.getPoints().get("filled");
+                }
+                else {
+            		playerScore += this.visitor.getPoints().get("hollow");
+            	}
+
+            	player.setScore(playerScore);
+            }
         }
     }
 
@@ -230,41 +251,4 @@ public class GameManager {
     public Variant getVariant() {
     	return this.variant;
     }
-
-    //DEBUG
-    private void countPointsDebug()
-    {
-    	/*RECTANGLE
-    	for(int i = 0; i < 5; i++) {
-            for(int j = 0; j < 3; j++) {
-            	this.layout.setCardAt(i, j, Stack.getInstance().drawCard());
-            }
-        }*/
-
-    	/*CIRCULAR*/
-    	this.layout.setCardAt(0, 2, Stack.getInstance().drawCard());
-
-        // Last row
-    	this.layout.setCardAt(4, 2, Stack.getInstance().drawCard());
-
-        // 2nd and 4th rows
-        for (int i = 1; i < 4; i++) {
-        	this.layout.setCardAt(1, i, Stack.getInstance().drawCard());
-        	this.layout.setCardAt(3, i, Stack.getInstance().drawCard());
-        }
-
-        // 3rd row
-        for(int i = 0; i < 5; i++) {
-        	this.layout.setCardAt(2, i, Stack.getInstance().drawCard());
-        }
-
-    	this.layout.display();
-
-    	//DEBUG
-        this.layout.countPointsAccept(this.visitor);
-        //this.visitor.displayPoints();
-        //DEBUG
-
-    }
-    //DEBUG
 }

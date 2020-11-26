@@ -18,7 +18,6 @@ public class LayoutVisitor {
 	{
 		
 		int tmp;
-		//HASHMAP
 		
 		pointsByParameter.put("red",0);
 		pointsByParameter.put("green",0);
@@ -38,8 +37,6 @@ public class LayoutVisitor {
 		currentParamaterChain.put("hollow",0);
 		currentParamaterChain.put("filled",0);
 
-		
-		//System.out.println("Lignes");
 		//FOR EACH LINE
 		for(int y = 0; y < layout.getY(); y++)
 		{
@@ -112,23 +109,15 @@ public class LayoutVisitor {
 						}
 					}
 				}
-				
-				/*DEBUG
-				System.out.print("Ligne "+y+" ");
-				diplayChains();
-				System.out.print("Points ");
-				displayPoints();*/
 			}
 			
-			//RESET CHAIN -> MUST NOT BE SHARED BETWEEN LINES OR COLUMNS
+			//RESET CHAIN -> CHAINS MUST NOT BE SHARED BETWEEN LINES OR COLUMNS
 			updatePoints();
 			resetChains();
 		}
 		
 		
 		
-		
-		//System.out.println("Colonnes");
 		//FOR EACH COLUMN
 		for(int x = 0; x < layout.getX(); x++)
 		{
@@ -200,20 +189,12 @@ public class LayoutVisitor {
 						}
 					}
 				}
-				
-				/*DEBUG
-				System.out.print("Colonne "+x+" ");
-				diplayChains();
-				System.out.print("Points ");
-				displayPoints();*/
 			}
 			
-			//RESET CHAIN -> MUST NOT BE SHARED BETWEEN LINES OR COLUMNS
+			//RESET CHAIN -> CHAIN MUST NOT BE SHARED BETWEEN LINES OR COLUMNS
 			updatePoints();
 			resetChains();
 		}
-		
-		displayPoints();
 		
 		
 	}
@@ -280,16 +261,6 @@ public class LayoutVisitor {
 		pointsByParameter.replace("hollow", tmp);
 	}
 	
-	
-	//DEBUG
-	private void displayPoints() {
-		System.out.println(this.pointsByParameter);
-	}
-	
-	private void diplayChains() {
-		System.out.print(this.currentParamaterChain);
-	}
-	
 	private void resetChains()
 	{
 		currentParamaterChain.replace("red",0);
@@ -300,6 +271,10 @@ public class LayoutVisitor {
 		currentParamaterChain.replace("circle",0);
 		currentParamaterChain.replace("hollow",0);
 		currentParamaterChain.replace("filled",0);
+	}
+	
+	public Map<String,Integer> getPoints() {
+			return this.pointsByParameter;
 	}
 	
 }
