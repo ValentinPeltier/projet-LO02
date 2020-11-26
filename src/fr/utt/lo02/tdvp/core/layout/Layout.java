@@ -71,5 +71,7 @@ public abstract class Layout {
                 }
             }
         }
+
+        System.out.println("\n");
     }
 }

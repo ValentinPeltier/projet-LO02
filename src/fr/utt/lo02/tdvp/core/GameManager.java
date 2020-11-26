@@ -63,8 +63,9 @@ public class GameManager {
         // Set the variant
         switch(variantChoice) {
             case 0:
-                // Create a variant that does nothing
+                // Create a variant that never executes and does nothing
                 this.variant = new Variant() {
+                    public boolean shouldExecute() { return false; }
                     public void execute() {}
                 };
                 break;
@@ -84,7 +85,7 @@ public class GameManager {
     private void initializePlayers() {
         // Ask for the number of physical players
         final int physicalPlayersCount = Input.promptChoice(
-            "Nombre de joueurs reeels",
+            "Nombre de joueurs reels",
             new String[] { "1 joueur", "2 joueurs", "3 joueurs" },
             "Combien de joueurs reels vont jouer ?"
         );
@@ -135,6 +136,7 @@ public class GameManager {
      * Asks the user the desired layout
      */
     private void initializeLayout() {
+        // Ask the user
         final int layoutChoice = Input.promptChoice(
             "Choix du plateau de jeu",
             new String[] {
@@ -143,6 +145,7 @@ public class GameManager {
             },
             "Quel plateau de jeu choisissez-vous ?");
 
+        // Create the layout
         switch(layoutChoice) {
             case 1:
                 this.layout = new LayoutRectangle();
@@ -153,19 +156,28 @@ public class GameManager {
         }
     }
 
+    /**
+     * Play a 3 round game.
+     * {@code initializeVariant}, {@code initializePlayers} and {@code initializeLayout} must have been called.
+     */
     public void playGame() {
-    	
-    	System.out.println("Que La Partie Commence !");
+        System.out.println("### Que la partie commence ! ###");
+
         // The game must be in 3 rounds
         for(int i = 0; i < 3; i++) {
-        	System.out.println("Round "+(i+1)+" !\n");
+            System.out.println("### Round " + (i + 1) + " ! ###\n");
+
             // Loop for each player
             for(Player player: players) {
                 player.play();
-                if(this.variant.getClass().getSimpleName()=="VariantRandomSwitch")
-                {
+
+                // Should the variant be executed ?
+                if(this.variant.shouldExecute()) {
+                    // Then execute it
                 	this.variant.execute();
                 }
+
+                // If the stack is empty then the round is over
                 if (Stack.getInstance().isEmpty()) {
                     break;
                 }
@@ -174,15 +186,20 @@ public class GameManager {
             // TODO: count points
         }
     }
-    
-    public Layout getLayout()
-    {
+
+    /**
+     * Returns the selected layout
+     * @return The selected layout
+     */
+    public Layout getLayout() {
     	return this.layout;
     }
-    
-    public Variant getVariant()
-    {
+
+    /**
+     * Returns the selected variant
+     * @return The selected variant
+     */
+    public Variant getVariant() {
     	return this.variant;
     }
-    
 }

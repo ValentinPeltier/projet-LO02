@@ -1,9 +1,5 @@
 package fr.utt.lo02.tdvp.core.player;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Scanner;
-
 import fr.utt.lo02.tdvp.core.Card;
 import fr.utt.lo02.tdvp.core.GameManager;
 import fr.utt.lo02.tdvp.core.Stack;
@@ -18,63 +14,55 @@ public class PhysicalPlayer extends Player {
     /**
      * Plays a turn
      */
-	GameManager gameManager = GameManager.getInstance();
-	Stack stack = Stack.getInstance();
-	
 	public void play() {
-		
-		Card drawnCard;
-		
-		int answer;
-		
-		drawnCard = stack.drawCard();
-		
+        GameManager gameManager = GameManager.getInstance();
+		Card drawnCard = Stack.getInstance().drawCard();
+
 		gameManager.getLayout().display();
-		
-		System.out.println("\nC'est a "+name+" de jouer ! \nTu viens de Piocher : "+drawnCard+"\n");
-		
-		// Victory Card Choice
-        answer = Input.promptChoice(
-            "Victory Card",
-            new String[] { "Oui", "Non" },
-            "Veux-tu voir ta Victory Card ?"
+
+		System.out.println("C'est a " + name + " de jouer ! \nTu viens de Piocher : "+drawnCard+"\n");
+
+		// Display Victory Card Choice
+        int answer = Input.promptChoice(
+            "Voir ta Victory Card",
+            new String[] { "Non", "Oui" },
+            "Veux-tu voir ta Victory Card ?",
+            0
         );
-        
-        if(answer == 1)
-        {
-        	displayVictoryCard();
+
+        if(answer == 1) {
+        	this.displayVictoryCard();
         }
-        
-        if (gameManager.getVariant().getClass().getSimpleName() == "VariantSecondChance")
-        {
-        	gameManager.getVariant().execute();
-        }
-        
-		
+
 		// Ask first Time
         answer = Input.promptChoice(
             "Options",
             new String[] { "Poser ma carte", "Deplacer des cartes" },
             "Que voulez vous faire ?"
         );
-        
+
         switch(answer) {
         	case 1:
-        		//TODO : poser cartes
+                // TODO : poser cartes
+
         		int answer2 = Input.promptChoice(
                         "Deplacer une carte",
-                        new String[] {"Oui","Non"},
-                        "Voulez voux deplacer une ou des carte.s ?"
+                        new String[] { "Non", "Oui" },
+                        "Voulez-vous deplacer une ou plusieurs carte.s ?",
+                        0
                     );
-        		if(answer2 == 0)
-        		{
-        			//TODO: deplacer cartes
-        		}
+
+        		if(answer2 == 1) {
+        			// TODO: deplacer cartes
+                }
+
         		break;
         	case 2:
-        		//TODO : deplacer cartes
-        		System.out.println("Vous devez maintenant poser votre carte !");
-        		//TODO : poser carte
+                // TODO : deplacer cartes
+
+                System.out.println("Vous devez maintenant poser votre carte !");
+
+        		// TODO : poser carte
         		break;
         }
 	}
@@ -83,7 +71,7 @@ public class PhysicalPlayer extends Player {
      * Display the victory card
      */
     public void displayVictoryCard() {
-        System.out.println("Votre carte Victoire est " + this.victoryCard);
+        System.out.println("Ta Victory Card est " + this.victoryCard + "\n");
     }
 
     /**
