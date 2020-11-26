@@ -3,11 +3,25 @@ package fr.utt.lo02.tdvp.core.layout;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Random;
 
 import fr.utt.lo02.tdvp.core.Card;
 
 public abstract class Layout {
     protected Map<Location, Card> locations = new HashMap<Location, Card>();
+
+    public Location getRandomLocation() {
+        Location randomLocation;
+        Random randomGenerator = new Random();
+        Object[] locations = this.locations.keySet().toArray();
+
+        // Get random location where a card is placed
+        do {
+            randomLocation = (Location) locations[randomGenerator.nextInt(locations.length)];
+        } while(this.locations.get(randomLocation) == null);
+
+        return randomLocation;
+    }
 
     /**
      * Indicate if the specified location exists in the layout
@@ -34,12 +48,19 @@ public abstract class Layout {
      */
     public Card getCardAt(int x, int y) {
         Location location = new Location(x, y);
+        return getCardAt(location);
+    }
+
+    public Card getCardAt(Location location) {
         return this.locations.get(location);
     }
 
     public boolean setCardAt(int x, int y, Card card) {
         Location location = new Location(x, y);
+        return setCardAt(location, card);
+    }
 
+    public boolean setCardAt(Location location, Card card) {
         // If specified location is on the layout
         if (this.locations.containsKey(location)) {
             // Place the card

@@ -69,7 +69,10 @@ public class GameManager {
             case 0:
                 // Create a variant that never executes and does nothing
                 this.variant = new Variant() {
-                    public boolean shouldExecute() { return false; }
+                    public boolean shouldExecute(int round, int playerIndex) {
+                        return false;
+                    }
+
                     public void execute() {}
                 };
                 break;
@@ -165,32 +168,41 @@ public class GameManager {
      * {@code initializeVariant}, {@code initializePlayers} and {@code initializeLayout} must have been called.
      */
     public void playGame() {
+        Stack stack = Stack.getInstance();
+
         System.out.println("################################");
         System.out.println("### Que la partie commence ! ###");
         System.out.println("################################\n");
 
         // The game must be in 4 rounds
-        for(int i = 0; i < 4; i++) {
+        for(int round = 0; round < 4; round++) {
             System.out.println("#################");
-            System.out.println("### Round " + (i + 1) + " ! ###");
+            System.out.println("### Round " + (round + 1) + " ! ###");
             System.out.println("#################\n");
 
             // If the stack is empty or the layout is full then the round is over
-            while (!Stack.getInstance().isEmpty() && !this.layout.isFull()) {
+            for (int turn = 0; !stack.isEmpty() && !this.layout.isFull(); turn++) {
                 // Loop for each player
-                for(Player player: players) {
+                for (int playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
                     // Should the variant be executed ?
-                    if(this.variant.shouldExecute()) {
+                    if (this.variant.shouldExecute(turn, playerIndex)) {
                         // Then execute it
                         this.variant.execute();
                     }
 
                     // Player turn
-                    player.play();
+                    this.players.get(playerIndex).play();
                 }
             }
 
             // TODO: count points
+
+            // Reset stack
+            stack.reset();
+
+            // TODO: reset layout
+
+            // TODO: change start player
         }
     }
 

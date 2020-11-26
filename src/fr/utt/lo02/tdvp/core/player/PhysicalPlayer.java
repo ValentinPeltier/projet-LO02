@@ -131,7 +131,7 @@ public class PhysicalPlayer extends Player {
         int answer = 1;
         if (layout.countCards() > 1) {
             answer = Input.promptChoice(
-                "Joue",
+                "Tour de jeu",
                 new String[] { "Poser ma carte", "Deplacer une carte" },
                 "Que veux-tu faire ?"
             );

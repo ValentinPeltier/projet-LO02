@@ -14,9 +14,11 @@ public class VariantSecondChance extends Variant {
 
     /**
      * Should the variant be executed ?
+     * @param turn The index of the turn currently playing
+     * @param playerIndex The index of the player within the turn
      * @return {@code true} if the variant should be executed now, {@code false} otherwise
      */
-    public boolean shouldExecute() {
+    public boolean shouldExecute(int turn, int playerIndex) {
         // TODO
         return true;
     }

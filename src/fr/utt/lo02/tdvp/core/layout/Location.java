@@ -29,6 +29,11 @@ public class Location {
     }
 
     @Override
+    public String toString() {
+        return (char)(this.x + 'A') + "" + this.y;
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(x, y);
     }
