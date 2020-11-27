@@ -75,7 +75,7 @@ public class GameManager {
                     public boolean shouldExecute(int round, int playerIndex) {
                         return false;
                     }
-                    public void execute() {}
+                    public void execute(Player player) {}
                     public void reset() {}
                 };
                 break;
@@ -197,7 +197,7 @@ public class GameManager {
                     // Should the variant be executed ?
                     if (this.variant.shouldExecute(turn, playerIndex)) {
                         // Then execute it
-                        this.variant.execute();
+                        this.variant.execute(player);
                     }
 
                     // Player turn

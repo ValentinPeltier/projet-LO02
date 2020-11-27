@@ -4,6 +4,7 @@ import fr.utt.lo02.tdvp.core.Card;
 import fr.utt.lo02.tdvp.core.GameManager;
 import fr.utt.lo02.tdvp.core.layout.Layout;
 import fr.utt.lo02.tdvp.core.layout.Location;
+import fr.utt.lo02.tdvp.core.player.Player;
 
 public class VariantRandomSwitch extends Variant {
     static final String name = "Echange aleatoire";
@@ -31,7 +32,7 @@ public class VariantRandomSwitch extends Variant {
     /**
      * Executes the variant
      */
-    public void execute() {
+    public void execute(Player player) {
         Layout layout = GameManager.getInstance().getLayout();
 
         // Get 2 random distinct locations
@@ -48,4 +49,6 @@ public class VariantRandomSwitch extends Variant {
 
         System.out.println("[Variante] 2 cartes aleatoires ont ete echangees !\n");
     }
+
+    public void reset() {}
 }

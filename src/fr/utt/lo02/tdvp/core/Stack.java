@@ -28,7 +28,13 @@ public class Stack {
      * @throws NoSuchElementException
      */
     public Card drawCard() throws NoSuchElementException {
-        return cards.pop();
+        return this.cards.pop();
+    }
+
+    public void put(Card card) {
+        this.cards.push(card);
+
+        Collections.shuffle(this.cards);
     }
 
     /**
@@ -38,12 +44,12 @@ public class Stack {
         // Add every possible card to the stack
         for (Card.Shape shape: Card.Shape.values()) {
             for (Card.Color color: Card.Color.values()) {
-                cards.add(new Card(shape, color, false));
-                cards.add(new Card(shape, color, true));
+                this.cards.add(new Card(shape, color, false));
+                this.cards.add(new Card(shape, color, true));
             }
         }
 
         // Shuffle cards
-        Collections.shuffle(cards);
+        Collections.shuffle(this.cards);
     }
 }
