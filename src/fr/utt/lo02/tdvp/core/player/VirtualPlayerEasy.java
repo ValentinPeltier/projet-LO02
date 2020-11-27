@@ -6,7 +6,6 @@ import java.util.List;
 import fr.utt.lo02.tdvp.core.Card;
 import fr.utt.lo02.tdvp.core.GameManager;
 import fr.utt.lo02.tdvp.core.Stack;
-import fr.utt.lo02.tdvp.core.cli.Input;
 import fr.utt.lo02.tdvp.core.layout.Layout;
 import fr.utt.lo02.tdvp.core.layout.Location;
 
@@ -15,91 +14,76 @@ public class VirtualPlayerEasy extends VirtualPlayer {
      * Play a turn with a low level strategy
      */
     public void play() {
-    	
-    	System.out.println("### A L'IA de jouer ! ###\n");
-    	
+    	System.out.println("### A " + this.name + " de jouer ! ###\n");
+
     	int choice, choice2;
     	Card drawnCard = Stack.getInstance().drawCard();
-    	
+
     	//Place Card ?
-    	choice = randomInt(0,1);
-    	if(choice == 1)//YES
-    	{
+        choice = randomInt(0,1);
+        // YES
+    	if(choice == 1) {
     		moveCard();
     		placeCard(drawnCard);
     	}
-    	else
-    	{
+    	else {
     		placeCard(drawnCard);
     		choice2 = randomInt(0,1);
-    		if(choice2 == 1)
-    		{
+    		if(choice2 == 1) {
     			moveCard();
     		}
     	}
-    	
-    	System.out.println("### L'IA a fini de jouer ! ###\n");
-    	
-    	
+
+    	System.out.println("### " + this.name + " a fini de jouer ! ###\n");
     }
-    
+
     private void moveCard() {
-    	
-    	
         Layout layout = GameManager.getInstance().getLayout();
-    	
+
         //1st card to move
         List<Location> possibleLocationsSource = new ArrayList<Location>();
-    	
+
     	int xMax = layout.getX();
     	int yMax = layout.getY();
-    	
-    	for(int x = 0; x < xMax; x++)
-    	{
-    		for(int y = 0; y < yMax; y++)
-        	{
+
+    	for(int x = 0; x < xMax; x++) {
+    		for(int y = 0; y < yMax; y++) {
     			//LOCATION HAS TO BE NON NULL
-        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) != null)
-        		{
+        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) != null) {
         			possibleLocationsSource.add(new Location(x,y));
         		}
         	}
-    	}	
-    	
-    	//Pickup a location randomly for the first Card 
+    	}
+
+    	//Pickup a location randomly for the first Card
 		int tryLocationIndex = randomInt(0,((int) (possibleLocationsSource.size()-1)));
 		Location tryLocationSource = possibleLocationsSource.get(tryLocationIndex);
-		
-		int x1 = tryLocationSource.getX(); 
-		int y1 = tryLocationSource.getY();   
-		
-		
+
+		int x1 = tryLocationSource.getX();
+		int y1 = tryLocationSource.getY();
+
+
 		//2nd location
-        List<Location> possibleLocationsDestination = new ArrayList<Location>();  
-    	
-    	for(int x = 0; x < xMax; x++)
-    	{
-    		for(int y = 0; y < yMax; y++)
-        	{
+        List<Location> possibleLocationsDestination = new ArrayList<Location>();
+
+    	for(int x = 0; x < xMax; x++) {
+    		for(int y = 0; y < yMax; y++) {
     			//LOCATION MUST NOT BE THE SAME AS THE SOURCE
-        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) != layout.getCardAt(x1,y1))
-        		{
+        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) != layout.getCardAt(x1,y1)) {
         			possibleLocationsDestination.add(new Location(x,y));
         		}
         	}
     	}
-    	
+
 
         // Ask for the destination
         while (true) {
-        	
         	//Pickup a location randomly for the second Card
-    		tryLocationIndex = randomInt(0,((int) (possibleLocationsSource.size()-1)));
+    		tryLocationIndex = randomInt(0, (int)(possibleLocationsSource.size() - 1));
     		Location tryLocationDestination = possibleLocationsSource.get(tryLocationIndex);
-    		
-    		int x2 = tryLocationDestination.getX(); 
-    		int y2 = tryLocationDestination.getY();   
-    		
+
+    		int x2 = tryLocationDestination.getX();
+    		int y2 = tryLocationDestination.getY();
 
             boolean error = false;
 
@@ -126,47 +110,38 @@ public class VirtualPlayerEasy extends VirtualPlayer {
             if (!error) {
                 if(layout.moveCard(x1, y1, x2, y2)) {
                     // Card has been moved, we are done
-                	System.out.println("L'IA a deplace des cartes\n");
+                	System.out.println(this.name + " a deplace des cartes\n");
                     return;
                 }
                 else {
                     System.out.println("Une erreur est survenue...\n");
                 }
             }
-            
+
             possibleLocationsDestination.remove(tryLocationIndex);
         }
-        
     }
-    
-    private void placeCard(Card card)
-    {
-    	
+
+    private void placeCard(Card card) {
     	Layout layout = GameManager.getInstance().getLayout();
     	List<Location> possibleLocations = new ArrayList<Location>();
-    	
-    	
+
     	int xMax = layout.getX();
     	int yMax = layout.getY();
-    	
-    	for(int x = 0; x < xMax; x++)
-    	{
-    		for(int y = 0; y < yMax; y++)
-        	{
-        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) == null)
-        		{
+
+    	for(int x = 0; x < xMax; x++) {
+    		for(int y = 0; y < yMax; y++) {
+        		if(layout.getLocations().containsKey(new Location(x,y)) && layout.getCardAt(x, y) == null) {
         			possibleLocations.add(new Location(x,y));
         		}
         	}
     	}
-    	
-    	while(true)
-    	{
+
+    	while(true) {
     		//Pickup a location randomly
     		int tryLocationIndex = randomInt(0,((int) (possibleLocations.size()-1)));
     		Location tryLocation = possibleLocations.get(tryLocationIndex);
-    		
-    		
+
             if (
                 !layout.isEmpty()
                 && layout.getCardAt(tryLocation.getX() - 1, tryLocation.getY()) == null
@@ -174,26 +149,23 @@ public class VirtualPlayerEasy extends VirtualPlayer {
                 && layout.getCardAt(tryLocation.getX(), tryLocation.getY() - 1) == null
                 && layout.getCardAt(tryLocation.getX(), tryLocation.getY() + 1) == null
             ) {
-                //ERREUR
+                //ERROR, let's retry
             }
             else if (layout.placeCard(tryLocation.getX(), tryLocation.getY(), card)) {
                 // Card has been placed, we are done
-            	System.out.println("L'IA a place une carte\n");
+            	System.out.println(this.name+" a place une carte\n");
                 return;
             }
             else {
                 System.out.println("Une erreur est survenue...\n");
             }
-            
-            //REMOVE 
+
+            //REMOVE
             possibleLocations.remove(tryLocationIndex);
     	}
-    	
     }
-    
-    
-    private int randomInt(int Min,int Max)
-    {
+
+    private int randomInt(int Min,int Max) {
     	int random = Min + (int)(Math.random() * ((Max - Min) + 1));
     	return random;
     }

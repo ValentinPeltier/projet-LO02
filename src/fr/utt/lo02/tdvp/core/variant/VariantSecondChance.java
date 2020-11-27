@@ -1,6 +1,5 @@
 package fr.utt.lo02.tdvp.core.variant;
 
-import fr.utt.lo02.tdvp.core.Card;
 import fr.utt.lo02.tdvp.core.GameManager;
 import fr.utt.lo02.tdvp.core.Stack;
 import fr.utt.lo02.tdvp.core.cli.Input;
