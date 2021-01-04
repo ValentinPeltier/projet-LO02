@@ -19,9 +19,17 @@ public class Card {
         BLUE,
     }
 
+    /**
+     * Is the card filled or hollow ?
+     */
+    public enum Filled {
+        HOLLOW,
+        FILLED
+    }
+
     private Shape shape;
     private Color color;
-    private boolean filled;
+    private Filled filled;
 
     /**
      * Instantiate a card
@@ -29,7 +37,7 @@ public class Card {
      * @param color the color of the card
      * @param filled the filling of the card
      */
-    public Card(Shape shape, Color color, boolean filled) {
+    public Card(Shape shape, Color color, Filled filled) {
         this.shape = shape;
         this.color = color;
         this.filled = filled;
@@ -55,7 +63,7 @@ public class Card {
      * Get the filling of the card
      * @return the filling of the card
      */
-    public boolean getFilled() {
+    public Filled getFilled() {
         return this.filled;
     }
 
@@ -90,8 +98,14 @@ public class Card {
         }
 
         // Filled
-        if (this.filled) filled = "F";
-        else filled = "E";
+        switch (this.filled) {
+            case HOLLOW: filled = "H";
+                break;
+            case FILLED: filled = "F";
+                break;
+            default: filled = this.color.toString();
+        }
+
 
         return shape + color + filled;
     }

@@ -44,8 +44,9 @@ public class Stack {
         // Add every possible card to the stack
         for (Card.Shape shape: Card.Shape.values()) {
             for (Card.Color color: Card.Color.values()) {
-                this.cards.add(new Card(shape, color, false));
-                this.cards.add(new Card(shape, color, true));
+                for (Card.Filled filled: Card.Filled.values()) {
+                    this.cards.add(new Card(shape, color, filled));
+                }
             }
         }
 

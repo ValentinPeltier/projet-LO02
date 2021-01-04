@@ -229,12 +229,7 @@ public class GameManager {
                 playerScore += this.layoutVisitor.getPoints().get(player.getVictoryCard().getShape().toString().toLowerCase());
 
             	// Add filled points
-            	if (player.getVictoryCard().getFilled()) {
-            		playerScore += this.layoutVisitor.getPoints().get("filled");
-                }
-                else {
-            		playerScore += this.layoutVisitor.getPoints().get("hollow");
-            	}
+                playerScore += this.layoutVisitor.getPoints().get(player.getVictoryCard().getFilled().toString().toLowerCase());
 
                 player.setScore(playerScore);
 
