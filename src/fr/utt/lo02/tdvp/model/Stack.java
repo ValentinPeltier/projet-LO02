@@ -1,4 +1,4 @@
-package fr.utt.lo02.tdvp.core;
+package fr.utt.lo02.tdvp.model;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;

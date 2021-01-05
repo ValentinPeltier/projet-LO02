@@ -1,13 +1,13 @@
-package fr.utt.lo02.tdvp.core.player;
+package fr.utt.lo02.tdvp.model.player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.utt.lo02.tdvp.core.Card;
-import fr.utt.lo02.tdvp.core.GameManager;
-import fr.utt.lo02.tdvp.core.Stack;
-import fr.utt.lo02.tdvp.core.layout.Layout;
-import fr.utt.lo02.tdvp.core.layout.Location;
+import fr.utt.lo02.tdvp.model.Card;
+import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Stack;
+import fr.utt.lo02.tdvp.model.layout.Layout;
+import fr.utt.lo02.tdvp.model.layout.Location;
 
 public class VirtualPlayerEasy extends VirtualPlayer {
     /**

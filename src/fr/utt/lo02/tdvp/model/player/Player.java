@@ -1,7 +1,7 @@
-package fr.utt.lo02.tdvp.core.player;
+package fr.utt.lo02.tdvp.model.player;
 
-import fr.utt.lo02.tdvp.core.Card;
-import fr.utt.lo02.tdvp.core.Stack;
+import fr.utt.lo02.tdvp.model.Card;
+import fr.utt.lo02.tdvp.model.Stack;
 
 public abstract class Player {
     protected String name;

@@ -1,4 +1,4 @@
-package fr.utt.lo02.tdvp.core;
+package fr.utt.lo02.tdvp.model;
 
 public class Card {
     /**

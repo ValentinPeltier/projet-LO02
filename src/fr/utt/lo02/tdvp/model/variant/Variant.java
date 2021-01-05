@@ -1,6 +1,6 @@
-package fr.utt.lo02.tdvp.core.variant;
+package fr.utt.lo02.tdvp.model.variant;
 
-import fr.utt.lo02.tdvp.core.player.Player;
+import fr.utt.lo02.tdvp.model.player.Player;
 
 public abstract class Variant {
     public Variant() {

@@ -1,10 +1,10 @@
-package fr.utt.lo02.tdvp.core.variant;
+package fr.utt.lo02.tdvp.model.variant;
 
-import fr.utt.lo02.tdvp.core.GameManager;
-import fr.utt.lo02.tdvp.core.Stack;
-import fr.utt.lo02.tdvp.core.cli.Input;
-import fr.utt.lo02.tdvp.core.layout.Layout;
-import fr.utt.lo02.tdvp.core.player.Player;
+import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Stack;
+import fr.utt.lo02.tdvp.model.layout.Layout;
+import fr.utt.lo02.tdvp.model.player.Player;
+import fr.utt.lo02.tdvp.view.cli.Input;
 
 public class VariantSecondChance extends Variant {
     static final String name = "Seconde chance";

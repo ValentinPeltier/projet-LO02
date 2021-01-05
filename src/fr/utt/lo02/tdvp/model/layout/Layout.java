@@ -1,11 +1,11 @@
-package fr.utt.lo02.tdvp.core.layout;
+package fr.utt.lo02.tdvp.model.layout;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
-import fr.utt.lo02.tdvp.core.Card;
+import fr.utt.lo02.tdvp.model.Card;
 
 public abstract class Layout {
 

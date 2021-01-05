@@ -1,4 +1,4 @@
-package fr.utt.lo02.tdvp.core.player;
+package fr.utt.lo02.tdvp.model.player;
 
 public class PlayerContext {
     private Player strategy;

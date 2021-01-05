@@ -1,20 +1,20 @@
-package fr.utt.lo02.tdvp.core;
+package fr.utt.lo02.tdvp.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.utt.lo02.tdvp.core.cli.Input;
-import fr.utt.lo02.tdvp.core.layout.Layout;
-import fr.utt.lo02.tdvp.core.layout.LayoutCircle;
-import fr.utt.lo02.tdvp.core.layout.LayoutRectangle;
-import fr.utt.lo02.tdvp.core.layout.LayoutVisitor;
-import fr.utt.lo02.tdvp.core.player.PhysicalPlayer;
-import fr.utt.lo02.tdvp.core.player.Player;
-import fr.utt.lo02.tdvp.core.player.VirtualPlayerEasy;
-import fr.utt.lo02.tdvp.core.player.VirtualPlayerHard;
-import fr.utt.lo02.tdvp.core.variant.Variant;
-import fr.utt.lo02.tdvp.core.variant.VariantRandomSwitch;
-import fr.utt.lo02.tdvp.core.variant.VariantSecondChance;
+import fr.utt.lo02.tdvp.model.layout.Layout;
+import fr.utt.lo02.tdvp.model.layout.LayoutCircle;
+import fr.utt.lo02.tdvp.model.layout.LayoutRectangle;
+import fr.utt.lo02.tdvp.model.layout.LayoutVisitor;
+import fr.utt.lo02.tdvp.model.player.PhysicalPlayer;
+import fr.utt.lo02.tdvp.model.player.Player;
+import fr.utt.lo02.tdvp.model.player.VirtualPlayerEasy;
+import fr.utt.lo02.tdvp.model.player.VirtualPlayerHard;
+import fr.utt.lo02.tdvp.model.variant.Variant;
+import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
+import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
+import fr.utt.lo02.tdvp.view.cli.Input;
 
 public class GameManager {
     private static GameManager instance = new GameManager();

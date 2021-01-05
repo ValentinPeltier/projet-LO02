@@ -1,4 +1,4 @@
-package fr.utt.lo02.tdvp.core.layout;
+package fr.utt.lo02.tdvp.model.layout;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package fr.utt.lo02.tdvp.core.cli;
+package fr.utt.lo02.tdvp.view.cli;
 
 import java.util.Scanner;
 

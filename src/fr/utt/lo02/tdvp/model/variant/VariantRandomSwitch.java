@@ -1,10 +1,10 @@
-package fr.utt.lo02.tdvp.core.variant;
+package fr.utt.lo02.tdvp.model.variant;
 
-import fr.utt.lo02.tdvp.core.Card;
-import fr.utt.lo02.tdvp.core.GameManager;
-import fr.utt.lo02.tdvp.core.layout.Layout;
-import fr.utt.lo02.tdvp.core.layout.Location;
-import fr.utt.lo02.tdvp.core.player.Player;
+import fr.utt.lo02.tdvp.model.Card;
+import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.layout.Layout;
+import fr.utt.lo02.tdvp.model.layout.Location;
+import fr.utt.lo02.tdvp.model.player.Player;
 
 public class VariantRandomSwitch extends Variant {
     static final String name = "Echange aleatoire";
