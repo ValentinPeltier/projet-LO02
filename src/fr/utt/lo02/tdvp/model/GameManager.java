@@ -15,6 +15,7 @@ import fr.utt.lo02.tdvp.model.variant.Variant;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
+import fr.utt.lo02.tdvp.view.gui.Window;
 
 public class GameManager {
     private static GameManager instance = new GameManager();
@@ -42,6 +43,9 @@ public class GameManager {
      * Let the user choose the variant, the players and the desired layout.
      */
     public void initializeGame() {
+        // Generate the window (GUI)
+        Window.getInstance();
+
         System.out.println("###############################");
         System.out.println("### Parametres de la partie ###");
         System.out.println("###############################\n");
