@@ -17,6 +17,7 @@ import fr.utt.lo02.tdvp.model.variant.Variant;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
+import fr.utt.lo02.tdvp.view.gui.Window;
 
 public class GameManager extends Observable{
 	
@@ -86,6 +87,7 @@ public class GameManager extends Observable{
      * Let the user choose the variant, the players and the desired layout.
      */
     public void initializeGame() {
+        Window.initWindow();
         
     	this.notifyObservers(Events.DisplayGameSettingsHeader);
 

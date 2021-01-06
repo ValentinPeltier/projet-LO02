@@ -1,0 +1,14 @@
+@font-face {
+    font-family: "Retron2000";
+    src: url("/assets/fonts/Retron2000.ttf");
+}
+
+.root {
+    -fx-background-image: url("/assets/background.png");
+    -fx-background-size: cover;
+    -fx-background-position: 50% 50%;
+    -fx-background-repeat: no-repeat;
+
+    -fx-font-family: "Retron2000";
+    -fx-font-size: 24px;
+}
