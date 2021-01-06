@@ -21,11 +21,12 @@ public class Window extends Application {
 
     @Override
     public void start(Stage window) {
-        scene = new Scene(PanelHome.getPane(), 800, 400);
+        scene = new Scene(HomePanel.getInstance(), 800, 400);
         scene.getStylesheets().add("/styles/global.css");
 
-        window.setMaximized(true);
         window.setTitle("Shape Up !");
+        window.getIcons().add(Images.getImage("icon.png"));
+        window.setMaximized(true);
         window.setScene(scene);
         window.setOnCloseRequest(new EventHandler<WindowEvent>(){
             @Override
