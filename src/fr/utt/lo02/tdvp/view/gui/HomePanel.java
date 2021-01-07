@@ -24,7 +24,7 @@ public class HomePanel extends HBox {
         leftCard.getTransforms().add(new Rotate(-45));
         rightCard.getTransforms().add(new Rotate(25));
 
-        Label title = new SULabel("Shape Up !");
+        Label title = new Label("Shape Up !");
         title.setStyle("-fx-font-size: 60px");
 
         ImageView[] cards = {
@@ -49,8 +49,9 @@ public class HomePanel extends HBox {
         cardsPane.setPrefColumns(5);
         cardsPane.setStyle("-fx-padding: 80px 140px");
 
-        Button button = new SUButton("JOUER");
-        button.setStyle("-fx-padding: 20px 180px; -fx-font-size: 36px");
+        Button button = new Button("JOUER");
+        button.getStyleClass().add("large-padding");
+        button.setStyle("-fx-font-size: 36px");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
