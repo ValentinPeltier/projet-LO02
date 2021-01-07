@@ -10,9 +10,8 @@
     -fx-background-size: cover;
     -fx-background-position: 50% 50%;
     -fx-background-repeat: no-repeat;
-
     -fx-font-family: "Retron2000";
-    -fx-font-size: 24px;
+    -fx-font-size: 30px;
 }
 
 /** Label **/
@@ -61,4 +60,10 @@
     -fx-background-size: contain;
     -fx-background-position: center;
     -fx-padding: 80px 50px;
+}
+
+/** Popup panel **/
+.popup-panel {
+    -fx-background-color: #c42f2ce7;
+    -fx-padding: 50px 30px;
 }
