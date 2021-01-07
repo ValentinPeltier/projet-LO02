@@ -277,7 +277,7 @@ public class ConsoleView implements Observer{
                         }
 
                         if (!error) {
-                            if(layout.moveCard(x1, y1, x2, y2)) {
+                            if(controller.moveCards(x1, y1, x2, y2)) {
                                 // Card has been moved, we are done
                                 return;
                             }

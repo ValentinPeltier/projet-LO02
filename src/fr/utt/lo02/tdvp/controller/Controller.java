@@ -33,6 +33,11 @@ public class Controller {
 		return gameManager.getLayout().placeCard(x, y, card);
 	}
 	
+	public boolean moveCards(int x1, int y1, int x2, int y2)
+	{
+		return gameManager.getLayout().moveCard(x1, y1, x2, y2);
+	}
+	
 	public void askPlaceCard()
 	{
 		gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).placeCard();
