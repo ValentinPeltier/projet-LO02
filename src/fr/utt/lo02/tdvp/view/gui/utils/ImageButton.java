@@ -1,10 +1,9 @@
-package fr.utt.lo02.tdvp.view.gui;
+package fr.utt.lo02.tdvp.view.gui.utils;
 
 import javafx.scene.control.Button;
 
 public class ImageButton extends Button {
     public ImageButton(String imageURI) {
-        super();
         this.init(imageURI);
     }
 
@@ -14,6 +13,6 @@ public class ImageButton extends Button {
     }
 
     public void changeImage(String imageURI) {
-        this.setGraphic(Images.getImageView(imageURI));
+        this.setGraphic(ImageUtil.getImageView(imageURI));
     }
 }

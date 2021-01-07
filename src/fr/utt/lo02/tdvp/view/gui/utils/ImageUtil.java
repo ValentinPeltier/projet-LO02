@@ -1,4 +1,4 @@
-package fr.utt.lo02.tdvp.view.gui;
+package fr.utt.lo02.tdvp.view.gui.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.IOException;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Images {
+public class ImageUtil {
     /**
      *
      * @param uri The image URI, without the "src/assets/" prefix
