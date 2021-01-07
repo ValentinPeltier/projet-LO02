@@ -25,4 +25,12 @@ public class LayoutCircle extends Layout {
             locations.put(new Location(2, i), null);
         }
     }
+    
+    public boolean moveHorizontally(int offset){
+    	return false;
+    }
+    
+    public boolean moveVertically(int offset){
+    	return false;
+    }
 }

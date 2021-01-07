@@ -3,6 +3,7 @@ package fr.utt.lo02.tdvp.model.player;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Stack;
@@ -10,11 +11,14 @@ import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.layout.Location;
 
 public class VirtualPlayerEasy extends VirtualPlayer {
+	
+	
+	GameManager gameManager =  GameManager.getInstance();
+	
     /**
      * Play a turn with a low level strategy
      */
     public void play() {
-    	System.out.println("### A " + this.name + " de jouer ! ###\n");
 
     	int choice, choice2;
     	Card drawnCard = Stack.getInstance().drawCard();
@@ -38,7 +42,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
     }
 
     private void moveCard() {
-        Layout layout = GameManager.getInstance().getLayout();
+        Layout layout = gameManager.getLayout();
 
         //1st card to move
         List<Location> possibleLocationsSource = new ArrayList<Location>();
@@ -114,7 +118,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
                     return;
                 }
                 else {
-                    System.out.println("Une erreur est survenue...\n");
+                    gameManager.notifyObservers(Events.LogError);
                 }
             }
 
@@ -123,7 +127,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
     }
 
     private void placeCard(Card card) {
-    	Layout layout = GameManager.getInstance().getLayout();
+    	Layout layout = gameManager.getLayout();
     	List<Location> possibleLocations = new ArrayList<Location>();
 
     	int xMax = layout.getX();
@@ -157,7 +161,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
                 return;
             }
             else {
-                System.out.println("Une erreur est survenue...\n");
+            	gameManager.notifyObservers(Events.LogError);
             }
 
             //REMOVE
@@ -169,4 +173,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
     	int random = Min + (int)(Math.random() * ((Max - Min) + 1));
     	return random;
     }
+
+	@Override
+	public void setName(String name) {}
 }

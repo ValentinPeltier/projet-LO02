@@ -2,7 +2,9 @@ package fr.utt.lo02.tdvp.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
+import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.layout.LayoutCircle;
 import fr.utt.lo02.tdvp.model.layout.LayoutRectangle;
@@ -16,7 +18,8 @@ import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
 
-public class GameManager {
+public class GameManager extends Observable{
+	
     private static GameManager instance = new GameManager();
 
     private List<Player> players = new ArrayList<Player>();
@@ -26,6 +29,11 @@ public class GameManager {
     private Layout layout;
 
     private LayoutVisitor layoutVisitor = new LayoutVisitor();
+    
+    
+    //MVC NEED IT
+    private int round;
+    private int playerIndex;
 
     private GameManager() {}
 
@@ -36,36 +44,61 @@ public class GameManager {
     public static GameManager getInstance() {
         return instance;
     }
+    
+    @Override
+    public void notifyObservers(Object arg){
+    	this.setChanged();
+        super.notifyObservers(arg);
+    }
+    
+    public int getRound() {
+    	return this.round;
+    }
+    
+    public int getPlayerIndex()
+    {
+    	return this.playerIndex;
+    }
+    
+    public Player getPlayerAtIndex(int index)
+    {
+    	return this.players.get(index);
+    }
+    
+    public boolean isCardAjacent(int x, int y) {
+    	
+    	boolean noAdjacentCard = !this.layout.isEmpty()
+        && layout.getCardAt(x - 1, y) == null
+        && layout.getCardAt(x + 1, y) == null
+        && layout.getCardAt(x, y - 1) == null
+        && layout.getCardAt(x, y + 1) == null;
+    	
+    	return !noAdjacentCard;
+    }
 
     /**
      * Initialize a new game.
      * Let the user choose the variant, the players and the desired layout.
      */
     public void initializeGame() {
-        System.out.println("###############################");
-        System.out.println("### Parametres de la partie ###");
-        System.out.println("###############################\n");
+        
+    	this.notifyObservers(Events.DisplayGameSettingsHeader);
 
         // Initialize the variant
-        initializeVariant();
-
+        this.notifyObservers(Events.AskVariant);
+        
         // Initialize the players
-        initializePlayers();
+        this.initializePlayers();
+        
 
         // Initialize layout
-        initializeLayout();
+        this.notifyObservers(Events.AskLayoutShape);  
     }
 
     /**
      * Asks the user to choose a variant
      */
-    private void initializeVariant() {
-        // Ask the user for a variant
-        final int variantChoice = Input.promptChoice("Choix de la variante", new String[] {
-            "Aucune",
-            VariantRandomSwitch.getName() + " (" + VariantRandomSwitch.getDescription() + ")",
-            VariantSecondChance.getName() + " (" + VariantSecondChance.getDescription() + ")"
-        }, "Quelle variante choisis-tu ?", 0);
+    public void initializeVariant(int variantChoice) {
 
         // Set the variant
         switch (variantChoice) {
@@ -88,23 +121,30 @@ public class GameManager {
                 break;
         }
     }
+    
 
+    
+    public void setPhysicalPlayers(int physicalPlayersCount) {
+    	
+    	// Create physical players
+        for (this.playerIndex = 0; this.playerIndex < physicalPlayersCount; this.playerIndex++) {
+            this.players.add(new PhysicalPlayer());
+            this.notifyObservers(Events.AskPlayerName);
+        }
+    }
+    
+    public void setPlayerName(String name) {
+    	this.players.get(this.playerIndex).setName(name);
+    }
+    
     /**
      * Asks the user for the number of physical and virtual players and their names
      */
-    private void initializePlayers() {
-        // Ask for the number of physical players
-        final int physicalPlayersCount = Input.promptChoice(
-            "Nombre de joueurs reels",
-            new String[] { "1 joueur", "2 joueurs", "3 joueurs" },
-            "Combien de joueurs reels vont jouer ?"
-        );
-
-        // Create physical players
-        for (int i = 0; i < physicalPlayersCount; i++) {
-            this.players.add(new PhysicalPlayer());
-        }
-
+    public void initializePlayers() {
+        
+    	this.notifyObservers(Events.AskPhysicalPlayersNumber);
+    	
+    	int physicalPlayersCount = this.players.size();
         // Generate answers for the number of virtual players
         final int minVirtualPlayers = Math.max(2 - physicalPlayersCount, 0);
         final ArrayList<String> virtualPlayersAnswers = new ArrayList<String>();
@@ -145,15 +185,7 @@ public class GameManager {
     /**
      * Asks the user the desired layout
      */
-    private void initializeLayout() {
-        // Ask the user
-        final int layoutChoice = Input.promptChoice(
-            "Choix du plateau de jeu",
-            new String[] {
-                "Plateau rectangulaire 5x3",
-                "Plateau circulaire de diametre 5"
-            },
-            "Quel plateau de jeu choisis-tu ?");
+    public void initializeLayout(int layoutChoice) {
 
         // Create the layout
         switch (layoutChoice) {
@@ -173,26 +205,25 @@ public class GameManager {
     public void playGame() {
         Stack stack = Stack.getInstance();
 
-        System.out.println("################################");
-        System.out.println("### Que la partie commence ! ###");
-        System.out.println("################################\n");
+        this.notifyObservers(Events.DisplayStartGameMsg);
 
         // The game must be in 4 rounds
-        for(int round = 0; round < 4; round++) {
-            System.out.println("#################");
-            System.out.println("### Round " + (round + 1) + " ! ###");
-            System.out.println("#################\n");
+        for(round = 0; round < 4; round++) {
+        	this.notifyObservers(Events.DisplayRoundNumber);
 
             boolean roundOver = false;
 
             // If the stack is empty or the layout is full then the round is over
             for (int turn = 0; !roundOver; turn++) {
                 // Loop for each player
-                for (int playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
+                for (playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
                     Player player = this.players.get(playerIndex);
+                    
+                    
 
                     // Display name
-                    System.out.println("### A " + player.getName() + " de jouer ! ###\n");
+                    this.notifyObservers(Events.DisplayNameAtTurn);
+
 
                     // Should the variant be executed ?
                     if (this.variant.shouldExecute(turn, playerIndex)) {
@@ -216,8 +247,9 @@ public class GameManager {
 
             // TODO: change start player
 
-            // Distribute points and display scores
-            System.out.println("### Scores ###");
+            
+            // Distribute points
+            
             for (Player player: this.players) {
             	// Get player current score
                 int playerScore = player.getScore();
@@ -233,10 +265,10 @@ public class GameManager {
 
                 player.setScore(playerScore);
 
-                // Display score
-                System.out.println("### " + player.getName() + " : " + player.getScore() + " points");
+                
             }
-            System.out.println();
+            
+            displayScores();
 
             // Reset stack, layout and variant at the end of each round
             stack.reset();
@@ -249,6 +281,19 @@ public class GameManager {
             }
         }
     }
+    
+    private void displayScores() {
+    	//Display Scores
+    	this.notifyObservers(Events.DisplayScoresHeader);
+
+        for (playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
+        	// Display score
+        	this.notifyObservers(Events.DisplayScoreForPlayerOnRow);
+        }
+        
+        this.notifyObservers(Events.DisplaySimpleFooter);
+    }
+    
 
     /**
      * Returns the selected layout

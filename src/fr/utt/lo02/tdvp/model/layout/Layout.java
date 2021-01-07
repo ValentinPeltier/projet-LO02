@@ -213,4 +213,18 @@ public abstract class Layout {
     }
 
     public abstract void reset();
+    
+    /**
+     * Move the whole grid left or right
+     * @return {@code false} if the movement is impossible, {@code true} if the movement has been made
+     * @param offset Offset of the movement : -1 for right and +1 for left 
+     */
+    public abstract boolean moveHorizontally(int offset);//On X
+    
+    /**
+     * Move the whole grid up or down
+     * @return {@code false} if the movement is impossible, {@code true} if the movement has been made
+     * @param offset Offset of the movement : 1 for right and -1 for left
+     */
+    public abstract boolean moveVertically(int offset);//On Y
 }
