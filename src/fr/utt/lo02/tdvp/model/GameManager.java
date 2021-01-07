@@ -65,6 +65,11 @@ public class GameManager extends Observable{
     	return this.players.get(index);
     }
     
+    public int getPlayersNumber()
+    {
+    	return this.players.size();
+    }
+    
     public boolean isCardAjacent(int x, int y) {
     	
     	boolean noAdjacentCard = !this.layout.isEmpty()
@@ -133,6 +138,19 @@ public class GameManager extends Observable{
         }
     }
     
+    public void setVirtualPlayer(int difficulty)
+    {
+    	// Create virtual player
+        switch (difficulty) {
+            case 1:
+                this.players.add(new VirtualPlayerEasy());
+                break;
+            case 2:
+                this.players.add(new VirtualPlayerHard());
+                break;
+        }
+    }
+    
     public void setPlayerName(String name) {
     	this.players.get(this.playerIndex).setName(name);
     }
@@ -144,42 +162,7 @@ public class GameManager extends Observable{
         
     	this.notifyObservers(Events.AskPhysicalPlayersNumber);
     	
-    	int physicalPlayersCount = this.players.size();
-        // Generate answers for the number of virtual players
-        final int minVirtualPlayers = Math.max(2 - physicalPlayersCount, 0);
-        final ArrayList<String> virtualPlayersAnswers = new ArrayList<String>();
-        for (int i = minVirtualPlayers; physicalPlayersCount + i <= 3; i++) {
-            virtualPlayersAnswers.add(String.valueOf(i) + " joueur" + (i > 1 ? "s" : ""));
-        }
-
-        int virtualPlayersCount = 0;
-        if (virtualPlayersAnswers.size() > 1) {
-            // Ask for the number of virtual players
-            virtualPlayersCount = Input.promptChoice(
-                "Nombre de joueurs virtuels",
-                virtualPlayersAnswers.toArray(new String[virtualPlayersAnswers.size()]),
-                "Combien de joueurs virtuels vont jouer ?",
-                minVirtualPlayers
-            );
-
-            for (int i = 0; i < virtualPlayersCount; i++) {
-                // Ask for the difficulty
-                final int difficulty = Input.promptChoice(
-                    "Difficulte du joueur virtuel " + (i + 1),
-                    new String[] { "Facile", "Difficile" },
-                    "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
-
-                // Create virtual player
-                switch (difficulty) {
-                    case 1:
-                        this.players.add(new VirtualPlayerEasy());
-                        break;
-                    case 2:
-                        this.players.add(new VirtualPlayerHard());
-                        break;
-                }
-            }
-        }
+    	
     }
 
     /**

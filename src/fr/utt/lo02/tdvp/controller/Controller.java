@@ -55,6 +55,11 @@ public class Controller {
 	public boolean moveVertically(int offset)
 	{
 		return gameManager.getLayout().moveVertically(offset);
-	}	
+	}
+	
+	public void setVirtualPlayer(int difficulty)
+	{
+		gameManager.setVirtualPlayer(difficulty);
+	}
 	
 }

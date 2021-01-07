@@ -1,5 +1,6 @@
 package fr.utt.lo02.tfvp.view;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
@@ -13,6 +14,8 @@ import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.layout.Location;
 import fr.utt.lo02.tdvp.model.player.Player;
+import fr.utt.lo02.tdvp.model.player.VirtualPlayerEasy;
+import fr.utt.lo02.tdvp.model.player.VirtualPlayerHard;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
@@ -70,6 +73,35 @@ public class ConsoleView implements Observer{
 	
 	public void askVirtualPlayersNumber() {
 		
+		int physicalPlayersCount = gameManager.getPlayersNumber();
+		
+        // Generate answers for the number of virtual players
+        final int minVirtualPlayers = Math.max(2 - physicalPlayersCount, 0);
+        final ArrayList<String> virtualPlayersAnswers = new ArrayList<String>();
+        for (int i = minVirtualPlayers; physicalPlayersCount + i <= 3; i++) {
+            virtualPlayersAnswers.add(String.valueOf(i) + " joueur" + (i > 1 ? "s" : ""));
+        }
+
+        int virtualPlayersCount = 0;
+        if (virtualPlayersAnswers.size() > 1) {
+            // Ask for the number of virtual players
+            virtualPlayersCount = Input.promptChoice(
+                "Nombre de joueurs virtuels",
+                virtualPlayersAnswers.toArray(new String[virtualPlayersAnswers.size()]),
+                "Combien de joueurs virtuels vont jouer ?",
+                minVirtualPlayers
+            );
+
+            for (int i = 0; i < virtualPlayersCount; i++) {
+                // Ask for the difficulty
+                final int difficulty = Input.promptChoice(
+                    "Difficulte du joueur virtuel " + (i + 1),
+                    new String[] { "Facile", "Difficile" },
+                    "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
+                
+                controller.setVirtualPlayer(difficulty);
+            }
+        }
 	}
 	
 	public void askVirtualPlayerDifficulty() {
@@ -77,48 +109,50 @@ public class ConsoleView implements Observer{
 	}
 	
 	//PLAY
-	public void askPLayerToPlay() {
+	public void askPlayerToPlay() {
 		
 		Player playingPlayer = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
 		List<Actions> availableActions = playingPlayer.getAvailableOptions();
 		
-		
-		//Generate answers
-		int iterator = 0;
-		String[] answers = {};
-		
-		for(int i = 0; i < availableActions.size(); i++)
+		if (availableActions.size()>0)
 		{
-			answers[i] = actionEnumToString(availableActions.get(i));
-		}
-	
-		final int answer = Input.promptChoice(
-                "Tour de jeu",
-                answers,
-                "Que veux-tu faire ?"
-            );
+			//Generate answers
+			String[] answers = new String[availableActions.size()];
+			
+			for(int i = 0; i < availableActions.size(); i++)
+			{
+				answers[i] = actionEnumToString(availableActions.get(i));
+			}
 		
-		Actions actionToMake = availableActions.get(answer);
-		
-		switch(actionToMake) {
-			case PlaceCard:
-				controller.askPlaceCard();
-				break;
-			case MoveCards:
-				controller.askMoveCard();
-				break;				
-			case ChangeVictoryCard:
-				break;
-			case SeeVictoryCard:
-				this.displayVictoryCard();
-				break;
-			case MoveLayout:
-				break;
-			case EndTurn:
-				controller.endTurn();
-				break;
-			default:
-				break;
+			final int answer = Input.promptChoice(
+	                "Tour de jeu",
+	                answers,
+	                "Que veux-tu faire ?"
+	            );
+			
+			Actions actionToMake = availableActions.get(answer-1);
+			
+			switch(actionToMake) {
+				case PlaceCard:
+					controller.askPlaceCard();
+					break;
+				case MoveCards:
+					controller.askMoveCard();
+					break;				
+				case ChangeVictoryCard:
+					break;
+				case SeeVictoryCard:
+					this.displayVictoryCard();
+					break;
+				case MoveLayout:
+					this.askToMoveLayout();
+					break;
+				case EndTurn:
+					controller.endTurn();
+					break;
+				default:
+					break;
+			}
 		}
             
 	}
@@ -174,7 +208,7 @@ public class ConsoleView implements Observer{
                 System.out.println("Il y a deja une carte ici !\n");
             }
             else if (
-            		gameManager.isCardAjacent(x,y))
+            		!gameManager.isCardAjacent(x,y))
             {
                 System.out.println("Il faut que ta carte soit adjacente a une autre !\n");
             }
@@ -188,9 +222,80 @@ public class ConsoleView implements Observer{
         }
 	}
 	
+	
+	public void askToMoveCards()
+	{
+		Layout layout = gameManager.getLayout();
+		// Ask for the card to move
+        while (true) {
+            String response;
+            do {
+                response = Input.promptString("Quelle carte veux-tu deplacer ? (e.g. \"B2\")");
+
+                if (response.length() != 2) {
+                    System.out.println("Emplacement invalide.\n");
+                }
+            } while(response.length() != 2);
+            int x1 = response.charAt(0) - 'A';
+            int y1 = response.charAt(1) - '0';
+
+            if (layout.getCardAt(x1, y1) == null) {
+                System.out.println("Emplacement invalide.\n");
+            }
+            else {
+                // Ask for the destination
+                while (true) {
+                    response = Input.promptString("Ou veux-tu deplacer cette carte ? (e.g. \"B2\")");
+                    int x2 = response.charAt(0) - 'A';
+                    int y2 = response.charAt(1) - '0';
+
+                    if (!layout.locationExists(x2, y2)) {
+                        System.out.println("Emplacement invalide.\n");
+                    }
+                    else {
+                        boolean error = false;
+
+                        // Is there a card at the destination coordinates ?
+                        if (layout.getCardAt(x2, y2) == null) {
+                            // Remove the card
+                            Card originCard = layout.getCardAt(x1, y1);
+                            layout.setCardAt(x1, y1, null);
+
+                            // Check if the destination has adjacent cards
+                            if (
+                                layout.getCardAt(x2 - 1, y2) == null
+                                && layout.getCardAt(x2 + 1, y2) == null
+                                && layout.getCardAt(x2, y2 - 1) == null
+                                && layout.getCardAt(x2, y2 + 1) == null
+                            ) {
+                                System.out.println("La carte que tu deplaces doit etre adjacente a une autre.\n");
+                                error = true;
+                            }
+
+                            // Replace the card
+                            layout.setCardAt(x1, y1, originCard);
+                        }
+
+                        if (!error) {
+                            if(layout.moveCard(x1, y1, x2, y2)) {
+                                // Card has been moved, we are done
+                                return;
+                            }
+                            else {
+                            	logError();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+	}
+	
 	public void askToMoveLayout() {
 		int answer2 = 0;
     	do {
+    		this.displayLayout();
+    		
         	 answer2 = Input.promptChoice(
                     "Deplacer la grille",
                     new String[] { "Haut", "Bas","Gauche","Droite","Retour" },
@@ -220,8 +325,6 @@ public class ConsoleView implements Observer{
         	
         	if(!result)
         		System.out.println("Impossible de déplacer le Layout ici");
-        	else
-        		this.displayLayout();
     	
     	}while(answer2 != 5);
 	}
@@ -358,8 +461,8 @@ public class ConsoleView implements Observer{
                 	break;
                 
                 //PLAY
-                case AskPLayerToPlay:
-                	askPLayerToPlay();
+                case AskPlayerToPlay:
+                	askPlayerToPlay();
                 	break;
                 case AskToPlaceCard:
                 	askToPlaceCard();

@@ -122,8 +122,8 @@ public abstract class Layout {
     }
 
     public void display() {
-    	System.out.println("yo");
-        //GameManager.getInstance().notifyObservers(Events.DisplayLayout);
+    	//System.out.println("yo");
+        GameManager.getInstance().notifyObservers(Events.DisplayLayout);
     }
 
     public int countCards() {

@@ -5,7 +5,7 @@ public enum Events {
 	AskVariant, AskPhysicalPlayersNumber, AskPlayerName, AskLayoutShape,
 	
 	
-	AskPLayerToPlay, AskToPlaceCard,
+	AskPlayerToPlay, AskToPlaceCard, AskToMoveCards,
 	
 	DisplayGameSettingsHeader,DisplayStartGameMsg, DisplayRoundNumber, DisplayNameAtTurn,
 	

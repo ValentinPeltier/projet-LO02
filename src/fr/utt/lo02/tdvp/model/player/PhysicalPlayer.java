@@ -15,9 +15,7 @@ public class PhysicalPlayer extends Player {
     private static int initializedCount = 0;
     
     GameManager gameManager =  GameManager.getInstance();
-    
-    
-
+    	
     public void placeCard() {
     	
     	//Cannot place card anymore
@@ -32,75 +30,12 @@ public class PhysicalPlayer extends Player {
     }    
 
     public void moveCard() {
-    	Layout layout = gameManager.getLayout();
-
-    	//Cannot place card anymore
+    	//Cannot move cards anymore
     	int actionIndex = availableOptions.indexOf(Actions.MoveCards);
-    	availableOptions.remove(actionIndex);
+    	availableOptions.remove(actionIndex); 
     	
-        // Ask for the card to move
-        while (true) {
-            String response;
-            do {
-                response = Input.promptString("Quelle carte veux-tu deplacer ? (e.g. \"B2\")");
-
-                if (response.length() != 2) {
-                    System.out.println("Emplacement invalide.\n");
-                }
-            } while(response.length() != 2);
-            int x1 = response.charAt(0) - 'A';
-            int y1 = response.charAt(1) - '0';
-
-            if (layout.getCardAt(x1, y1) == null) {
-                System.out.println("Emplacement invalide.\n");
-            }
-            else {
-                // Ask for the destination
-                while (true) {
-                    response = Input.promptString("Ou veux-tu deplacer cette carte ? (e.g. \"B2\")");
-                    int x2 = response.charAt(0) - 'A';
-                    int y2 = response.charAt(1) - '0';
-
-                    if (!layout.locationExists(x2, y2)) {
-                        System.out.println("Emplacement invalide.\n");
-                    }
-                    else {
-                        boolean error = false;
-
-                        // Is there a card at the destination coordinates ?
-                        if (layout.getCardAt(x2, y2) == null) {
-                            // Remove the card
-                            Card originCard = layout.getCardAt(x1, y1);
-                            layout.setCardAt(x1, y1, null);
-
-                            // Check if the destination has adjacent cards
-                            if (
-                                layout.getCardAt(x2 - 1, y2) == null
-                                && layout.getCardAt(x2 + 1, y2) == null
-                                && layout.getCardAt(x2, y2 - 1) == null
-                                && layout.getCardAt(x2, y2 + 1) == null
-                            ) {
-                                System.out.println("La carte que tu deplaces doit etre adjacente a une autre.\n");
-                                error = true;
-                            }
-
-                            // Replace the card
-                            layout.setCardAt(x1, y1, originCard);
-                        }
-
-                        if (!error) {
-                            if(layout.moveCard(x1, y1, x2, y2)) {
-                                // Card has been moved, we are done
-                                return;
-                            }
-                            else {
-                                System.out.println("Une erreur est survenue...\n");
-                            }
-                        }
-                    }
-                }
-            }
-        }
+    	//Place Card
+    	gameManager.notifyObservers(Events.AskToMoveCards);  
     }
 
     /**
@@ -134,7 +69,7 @@ public class PhysicalPlayer extends Player {
         
         while(!isTurnOver)
         {
-        	gameManager.notifyObservers(Events.AskPLayerToPlay);
+        	gameManager.notifyObservers(Events.AskPlayerToPlay);
         }
 
 	}
