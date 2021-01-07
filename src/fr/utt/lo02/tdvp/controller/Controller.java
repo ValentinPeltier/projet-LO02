@@ -62,9 +62,9 @@ public class Controller {
 		gameManager.setVirtualPlayer(difficulty);
 	}
 
-	public void variantSecondChance() {
+	public void variantSecondChance() 
+	{
 		gameManager.getVariant().makeChange();
-		
 	}
 	
 }

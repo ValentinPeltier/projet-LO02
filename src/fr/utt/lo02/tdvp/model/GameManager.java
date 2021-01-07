@@ -167,7 +167,7 @@ public class GameManager extends Observable{
         
     	this.notifyObservers(Events.AskPhysicalPlayersNumber);
     	
-    	
+    	this.notifyObservers(Events.AskVirtualPlayerSettings);
     }
 
     /**

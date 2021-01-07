@@ -3,7 +3,7 @@ package fr.utt.lo02.tdvp.controller;
 public enum Events {
 	
 	//SETTINGS
-	AskVariant, AskPhysicalPlayersNumber, AskPlayerName, AskLayoutShape,
+	AskVariant, AskPhysicalPlayersNumber, AskPlayerName, AskLayoutShape, AskVirtualPlayerSettings,
 	
 	//PLAY
 	AskPlayerToPlay, AskToPlaceCard, AskToMoveCards,

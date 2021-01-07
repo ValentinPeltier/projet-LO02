@@ -481,6 +481,9 @@ public class ConsoleView implements Observer{
                 case AskPlayerName:
                 	this.askPhysicalPlayerName();
                 	break;
+                case AskVirtualPlayerSettings:
+                	this.askVirtualPlayersNumber();
+                	break;
                 
                 //PLAY
                 case AskPlayerToPlay:
