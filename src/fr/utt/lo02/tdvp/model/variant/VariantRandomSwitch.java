@@ -1,5 +1,6 @@
 package fr.utt.lo02.tdvp.model.variant;
 
+import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.layout.Layout;
@@ -47,8 +48,15 @@ public class VariantRandomSwitch extends Variant {
         layout.setCardAt(location1, layout.getCardAt(location2));
         layout.setCardAt(location2, cardTmp);
 
-        System.out.println("[Variante] 2 cartes aleatoires ont ete echangees !\n");
+        //Display Message
+        GameManager.getInstance().notifyObservers(Events.DisplayVariantRandomSwitch);
     }
 
     public void reset() {}
+
+	@Override
+	public void makeChange() {
+		// TODO Auto-generated method stub
+		
+	}
 }

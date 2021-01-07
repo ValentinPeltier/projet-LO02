@@ -1,5 +1,6 @@
 package fr.utt.lo02.tdvp.model.variant;
 
+import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Stack;
 import fr.utt.lo02.tdvp.model.layout.Layout;
@@ -63,22 +64,20 @@ public class VariantSecondChance extends Variant {
      */
     public void execute(Player player) {
         GameManager.getInstance().getLayout().display();
+        	
+        //ASK VIEW  
+        GameManager.getInstance().notifyObservers(Events.AskVariantSecondChance);
+    }
+    
+    public void makeChange()
+    {
+    	Player player = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
+    	// Put the victory card back in the stack
+        Stack.getInstance().put(player.getVictoryCard());
 
-        final int drawNewVictoryCard = Input.promptChoice(
-            "[Variante] Repiocher une Victory Card",
-            new String[] { "Non", "Oui" },
-            "Souhaites-tu repiocher une Victory Card et remettre la tienne (" + player.getVictoryCard() + ") dans la pioche ?",
-            0
-        );
+        // Draw a new victory card
+        player.drawVictoryCard();
 
-        if (drawNewVictoryCard == 1) {
-            // Put the victory card back in the stack
-            Stack.getInstance().put(player.getVictoryCard());
-
-            // Draw a new victory card
-            player.drawVictoryCard();
-
-            System.out.println("Tu as pioche ta nouvelle Victory Card : " + player.getVictoryCard() + "\n");
-        }
+        GameManager.getInstance().notifyObservers(Events.DisplayVariantSeconChance);
     }
 }

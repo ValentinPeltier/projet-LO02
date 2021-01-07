@@ -329,6 +329,19 @@ public class ConsoleView implements Observer{
     	}while(answer2 != 5);
 	}
 	
+	public void askVariantSecondChance()
+	{
+		final int drawNewVictoryCard = Input.promptChoice(
+	            "[Variante] Repiocher une Victory Card",
+	            new String[] { "Non", "Oui" },
+	            "Souhaites-tu repiocher une Victory Card et remettre la tienne (" + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + ") dans la pioche ?",
+	            0
+	        );
+		
+		if (drawNewVictoryCard == 1)
+				controller.variantSecondChance();
+	}
+	
 	
 	
 	/*-------------------DISPLAY-------------------------*/
@@ -359,6 +372,15 @@ public class ConsoleView implements Observer{
 	{
 		// Display victory card
         System.out.println("Ta Victory Card est : " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + "\n");
+	}
+	
+	public void displayVariantRandomSwitch(){
+		System.out.println("[Variante] 2 cartes aleatoires ont ete echangees !\n");
+	}
+	
+	public void displayVariantSeconChance()
+	{
+		System.out.println("Tu as pioche ta nouvelle Victory Card : " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + "\n");
 	}
 	
 	public void displayLayout()
@@ -470,6 +492,11 @@ public class ConsoleView implements Observer{
                 case AskToMoveCards:
                 	askToMoveCards();
                 	break;
+                
+                //VARIANT
+                case AskVariantSecondChance:
+                	askVariantSecondChance();
+                	break;
                 	
                 //DISPLAYS
                 case DisplayGameSettingsHeader:
@@ -487,6 +514,13 @@ public class ConsoleView implements Observer{
                 	
                 case DisplayLayout:
                 	displayLayout();
+                	break;
+                
+                case DisplayVariantRandomSwitch:
+                	displayVariantRandomSwitch();
+                	break;
+                case DisplayVariantSeconChance:
+                	displayVariantSeconChance();
                 	break;
                 
                 case DisplayScoresHeader:

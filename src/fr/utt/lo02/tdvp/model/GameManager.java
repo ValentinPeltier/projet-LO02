@@ -115,6 +115,11 @@ public class GameManager extends Observable{
                     }
                     public void execute(Player player) {}
                     public void reset() {}
+					@Override
+					public void makeChange() {
+						// TODO Auto-generated method stub
+						
+					}
                 };
                 break;
             case 1:
