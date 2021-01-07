@@ -3,13 +3,18 @@ package fr.utt.lo02.tdvp.model.layout;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Random;
 
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
 
-public abstract class Layout {
+public abstract class Layout extends Observable {
+    public static enum Name {
+        Circle,
+        Rectangle,
+    }
 
     protected Map<Location, Card> locations = new HashMap<Location, Card>();
     protected int x;
@@ -71,6 +76,10 @@ public abstract class Layout {
         if (this.locations.containsKey(location)) {
             // Place the card
             this.locations.put(location, card);
+
+            setChanged();
+            notifyObservers();
+
             return true;
         }
 
