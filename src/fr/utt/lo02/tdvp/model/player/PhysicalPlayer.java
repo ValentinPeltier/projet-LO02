@@ -14,20 +14,25 @@ public class PhysicalPlayer extends Player {
      */
     private static int initializedCount = 0;
     
-    Layout layout = GameManager.getInstance().getLayout();
+    GameManager gameManager =  GameManager.getInstance();
     
     
 
-    private void placeCard(Card card) {
+    public void placeCard() {
     	
     	//Cannot place card anymore
     	int actionIndex = availableOptions.indexOf(Actions.PlaceCard);
     	availableOptions.remove(actionIndex);
     	
-    	GameManager.getInstance().notifyObservers(Events.AskToPlaceCard);    	
+    	//Can End Turn
+    	availableOptions.add(Actions.EndTurn);
+    	
+    	//Place Card
+    	gameManager.notifyObservers(Events.AskToPlaceCard);    	
     }    
 
-    private void moveCard() {
+    public void moveCard() {
+    	Layout layout = gameManager.getLayout();
 
     	//Cannot place card anymore
     	int actionIndex = availableOptions.indexOf(Actions.MoveCards);
@@ -102,6 +107,7 @@ public class PhysicalPlayer extends Player {
      * Plays a turn
      */
 	public void play() {
+		Layout layout = gameManager.getLayout();
 		
 		isTurnOver = false;
 
@@ -113,9 +119,6 @@ public class PhysicalPlayer extends Player {
 
         // Display drawn card
         System.out.println("Tu viens de piocher : " + drawnCard);
-
-        // Display victory card
-        System.out.println("Ta Victory Card est : " + this.victoryCard + "\n");
         
         //OPTIONS
     	availableOptions.add(Actions.PlaceCard);
@@ -123,95 +126,17 @@ public class PhysicalPlayer extends Player {
     	availableOptions.add(Actions.MoveLayout);
 
         // Ask what action to do if the layout has 2 cards at least
-        int answer = 1;
-        if (layout.countCards() > 1) {
+        //int answer = 1;
+        
+    	if (layout.countCards() > 1) {
         	availableOptions.add(Actions.MoveCards);
-        	
-        	
-        	
-            answer = Input.promptChoice(
-                "Tour de jeu",
-                new String[] { "Poser ma carte", "Deplacer une carte","Bouger le plateau" },
-                "Que veux-tu faire ?"
-            );
-        }	
-
-        switch (answer) {
-            case 1:
-                // Place drawn card
-                this.placeCard(drawnCard);
-
-                if (layout.countCards() > 1) {
-                    // Display layout
-                    layout.display();
-
-                    int answer2 = Input.promptChoice(
-                        "Deplacer une carte",
-                        new String[] { "Non", "Oui" },
-                        "Veux-tu deplacer une carte ?",
-                        0
-                    );
-
-                    if(answer2 == 1) {
-                        // Move card
-                        this.moveCard();
-                    }
-                }
-                break;
-
-            case 2:
-                // Move card
-                this.moveCard();
-
-                // Display layout
-                layout.display();
-
-                // Place drawn card
-                System.out.println("Tu dois maintenant poser ta carte !");
-                this.placeCard(drawnCard);
-                break;
-
-            //TEST    
-            case 3:
-            	int answer2 = 0;
-            	do {
-	            	 answer2 = Input.promptChoice(
-	                        "Deplacer la grille",
-	                        new String[] { "Haut", "Bas","Gauche","Droite","Quitter" },
-	                        "Quelle direction ?"
-	                    );
-	            	
-	            	boolean result;
-	            	
-	            	switch(answer2)
-	            	{
-	            		case 1: 
-	            			result = layout.moveVertically(-1);
-	            			break;
-	            		case 2: 
-	            			result = layout.moveVertically(1);
-	            			break;
-	            		case 3: 
-	            			result = layout.moveHorizontally(-1);
-	            			break;
-	            		case 4: 
-	            			result = layout.moveHorizontally(1);
-	            			break;
-	            		default:
-	            			result = false;
-	            			break;
-	            	}
-	            	
-	            	if(!result)
-	            		System.out.println("Impossible de déplacer le Layout ici");
-	            	else
-	            		layout.display();
-            	
-            	}while(answer2 != 5);
-            	
-            	break;
-                
         }
+        
+        while(!isTurnOver)
+        {
+        	gameManager.notifyObservers(Events.AskPLayerToPlay);
+        }
+
 	}
 
     /**

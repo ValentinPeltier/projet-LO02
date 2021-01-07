@@ -1,13 +1,17 @@
 package fr.utt.lo02.tfvp.view;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import fr.utt.lo02.tdvp.controller.Actions;
 import fr.utt.lo02.tdvp.controller.Controller;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.layout.Layout;
+import fr.utt.lo02.tdvp.model.layout.Location;
 import fr.utt.lo02.tdvp.model.player.Player;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
@@ -73,6 +77,76 @@ public class ConsoleView implements Observer{
 	}
 	
 	//PLAY
+	public void askPLayerToPlay() {
+		
+		Player playingPlayer = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
+		List<Actions> availableActions = playingPlayer.getAvailableOptions();
+		
+		
+		//Generate answers
+		int iterator = 0;
+		String[] answers = {};
+		
+		for(int i = 0; i < availableActions.size(); i++)
+		{
+			answers[i] = actionEnumToString(availableActions.get(i));
+		}
+	
+		final int answer = Input.promptChoice(
+                "Tour de jeu",
+                answers,
+                "Que veux-tu faire ?"
+            );
+		
+		Actions actionToMake = availableActions.get(answer);
+		
+		switch(actionToMake) {
+			case PlaceCard:
+				controller.askPlaceCard();
+				break;
+			case MoveCards:
+				controller.askMoveCard();
+				break;				
+			case ChangeVictoryCard:
+				break;
+			case SeeVictoryCard:
+				this.displayVictoryCard();
+				break;
+			case MoveLayout:
+				break;
+			case EndTurn:
+				controller.endTurn();
+				break;
+			default:
+				break;
+		}
+            
+	}
+	
+	private String actionEnumToString(Actions action)
+	{
+		switch(action)
+		{
+			case PlaceCard:
+				return "Poser ma carte";
+			case MoveCards:
+				return "Deplacer une carte";
+			case ChangeVictoryCard:
+				return "Changer de Victory Card";
+			case SeeVictoryCard:
+				return "Voir ma Victory Card";
+			case MoveLayout:
+				return "Bouger le Plateau";
+			case EndTurn:
+				return "Terminer le Tour";
+			default:
+				return "";
+		}
+	}
+	
+	
+	
+	
 	public void askToPlaceCard()
 	{
 		Player playingPlayer = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
@@ -114,6 +188,44 @@ public class ConsoleView implements Observer{
         }
 	}
 	
+	public void askToMoveLayout() {
+		int answer2 = 0;
+    	do {
+        	 answer2 = Input.promptChoice(
+                    "Deplacer la grille",
+                    new String[] { "Haut", "Bas","Gauche","Droite","Retour" },
+                    "Quelle direction ?"
+                );
+        	
+        	boolean result;
+        	
+        	switch(answer2)
+        	{
+        		case 1: 
+        			result = controller.moveVertically(-1);
+        			break;
+        		case 2: 
+        			result = controller.moveVertically(1);
+        			break;
+        		case 3: 
+        			result = controller.moveHorizontally(-1);
+        			break;
+        		case 4: 
+        			result = controller.moveHorizontally(1);
+        			break;
+        		default:
+        			result = false;
+        			break;
+        	}
+        	
+        	if(!result)
+        		System.out.println("Impossible de déplacer le Layout ici");
+        	else
+        		this.displayLayout();
+    	
+    	}while(answer2 != 5);
+	}
+	
 	
 	
 	/*-------------------DISPLAY-------------------------*/
@@ -140,14 +252,69 @@ public class ConsoleView implements Observer{
 		System.out.println("### A " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getName() + " de jouer ! ###\n");
 	}
 	
+	public void displayVictoryCard()
+	{
+		// Display victory card
+        System.out.println("Ta Victory Card est : " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + "\n");
+	}
 	
-	
-	
-	
-	
-	
-	
-	
+	public void displayLayout()
+	{
+		Layout layout = gameManager.getLayout();
+		
+		int minX = 0, minY = 0, maxX = 0, maxY = 0;
+        Iterator<Location> mapIterator = layout.getLocations().keySet().iterator();
+
+        while (mapIterator.hasNext()) {
+            Location location = mapIterator.next();
+
+            if (location.getX() < minX) {
+                minX = location.getX();
+            }
+
+            if (location.getY() < minY) {
+                minX = location.getX();
+            }
+
+            if (location.getX() > maxX) {
+                maxX = location.getX();
+            }
+
+            if (location.getY() > maxY) {
+                maxY = location.getY();
+            }
+        }
+
+        // Display the letters
+        for (int x = minX; x <= maxX; x++) {
+            System.out.print("\t " + (char)('A' + x));
+        }
+
+        // Display grid row by row
+        for (int y = minY; y <= maxY; y++) {
+            System.out.print("\n\n" + y + "\t");
+
+            for(int x = minX; x <= maxX; x++) {
+                boolean locationExists = layout.locationExists(x, y);
+
+                if (locationExists) {
+                    Card card = layout.getCardAt(x, y);
+
+                    if (card != null) {
+                        System.out.print(card + "\t");
+                    }
+                    else {
+                        System.out.print(" x \t");
+                    }
+                }
+                else {
+                    System.out.print("   \t");
+                }
+            }
+        }
+
+        System.out.println("\n");
+	}
 	
 	
 	
@@ -170,10 +337,6 @@ public class ConsoleView implements Observer{
 		System.out.println("Une erreur est survenue...\n");
 	}
 	
-	
-	
-	
-
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof Events && o instanceof GameManager)
@@ -195,6 +358,9 @@ public class ConsoleView implements Observer{
                 	break;
                 
                 //PLAY
+                case AskPLayerToPlay:
+                	askPLayerToPlay();
+                	break;
                 case AskToPlaceCard:
                 	askToPlaceCard();
                 	break;
@@ -213,6 +379,9 @@ public class ConsoleView implements Observer{
                 	displayNameAtTurn();
                 	break;
                 	
+                case DisplayLayout:
+                	displayLayout();
+                	break;
                 
                 case DisplayScoresHeader:
                 	displayScoresHeader();

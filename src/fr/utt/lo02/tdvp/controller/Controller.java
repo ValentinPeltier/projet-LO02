@@ -33,17 +33,28 @@ public class Controller {
 		return gameManager.getLayout().placeCard(x, y, card);
 	}
 	
+	public void askPlaceCard()
+	{
+		gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).placeCard();
+	}
+	
+	public void askMoveCard() {
+		gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).moveCard();
+	}
+	
 	public void endTurn()
 	{
 		gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).endTurn();
 	}
 	
+	public boolean moveHorizontally(int offset)
+	{
+		return gameManager.getLayout().moveHorizontally(offset);
+	}
 	
-	
-	
-	
-	
-	
-		
+	public boolean moveVertically(int offset)
+	{
+		return gameManager.getLayout().moveVertically(offset);
+	}	
 	
 }

@@ -41,7 +41,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
     	System.out.println("### " + this.name + " a fini de jouer ! ###\n");
     }
 
-    private void moveCard() {
+    public void moveCard() {
         Layout layout = gameManager.getLayout();
 
         //1st card to move
@@ -176,4 +176,10 @@ public class VirtualPlayerEasy extends VirtualPlayer {
 
 	@Override
 	public void setName(String name) {}
+
+	@Override
+	public void placeCard() {
+		// TODO Auto-generated method stub
+		
+	}
 }

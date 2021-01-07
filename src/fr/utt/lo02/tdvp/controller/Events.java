@@ -4,18 +4,16 @@ public enum Events {
 	
 	AskVariant, AskPhysicalPlayersNumber, AskPlayerName, AskLayoutShape,
 	
-	AskToPlaceCard,
+	
+	AskPLayerToPlay, AskToPlaceCard,
 	
 	DisplayGameSettingsHeader,DisplayStartGameMsg, DisplayRoundNumber, DisplayNameAtTurn,
 	
 	DisplayScoresHeader,DisplayScoreForPlayerOnRow,
 	
-	
-	
+	DisplayLayout,
 	
 	DisplaySimpleFooter,
-	
-	
 	
 	LogError
 

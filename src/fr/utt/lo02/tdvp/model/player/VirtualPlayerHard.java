@@ -13,4 +13,16 @@ public class VirtualPlayerHard extends VirtualPlayer {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void placeCard() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void moveCard() {
+		// TODO Auto-generated method stub
+		
+	}
 }

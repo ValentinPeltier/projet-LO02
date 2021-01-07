@@ -34,6 +34,10 @@ public abstract class Player {
     	isTurnOver = true;
     }
     
+    public List<Actions> getAvailableOptions(){
+    	return this.availableOptions;	
+    }
+    
 
     /**
      * Initialize the player by drawing a victory card and choosing a name.
@@ -90,6 +94,9 @@ public abstract class Player {
     protected abstract void initName();
 
     public abstract void play();
+    
+    public abstract void placeCard();
+    public abstract void moveCard();
     
     public abstract void setName(String name);
 }
