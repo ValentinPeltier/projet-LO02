@@ -201,12 +201,9 @@ public class GameManager extends Observable{
                 // Loop for each player
                 for (playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
                     Player player = this.players.get(playerIndex);
-                    
-                    
 
                     // Display name
                     this.notifyObservers(Events.DisplayNameAtTurn);
-
 
                     // Should the variant be executed ?
                     if (this.variant.shouldExecute(turn, playerIndex)) {

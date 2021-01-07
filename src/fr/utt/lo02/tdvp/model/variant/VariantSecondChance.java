@@ -78,7 +78,7 @@ public class VariantSecondChance extends Variant {
             // Draw a new victory card
             player.drawVictoryCard();
 
-            System.out.println("Tu as pioché ta nouvelle Victory Card : " + player.getVictoryCard() + "\n");
+            System.out.println("Tu as pioche ta nouvelle Victory Card : " + player.getVictoryCard() + "\n");
         }
     }
 }

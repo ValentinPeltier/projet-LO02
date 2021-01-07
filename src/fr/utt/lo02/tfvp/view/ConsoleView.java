@@ -467,6 +467,9 @@ public class ConsoleView implements Observer{
                 case AskToPlaceCard:
                 	askToPlaceCard();
                 	break;
+                case AskToMoveCards:
+                	askToMoveCards();
+                	break;
                 	
                 //DISPLAYS
                 case DisplayGameSettingsHeader:

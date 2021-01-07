@@ -60,9 +60,7 @@ public class PhysicalPlayer extends Player {
     	availableOptions.add(Actions.SeeVictoryCard);
     	availableOptions.add(Actions.MoveLayout);
 
-        // Ask what action to do if the layout has 2 cards at least
-        //int answer = 1;
-        
+        // Ask what action to do if the layout has 2 cards at least        
     	if (layout.countCards() > 1) {
         	availableOptions.add(Actions.MoveCards);
         }
