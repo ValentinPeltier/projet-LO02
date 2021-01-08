@@ -1,4 +1,4 @@
-package fr.utt.lo02.tfvp.view;
+package fr.utt.lo02.tdvp.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,13 +21,13 @@ import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
 
 public class ConsoleView implements Observer{
-	
+
 	public ConsoleView() {}
-	
+
 	private Controller controller = new Controller();
 	GameManager gameManager = GameManager.getInstance();
-	
-	
+
+
 	public void askVariant()
 	{
 		// Ask the user for a variant
@@ -36,10 +36,10 @@ public class ConsoleView implements Observer{
             VariantRandomSwitch.getName() + " (" + VariantRandomSwitch.getDescription() + ")",
             VariantSecondChance.getName() + " (" + VariantSecondChance.getDescription() + ")"
         }, "Quelle variante choisis-tu ?", 0);
-        
+
         controller.setVariant(answer);
 	}
-	
+
 	public void askLayoutShape()
 	{
 		// Ask the user
@@ -50,10 +50,10 @@ public class ConsoleView implements Observer{
                 "Plateau circulaire de diametre 5"
             },
             "Quel plateau de jeu choisis-tu ?");
-        
+
         controller.setLayoutShape(answer);
 	}
-	
+
 	public void askPhysicalPlayersNumber() {
 		// Ask for the number of physical players
         final int answer = Input.promptChoice(
@@ -61,20 +61,20 @@ public class ConsoleView implements Observer{
             new String[] { "1 joueur", "2 joueurs", "3 joueurs" },
             "Combien de joueurs reels vont jouer ?"
         );
-        
+
         controller.setPhysicalPlayersNumber(answer);
 	}
-	
+
 	public void askPhysicalPlayerName() {
 		final String answer = Input.promptString("Choisis un nom pour le joueur " + (gameManager.getPlayerIndex()+1) + " :");
-		
+
 		controller.setPlayerName(answer);
 	}
-	
+
 	public void askVirtualPlayersNumber() {
-		
+
 		int physicalPlayersCount = gameManager.getPlayersNumber();
-		
+
         // Generate answers for the number of virtual players
         final int minVirtualPlayers = Math.max(2 - physicalPlayersCount, 0);
         final ArrayList<String> virtualPlayersAnswers = new ArrayList<String>();
@@ -98,47 +98,47 @@ public class ConsoleView implements Observer{
                     "Difficulte du joueur virtuel " + (i + 1),
                     new String[] { "Facile", "Difficile" },
                     "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
-                
+
                 controller.setVirtualPlayer(difficulty);
             }
         }
 	}
-	
+
 	public void askVirtualPlayerDifficulty() {
-		
+
 	}
-	
+
 	//PLAY
 	public void askPlayerToPlay() {
-		
+
 		Player playingPlayer = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
 		List<Actions> availableActions = playingPlayer.getAvailableOptions();
-		
+
 		if (availableActions.size()>0)
 		{
 			//Generate answers
 			String[] answers = new String[availableActions.size()];
-			
+
 			for(int i = 0; i < availableActions.size(); i++)
 			{
 				answers[i] = actionEnumToString(availableActions.get(i));
 			}
-		
+
 			final int answer = Input.promptChoice(
 	                "Tour de jeu",
 	                answers,
 	                "Que veux-tu faire ?"
 	            );
-			
+
 			Actions actionToMake = availableActions.get(answer-1);
-			
+
 			switch(actionToMake) {
 				case PlaceCard:
 					controller.askPlaceCard();
 					break;
 				case MoveCards:
 					controller.askMoveCard();
-					break;				
+					break;
 				case ChangeVictoryCard:
 					break;
 				case SeeVictoryCard:
@@ -154,9 +154,9 @@ public class ConsoleView implements Observer{
 					break;
 			}
 		}
-            
+
 	}
-	
+
 	private String actionEnumToString(Actions action)
 	{
 		switch(action)
@@ -177,18 +177,18 @@ public class ConsoleView implements Observer{
 				return "";
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	public void askToPlaceCard()
 	{
 		Player playingPlayer = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
 		Card card = playingPlayer.getDrawnCard();
-		
-		
+
+
 		Layout layout = gameManager.getLayout();
-		
+
 		while(true) {
             String response;
             do {
@@ -221,8 +221,8 @@ public class ConsoleView implements Observer{
             }
         }
 	}
-	
-	
+
+
 	public void askToMoveCards()
 	{
 		Layout layout = gameManager.getLayout();
@@ -290,45 +290,45 @@ public class ConsoleView implements Observer{
             }
         }
 	}
-	
+
 	public void askToMoveLayout() {
 		int answer2 = 0;
     	do {
     		this.displayLayout();
-    		
+
         	 answer2 = Input.promptChoice(
                     "Deplacer la grille",
                     new String[] { "Haut", "Bas","Gauche","Droite","Retour" },
                     "Quelle direction ?"
                 );
-        	
+
         	boolean result;
-        	
+
         	switch(answer2)
         	{
-        		case 1: 
+        		case 1:
         			result = controller.moveVertically(-1);
         			break;
-        		case 2: 
+        		case 2:
         			result = controller.moveVertically(1);
         			break;
-        		case 3: 
+        		case 3:
         			result = controller.moveHorizontally(-1);
         			break;
-        		case 4: 
+        		case 4:
         			result = controller.moveHorizontally(1);
         			break;
         		default:
         			result = false;
         			break;
         	}
-        	
+
         	if(!result)
-        		System.out.println("Impossible de déplacer le Layout ici");
-    	
+        		System.out.println("Impossible de dï¿½placer le Layout ici");
+
     	}while(answer2 != 5);
 	}
-	
+
 	public void askVariantSecondChance()
 	{
 		final int drawNewVictoryCard = Input.promptChoice(
@@ -337,56 +337,56 @@ public class ConsoleView implements Observer{
 	            "Souhaites-tu repiocher une Victory Card et remettre la tienne (" + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + ") dans la pioche ?",
 	            0
 	        );
-		
+
 		if (drawNewVictoryCard == 1)
 				controller.variantSecondChance();
 	}
-	
-	
-	
+
+
+
 	/*-------------------DISPLAY-------------------------*/
 	public void displayGameSettingsHeader() {
 		System.out.println("###############################");
         System.out.println("### Parametres de la partie ###");
         System.out.println("###############################\n");
 	}
-	
+
 	public void displayStartGameMsg() {
 		System.out.println("################################");
         System.out.println("### Que la partie commence ! ###");
         System.out.println("################################\n");
 	}
-	
+
 	public void displayRoundNumber(int round) {
 		System.out.println("#################");
         System.out.println("### Round " + (round + 1) + " ! ###");
         System.out.println("#################\n");
 	}
-	
+
 	public void displayNameAtTurn()
 	{
 		System.out.println("### A " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getName() + " de jouer ! ###\n");
 	}
-	
+
 	public void displayVictoryCard()
 	{
 		// Display victory card
         System.out.println("Ta Victory Card est : " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + "\n");
 	}
-	
+
 	public void displayVariantRandomSwitch(){
 		System.out.println("[Variante] 2 cartes aleatoires ont ete echangees !\n");
 	}
-	
+
 	public void displayVariantSeconChance()
 	{
 		System.out.println("Tu as pioche ta nouvelle Victory Card : " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + "\n");
 	}
-	
+
 	public void displayLayout()
 	{
 		Layout layout = gameManager.getLayout();
-		
+
 		int minX = 0, minY = 0, maxX = 0, maxY = 0;
         Iterator<Location> mapIterator = layout.getLocations().keySet().iterator();
 
@@ -440,28 +440,28 @@ public class ConsoleView implements Observer{
 
         System.out.println("\n");
 	}
-	
-	
-	
+
+
+
 	public void displayScoresHeader() {
 		System.out.println("### Scores ###");
 	}
-	
+
 	public void displayScoreForPlayerOnRow()
 	{
 		Player player = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
 		System.out.println("### " + player.getName() + " : " + player.getScore() + " points");
 	}
-	
+
 	public void displaySimpleFooter()
 	{
 		System.out.println();
 	}
-	
+
 	public void logError() {
 		System.out.println("Une erreur est survenue...\n");
 	}
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof Events && o instanceof GameManager)
@@ -469,7 +469,7 @@ public class ConsoleView implements Observer{
             switch ((Events) arg)
             {
             	//SETTINGS
-                case AskVariant: 
+                case AskVariant:
                 	this.askVariant();
                 	break;
                 case AskPhysicalPlayersNumber:
@@ -484,7 +484,7 @@ public class ConsoleView implements Observer{
                 case AskVirtualPlayerSettings:
                 	this.askVirtualPlayersNumber();
                 	break;
-                
+
                 //PLAY
                 case AskPlayerToPlay:
                 	askPlayerToPlay();
@@ -495,12 +495,12 @@ public class ConsoleView implements Observer{
                 case AskToMoveCards:
                 	askToMoveCards();
                 	break;
-                
+
                 //VARIANT
                 case AskVariantSecondChance:
                 	askVariantSecondChance();
                 	break;
-                	
+
                 //DISPLAYS
                 case DisplayGameSettingsHeader:
                 	displayGameSettingsHeader();
@@ -514,30 +514,30 @@ public class ConsoleView implements Observer{
                 case DisplayNameAtTurn:
                 	displayNameAtTurn();
                 	break;
-                	
+
                 case DisplayLayout:
                 	displayLayout();
                 	break;
-                
+
                 case DisplayVariantRandomSwitch:
                 	displayVariantRandomSwitch();
                 	break;
                 case DisplayVariantSeconChance:
                 	displayVariantSeconChance();
                 	break;
-                
+
                 case DisplayScoresHeader:
                 	displayScoresHeader();
                 	break;
                 case DisplayScoreForPlayerOnRow:
                 	displayScoreForPlayerOnRow();
                 	break;
-                	
-                	
+
+
                 case DisplaySimpleFooter:
                 	displaySimpleFooter();
                 	break;
-                
+
                 case LogError:
                 	logError();
                 	break;
@@ -545,9 +545,9 @@ public class ConsoleView implements Observer{
                 	break;
             }
         }
-		
+
 	}
-	
-	
-	
+
+
+
 }
