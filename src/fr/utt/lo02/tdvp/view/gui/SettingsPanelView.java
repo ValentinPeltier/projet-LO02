@@ -3,6 +3,8 @@ package fr.utt.lo02.tdvp.view.gui;
 import java.util.Observable;
 import java.util.Observer;
 
+import fr.utt.lo02.tdvp.controller.Events;
+import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.panel.SettingsPanel;
@@ -56,7 +58,7 @@ public class SettingsPanelView extends VBox implements Observer {
     }
 
     @Override
-    public void update(Observable settingsPanel, Object arg) {
+    public void update(Observable o, Object arg) {
         Label label = new Label();
         label.setStyle("-fx-font-size: 40px; -fx-padding: 0 0 40px 0");
         HBox pane = new HBox();
@@ -192,6 +194,29 @@ public class SettingsPanelView extends VBox implements Observer {
 
         settingsPane.getChildren().clear();
         settingsPane.getChildren().addAll(label, pane);
+        
+        if(arg instanceof Events && o instanceof GameManager)
+        {
+            switch ((Events) arg)
+            {
+            	//SETTINGS
+                case AskVariant:
+                	this.askVariant();
+                	break;
+                case AskPhysicalPlayersNumber:
+                	this.askPhysicalPlayersNumber();
+                	break;
+                case AskLayoutShape:
+                	this.askLayoutShape();
+                	break;
+                case AskPlayerName:
+                	this.askPhysicalPlayerName();
+                	break;
+                case AskVirtualPlayerSettings:
+                	this.askVirtualPlayersNumber();
+                	break;
+            }
+        }
     }
 
     public VBox getSettingsPane() {
@@ -205,4 +230,5 @@ public class SettingsPanelView extends VBox implements Observer {
     public Button getNextButton() {
         return nextButton;
     }
+    
 }

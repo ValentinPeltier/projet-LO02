@@ -12,6 +12,8 @@ public class Settings extends Observable {
     private int physicalPlayersCount;
     private int virtualPlayersCount;
     private Layout.Name layout;
+    
+    GameManager gameManager = GameManager.getInstance();
 
     public static Settings getInstance() {
         return instance;
@@ -49,6 +51,7 @@ public class Settings extends Observable {
             return false;
         }
         physicalPlayersCount = count;
+        gameManager.setPhysicalPlayers(physicalPlayersCount);
         setChanged();
         notifyObservers();
         return true;

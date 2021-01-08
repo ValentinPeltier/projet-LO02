@@ -97,9 +97,8 @@ public class GameManager extends Observable{
         // Initialize the players
         this.initializePlayers();
         
-
         // Initialize layout
-        this.notifyObservers(Events.AskLayoutShape);  
+        this.notifyObservers(Events.AskLayoutShape);
     }
 
     /**
