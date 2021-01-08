@@ -9,6 +9,7 @@ import java.util.Random;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Settings;
 
 public abstract class Layout extends Observable {
     public static enum Name {
@@ -19,6 +20,16 @@ public abstract class Layout extends Observable {
     protected Map<Location, Card> locations = new HashMap<Location, Card>();
     protected int x;
     protected int y;
+
+    public boolean isCardAjacent(int x, int y) {
+    	boolean noAdjacentCard = !isEmpty()
+        && getCardAt(x - 1, y) == null
+        && getCardAt(x + 1, y) == null
+        && getCardAt(x, y - 1) == null
+        && getCardAt(x, y + 1) == null;
+
+    	return !noAdjacentCard;
+    }
 
     public Location getRandomLocation() {
         Location randomLocation;
@@ -131,7 +142,6 @@ public abstract class Layout extends Observable {
     }
 
     public void display() {
-    	//System.out.println("yo");
         GameManager.getInstance().notifyObservers(Events.DisplayLayout);
     }
 
@@ -173,14 +183,14 @@ public abstract class Layout extends Observable {
     }
 
     public abstract void reset();
-    
+
     /**
      * Move the whole grid left or right
      * @return {@code false} if the movement is impossible, {@code true} if the movement has been made
-     * @param offset Offset of the movement : -1 for right and +1 for left 
+     * @param offset Offset of the movement : -1 for right and +1 for left
      */
     public abstract boolean moveHorizontally(int offset);//On X
-    
+
     /**
      * Move the whole grid up or down
      * @return {@code false} if the movement is impossible, {@code true} if the movement has been made

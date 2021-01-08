@@ -1,10 +1,17 @@
 package fr.utt.lo02.tdvp.view.gui;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import fr.utt.lo02.tdvp.controller.Actions;
+import fr.utt.lo02.tdvp.controller.Controller;
+import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Settings;
+import fr.utt.lo02.tdvp.model.player.Player;
 import fr.utt.lo02.tdvp.model.variant.Variant;
+import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
+import fr.utt.lo02.tdvp.view.cli.Input;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageButton;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
 import javafx.event.ActionEvent;
@@ -20,6 +27,7 @@ import javafx.scene.layout.VBox;
 
 public class GamePanelView extends GridPane implements Observer {
     private static GamePanelView instance = new GamePanelView();
+    private Controller controller = Controller.getInstance();
 
     private TilePane layoutPane;
     private ImageButton actionButtonMove;
@@ -113,7 +121,7 @@ public class GamePanelView extends GridPane implements Observer {
     }
 
     public void updateActionButtonChangeVictoryCard() {
-        if (Settings.getInstance().getVariant() == Variant.Name.SecondChance) {
+        if (Settings.getInstance().getVariant() instanceof VariantSecondChance) {
             actionButtonChangeVictoryCard.setVisible(true);
         }
         else {
@@ -132,4 +140,71 @@ public class GamePanelView extends GridPane implements Observer {
     public ImageButton getActionButtonChangeVictoryCard() {
         return actionButtonChangeVictoryCard;
     }
+
+    private String actionEnumToString(Actions action)
+	{
+		switch(action)
+		{
+			case PlaceCard:
+				return "Poser ma carte";
+			case MoveCards:
+				return "Deplacer une carte";
+			case ChangeVictoryCard:
+				return "Changer de Victory Card";
+			case SeeVictoryCard:
+				return "Voir ma Victory Card";
+			case MoveLayout:
+				return "Bouger le Plateau";
+			case EndTurn:
+				return "Terminer le Tour";
+			default:
+				return "";
+		}
+	}
+
+    public void askPlayerToPlay() {
+		Player playingPlayer = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
+		List<Actions> availableActions = playingPlayer.getAvailableOptions();
+
+		if (availableActions.size()>0)
+		{
+			//Generate answers
+			String[] answers = new String[availableActions.size()];
+
+			for(int i = 0; i < availableActions.size(); i++)
+			{
+				answers[i] = actionEnumToString(availableActions.get(i));
+			}
+
+			final int answer = Input.promptChoice(
+	                "Tour de jeu",
+	                answers,
+	                "Que veux-tu faire ?"
+	            );
+
+			Actions actionToMake = availableActions.get(answer-1);
+
+			switch(actionToMake) {
+				case PlaceCard:
+					controller.askPlaceCard();
+					break;
+				case MoveCards:
+					controller.askMoveCard();
+					break;
+				case ChangeVictoryCard:
+					break;
+				case SeeVictoryCard:
+					// this.displayVictoryCard();
+					break;
+				case MoveLayout:
+					// this.askToMoveLayout();
+					break;
+				case EndTurn:
+					controller.endTurn();
+					break;
+				default:
+					break;
+			}
+		}
+	}
 }

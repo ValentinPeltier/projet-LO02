@@ -2,6 +2,7 @@ package fr.utt.lo02.tdvp.model.variant;
 
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.Stack;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.player.Player;
@@ -34,7 +35,7 @@ public class VariantSecondChance extends Variant {
         }
         // If variant has never been executed
         else if (executeAtTurn == -1) {
-            Layout layout = GameManager.getInstance().getLayout();
+            Layout layout = Settings.getInstance().getLayout();
 
             // Execute when we are in the middle of the round, so the layout is half filled
             boolean secondHalfRound = layout.countCards() >= Math.floor(layout.getLocations().size() / 2);
@@ -63,12 +64,12 @@ public class VariantSecondChance extends Variant {
      * Executes the variant
      */
     public void execute(Player player) {
-        GameManager.getInstance().getLayout().display();
-        	
-        //ASK VIEW  
+        Settings.getInstance().getLayout().display();
+
+        //ASK VIEW
         GameManager.getInstance().notifyObservers(Events.AskVariantSecondChance);
     }
-    
+
     public void makeChange()
     {
     	Player player = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());

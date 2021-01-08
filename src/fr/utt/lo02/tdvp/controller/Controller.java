@@ -3,73 +3,79 @@ package fr.utt.lo02.tdvp.controller;
 
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Settings;
 
 public class Controller {
-	
-	GameManager gameManager = GameManager.getInstance();
-	
-	public void Controller() {}
+    private static Controller instance = new Controller();
+
+    Settings settings = Settings.getInstance();
+
+    public static Controller getInstance() {
+        return instance;
+    }
+
+	private Controller() {}
 
 	public void setVariant(int answer)
 	{
-		gameManager.initializeVariant(answer);
-	}
-	
-	public void setLayoutShape(int answer)
-	{
-		gameManager.initializeLayout(answer);
-	}
-	
-	public void setPhysicalPlayersNumber(int answer)
-	{
-		gameManager.setPhysicalPlayers(answer);
-	}
-	
-	public void setPlayerName(String name) {
-		gameManager.setPlayerName(name);
-	}
-	
-	public boolean placeCard(int x, int y, Card card) {
-		return gameManager.getLayout().placeCard(x, y, card);
-	}
-	
-	public boolean moveCards(int x1, int y1, int x2, int y2)
-	{
-		return gameManager.getLayout().moveCard(x1, y1, x2, y2);
-	}
-	
-	public void askPlaceCard()
-	{
-		gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).placeCard();
-	}
-	
-	public void askMoveCard() {
-		gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).moveCard();
-	}
-	
-	public void endTurn()
-	{
-		gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).endTurn();
-	}
-	
-	public boolean moveHorizontally(int offset)
-	{
-		return gameManager.getLayout().moveHorizontally(offset);
-	}
-	
-	public boolean moveVertically(int offset)
-	{
-		return gameManager.getLayout().moveVertically(offset);
-	}
-	
-	public void setVirtualPlayer(int difficulty)
-	{
-		gameManager.setVirtualPlayer(difficulty);
+		settings.setVariant(answer);
 	}
 
-	public void variantSecondChance() 
+	public void setLayoutShape(int answer)
 	{
-		gameManager.getVariant().makeChange();
+		settings.setLayoutShape(answer);
 	}
-	
+
+	public void setPhysicalPlayersNumber(int answer)
+	{
+		settings.setPhysicalPlayers(answer);
+	}
+
+	public void setPlayerName(int i, String name) {
+		settings.setPlayerName(i, name);
+    }
+
+    public void setVirtualPlayer(int count)
+	{
+		settings.setVirtualPlayers(count);
+	}
+
+	public boolean placeCard(int x, int y, Card card) {
+		return settings.getLayout().placeCard(x, y, card);
+	}
+
+	public boolean moveCards(int x1, int y1, int x2, int y2)
+	{
+		return settings.getLayout().moveCard(x1, y1, x2, y2);
+	}
+
+	public void askPlaceCard()
+	{
+		GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).placeCard();
+	}
+
+	public void askMoveCard() {
+		GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).moveCard();
+	}
+
+	public void endTurn()
+	{
+		GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).endTurn();
+	}
+
+	public boolean moveHorizontally(int offset)
+	{
+		return settings.getLayout().moveHorizontally(offset);
+	}
+
+	public boolean moveVertically(int offset)
+	{
+		return settings.getLayout().moveVertically(offset);
+	}
+
+	public void variantSecondChance()
+	{
+		settings.getVariant().makeChange();
+	}
+
 }

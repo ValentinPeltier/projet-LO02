@@ -1,23 +1,23 @@
 package fr.utt.lo02.tdvp.controller;
 
 public enum Events {
-	
+
 	//SETTINGS
-	AskVariant, AskPhysicalPlayersNumber, AskPlayerName, AskLayoutShape, AskVirtualPlayerSettings,
-	
+	AskVariant, AskPhysicalPlayersNumber, AskPlayerName1, AskPlayerName2, AskPlayerName3, AskLayoutShape, AskVirtualPlayerSettings,
+
 	//PLAY
 	AskPlayerToPlay, AskToPlaceCard, AskToMoveCards,
-	
+
 	//DISPLAY
 	DisplayGameSettingsHeader,DisplayStartGameMsg, DisplayRoundNumber, DisplayNameAtTurn,
 	DisplayVariantRandomSwitch,DisplayVariantSeconChance,AskVariantSecondChance,
-	
+
 	DisplayScoresHeader,DisplayScoreForPlayerOnRow,
-	
-	DisplayLayout, 
-	
+
+	DisplayLayout,
+
 	DisplaySimpleFooter,
-	
+
 	LogError
 
 }

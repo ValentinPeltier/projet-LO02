@@ -8,10 +8,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import fr.utt.lo02.tdvp.controller.SettingsPanelController;
 import fr.utt.lo02.tdvp.model.panel.*;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
 
-public class Window extends Application {
+public class Window extends Application implements Runnable {
     private static StackPane root;
 
     public static void setPanel(Pane panel) {
@@ -19,6 +20,11 @@ public class Window extends Application {
             root.getChildren().remove(1);
         }
         root.getChildren().add(panel);
+    }
+
+    @Override
+    public void run() {
+        initWindow();
     }
 
     public static void initWindow() {
@@ -40,7 +46,6 @@ public class Window extends Application {
 
     @Override
     public void start(Stage window) {
-        // Initialize panels
         HomePanel.getInstance().init();
         SettingsPanel.getInstance().init();
         GamePanel.getInstance().init();

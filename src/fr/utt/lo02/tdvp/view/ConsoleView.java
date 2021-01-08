@@ -11,22 +11,20 @@ import fr.utt.lo02.tdvp.controller.Controller;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.layout.Location;
 import fr.utt.lo02.tdvp.model.player.Player;
-import fr.utt.lo02.tdvp.model.player.VirtualPlayerEasy;
-import fr.utt.lo02.tdvp.model.player.VirtualPlayerHard;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
 
-public class ConsoleView implements Observer{
+public class ConsoleView implements Observer {
 
 	public ConsoleView() {}
 
-	private Controller controller = new Controller();
-	GameManager gameManager = GameManager.getInstance();
-
+    Controller controller = Controller.getInstance();
+    Settings settings = Settings.getInstance();
 
 	public void askVariant()
 	{
@@ -65,15 +63,13 @@ public class ConsoleView implements Observer{
         controller.setPhysicalPlayersNumber(answer);
 	}
 
-	public void askPhysicalPlayerName() {
-		final String answer = Input.promptString("Choisis un nom pour le joueur " + (gameManager.getPlayerIndex()+1) + " :");
-
-		controller.setPlayerName(answer);
+	public void askPhysicalPlayerName(int i) {
+        final String answer = Input.promptString("Choisis un nom pour le joueur " + (i+1) + " :");
+        controller.setPlayerName(i, answer);
 	}
 
 	public void askVirtualPlayersNumber() {
-
-		int physicalPlayersCount = gameManager.getPlayersNumber();
+		int physicalPlayersCount = settings.getPhysicalPlayersCount();
 
         // Generate answers for the number of virtual players
         final int minVirtualPlayers = Math.max(2 - physicalPlayersCount, 0);
@@ -94,24 +90,20 @@ public class ConsoleView implements Observer{
 
             for (int i = 0; i < virtualPlayersCount; i++) {
                 // Ask for the difficulty
-                final int difficulty = Input.promptChoice(
-                    "Difficulte du joueur virtuel " + (i + 1),
-                    new String[] { "Facile", "Difficile" },
-                    "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
+                // final int difficulty = Input.promptChoice(
+                //     "Difficulte du joueur virtuel " + (i + 1),
+                //     new String[] { "Facile", "Difficile" },
+                //     "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
 
-                controller.setVirtualPlayer(difficulty);
+                controller.setVirtualPlayer(1);
             }
         }
-	}
-
-	public void askVirtualPlayerDifficulty() {
-
 	}
 
 	//PLAY
 	public void askPlayerToPlay() {
 
-		Player playingPlayer = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
+		Player playingPlayer = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
 		List<Actions> availableActions = playingPlayer.getAvailableOptions();
 
 		if (availableActions.size()>0)
@@ -183,11 +175,11 @@ public class ConsoleView implements Observer{
 
 	public void askToPlaceCard()
 	{
-		Player playingPlayer = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
+		Player playingPlayer = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
 		Card card = playingPlayer.getDrawnCard();
 
 
-		Layout layout = gameManager.getLayout();
+		Layout layout = settings.getLayout();
 
 		while(true) {
             String response;
@@ -208,7 +200,7 @@ public class ConsoleView implements Observer{
                 System.out.println("Il y a deja une carte ici !\n");
             }
             else if (
-            		!gameManager.isCardAjacent(x,y))
+            		!settings.getLayout().isCardAjacent(x,y))
             {
                 System.out.println("Il faut que ta carte soit adjacente a une autre !\n");
             }
@@ -225,7 +217,7 @@ public class ConsoleView implements Observer{
 
 	public void askToMoveCards()
 	{
-		Layout layout = gameManager.getLayout();
+		Layout layout = settings.getLayout();
 		// Ask for the card to move
         while (true) {
             String response;
@@ -334,7 +326,7 @@ public class ConsoleView implements Observer{
 		final int drawNewVictoryCard = Input.promptChoice(
 	            "[Variante] Repiocher une Victory Card",
 	            new String[] { "Non", "Oui" },
-	            "Souhaites-tu repiocher une Victory Card et remettre la tienne (" + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + ") dans la pioche ?",
+	            "Souhaites-tu repiocher une Victory Card et remettre la tienne (" + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getVictoryCard() + ") dans la pioche ?",
 	            0
 	        );
 
@@ -365,13 +357,13 @@ public class ConsoleView implements Observer{
 
 	public void displayNameAtTurn()
 	{
-		System.out.println("### A " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getName() + " de jouer ! ###\n");
+		System.out.println("### A " + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getName() + " de jouer ! ###\n");
 	}
 
 	public void displayVictoryCard()
 	{
 		// Display victory card
-        System.out.println("Ta Victory Card est : " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + "\n");
+        System.out.println("Ta Victory Card est : " + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getVictoryCard() + "\n");
 	}
 
 	public void displayVariantRandomSwitch(){
@@ -380,12 +372,12 @@ public class ConsoleView implements Observer{
 
 	public void displayVariantSeconChance()
 	{
-		System.out.println("Tu as pioche ta nouvelle Victory Card : " + gameManager.getPlayerAtIndex(gameManager.getPlayerIndex()).getVictoryCard() + "\n");
+		System.out.println("Tu as pioche ta nouvelle Victory Card : " + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getVictoryCard() + "\n");
 	}
 
 	public void displayLayout()
 	{
-		Layout layout = gameManager.getLayout();
+		Layout layout = settings.getLayout();
 
 		int minX = 0, minY = 0, maxX = 0, maxY = 0;
         Iterator<Location> mapIterator = layout.getLocations().keySet().iterator();
@@ -449,7 +441,7 @@ public class ConsoleView implements Observer{
 
 	public void displayScoreForPlayerOnRow()
 	{
-		Player player = gameManager.getPlayerAtIndex(gameManager.getPlayerIndex());
+		Player player = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
 		System.out.println("### " + player.getName() + " : " + player.getScore() + " points");
 	}
 
@@ -478,9 +470,15 @@ public class ConsoleView implements Observer{
                 case AskLayoutShape:
                 	this.askLayoutShape();
                 	break;
-                case AskPlayerName:
-                	this.askPhysicalPlayerName();
+                case AskPlayerName1:
+                	this.askPhysicalPlayerName(0);
                 	break;
+                case AskPlayerName2:
+                    this.askPhysicalPlayerName(1);
+                    break;
+                case AskPlayerName3:
+                    this.askPhysicalPlayerName(2);
+                    break;
                 case AskVirtualPlayerSettings:
                 	this.askVirtualPlayersNumber();
                 	break;
@@ -509,7 +507,7 @@ public class ConsoleView implements Observer{
                 	displayStartGameMsg();
                 	break;
                 case DisplayRoundNumber:
-                	displayRoundNumber(gameManager.getRound());
+                	displayRoundNumber(GameManager.getInstance().getRound());
                 	break;
                 case DisplayNameAtTurn:
                 	displayNameAtTurn();
@@ -547,7 +545,4 @@ public class ConsoleView implements Observer{
         }
 
 	}
-
-
-
 }

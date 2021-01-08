@@ -6,15 +6,14 @@ import java.util.List;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.Stack;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.layout.Location;
 
 public class VirtualPlayerEasy extends VirtualPlayer {
-	
-	
-	GameManager gameManager =  GameManager.getInstance();
-	
+
+
     /**
      * Play a turn with a low level strategy
      */
@@ -42,7 +41,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
     }
 
     public void moveCard() {
-        Layout layout = gameManager.getLayout();
+        Layout layout = Settings.getInstance().getLayout();
 
         //1st card to move
         List<Location> possibleLocationsSource = new ArrayList<Location>();
@@ -118,7 +117,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
                     return;
                 }
                 else {
-                    gameManager.notifyObservers(Events.LogError);
+                    GameManager.getInstance().notifyObservers(Events.LogError);
                 }
             }
 
@@ -127,7 +126,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
     }
 
     private void placeCard(Card card) {
-    	Layout layout = gameManager.getLayout();
+    	Layout layout = Settings.getInstance().getLayout();
     	List<Location> possibleLocations = new ArrayList<Location>();
 
     	int xMax = layout.getX();
@@ -161,7 +160,7 @@ public class VirtualPlayerEasy extends VirtualPlayer {
                 return;
             }
             else {
-            	gameManager.notifyObservers(Events.LogError);
+            	GameManager.getInstance().notifyObservers(Events.LogError);
             }
 
             //REMOVE
@@ -180,6 +179,6 @@ public class VirtualPlayerEasy extends VirtualPlayer {
 	@Override
 	public void placeCard() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

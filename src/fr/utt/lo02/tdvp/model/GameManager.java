@@ -1,37 +1,24 @@
 package fr.utt.lo02.tdvp.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
+import java.awt.EventQueue;
 
 import fr.utt.lo02.tdvp.controller.Events;
-import fr.utt.lo02.tdvp.model.layout.Layout;
-import fr.utt.lo02.tdvp.model.layout.LayoutCircle;
-import fr.utt.lo02.tdvp.model.layout.LayoutRectangle;
+import fr.utt.lo02.tdvp.controller.SettingsPanelController;
 import fr.utt.lo02.tdvp.model.layout.LayoutVisitor;
-import fr.utt.lo02.tdvp.model.player.PhysicalPlayer;
 import fr.utt.lo02.tdvp.model.player.Player;
-import fr.utt.lo02.tdvp.model.player.VirtualPlayerEasy;
-import fr.utt.lo02.tdvp.model.player.VirtualPlayerHard;
-import fr.utt.lo02.tdvp.model.variant.Variant;
-import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
-import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
-import fr.utt.lo02.tdvp.view.cli.Input;
+import fr.utt.lo02.tdvp.view.gui.SettingsPanelView;
 import fr.utt.lo02.tdvp.view.gui.Window;
 
-public class GameManager extends Observable{
-	
+public class GameManager extends Observable {
+
     private static GameManager instance = new GameManager();
+    private Settings settings = Settings.getInstance();
 
-    private List<Player> players = new ArrayList<Player>();
-
-    private Variant variant;
-
-    private Layout layout;
 
     private LayoutVisitor layoutVisitor = new LayoutVisitor();
-    
-    
+
+
     //MVC NEED IT
     private int round;
     private int playerIndex;
@@ -45,41 +32,23 @@ public class GameManager extends Observable{
     public static GameManager getInstance() {
         return instance;
     }
-    
+
     @Override
     public void notifyObservers(Object arg){
     	this.setChanged();
         super.notifyObservers(arg);
     }
-    
+
+    public Player getPlayerAtIndex(int i) {
+        return settings.getPlayers().get(i);
+    }
+
     public int getRound() {
     	return this.round;
     }
-    
-    public int getPlayerIndex()
-    {
-    	return this.playerIndex;
-    }
-    
-    public Player getPlayerAtIndex(int index)
-    {
-    	return this.players.get(index);
-    }
-    
-    public int getPlayersNumber()
-    {
-    	return this.players.size();
-    }
-    
-    public boolean isCardAjacent(int x, int y) {
-    	
-    	boolean noAdjacentCard = !this.layout.isEmpty()
-        && layout.getCardAt(x - 1, y) == null
-        && layout.getCardAt(x + 1, y) == null
-        && layout.getCardAt(x, y - 1) == null
-        && layout.getCardAt(x, y + 1) == null;
-    	
-    	return !noAdjacentCard;
+
+    public int getPlayerIndex() {
+        return playerIndex;
     }
 
     /**
@@ -87,108 +56,17 @@ public class GameManager extends Observable{
      * Let the user choose the variant, the players and the desired layout.
      */
     public void initializeGame() {
-        Window.initWindow();
-        
-    	this.notifyObservers(Events.DisplayGameSettingsHeader);
+        Thread t = new Thread(new Window());
+        t.start();
+
+        notifyObservers(Events.DisplayGameSettingsHeader);
 
         // Initialize the variant
-        this.notifyObservers(Events.AskVariant);
-        
-        // Initialize the players
-        this.initializePlayers();
-        
-        // Initialize layout
-        this.notifyObservers(Events.AskLayoutShape);
+        notifyObservers(Events.AskVariant);
     }
 
     /**
-     * Asks the user to choose a variant
-     */
-    public void initializeVariant(int variantChoice) {
-
-        // Set the variant
-        switch (variantChoice) {
-            case 0:
-                // Create a variant that never executes and does nothing
-                this.variant = new Variant() {
-                    public boolean shouldExecute(int round, int playerIndex) {
-                        return false;
-                    }
-                    public void execute(Player player) {}
-                    public void reset() {}
-					@Override
-					public void makeChange() {
-						// TODO Auto-generated method stub
-						
-					}
-                };
-                break;
-            case 1:
-                // RandomSwitch variant
-                this.variant = new VariantRandomSwitch();
-                break;
-            case 2:
-                this.variant = new VariantSecondChance();
-                break;
-        }
-    }
-    
-
-    
-    public void setPhysicalPlayers(int physicalPlayersCount) {
-    	
-    	// Create physical players
-        for (this.playerIndex = 0; this.playerIndex < physicalPlayersCount; this.playerIndex++) {
-            this.players.add(new PhysicalPlayer());
-            this.notifyObservers(Events.AskPlayerName);
-        }
-    }
-    
-    public void setVirtualPlayer(int difficulty)
-    {
-    	// Create virtual player
-        switch (difficulty) {
-            case 1:
-                this.players.add(new VirtualPlayerEasy());
-                break;
-            case 2:
-                this.players.add(new VirtualPlayerHard());
-                break;
-        }
-    }
-    
-    public void setPlayerName(String name) {
-    	this.players.get(this.playerIndex).setName(name);
-    }
-    
-    /**
-     * Asks the user for the number of physical and virtual players and their names
-     */
-    public void initializePlayers() {
-        
-    	this.notifyObservers(Events.AskPhysicalPlayersNumber);
-    	
-    	this.notifyObservers(Events.AskVirtualPlayerSettings);
-    }
-
-    /**
-     * Asks the user the desired layout
-     */
-    public void initializeLayout(int layoutChoice) {
-
-        // Create the layout
-        switch (layoutChoice) {
-            case 1:
-                this.layout = new LayoutRectangle();
-                break;
-            case 2:
-                this.layout = new LayoutCircle();
-                break;
-        }
-    }
-
-    /**
-     * Play a 3 round game.
+     * Play a 4 round game.
      * {@code initializeVariant}, {@code initializePlayers} and {@code initializeLayout} must have been called.
      */
     public void playGame() {
@@ -205,23 +83,23 @@ public class GameManager extends Observable{
             // If the stack is empty or the layout is full then the round is over
             for (int turn = 0; !roundOver; turn++) {
                 // Loop for each player
-                for (playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
-                    Player player = this.players.get(playerIndex);
+                for (playerIndex = 0; playerIndex < settings.getPlayers().size(); playerIndex++) {
+                    Player player = settings.getPlayers().get(playerIndex);
 
                     // Display name
                     this.notifyObservers(Events.DisplayNameAtTurn);
 
                     // Should the variant be executed ?
-                    if (this.variant.shouldExecute(turn, playerIndex)) {
+                    if (settings.getVariant().shouldExecute(turn, playerIndex)) {
                         // Then execute it
-                        this.variant.execute(player);
+                        settings.getVariant().execute(player);
                     }
 
                     // Player turn
                     player.play();
 
                     // Is the round over ?
-                    roundOver = this.layout.isFull();
+                    roundOver = settings.getLayout().isFull();
                     if (roundOver) {
                         break;
                     }
@@ -229,14 +107,14 @@ public class GameManager extends Observable{
             }
 
             // Count Points
-            this.layout.countPointsAccept(this.layoutVisitor);
+            settings.getLayout().countPointsAccept(this.layoutVisitor);
 
             // TODO: change start player
 
-            
+
             // Distribute points
-            
-            for (Player player: this.players) {
+
+            for (Player player: settings.getPlayers()) {
             	// Get player current score
                 int playerScore = player.getScore();
 
@@ -251,49 +129,32 @@ public class GameManager extends Observable{
 
                 player.setScore(playerScore);
 
-                
+
             }
-            
+
             displayScores();
 
             // Reset stack, layout and variant at the end of each round
             stack.reset();
-            this.layout.reset();
-            this.variant.reset();
+            settings.getLayout().reset();
+            settings.getVariant().reset();
 
             // Draw new victory card for each player
-            for (Player player: this.players) {
+            for (Player player: settings.getPlayers()) {
                 player.drawVictoryCard();
             }
         }
     }
-    
+
     private void displayScores() {
     	//Display Scores
     	this.notifyObservers(Events.DisplayScoresHeader);
 
-        for (playerIndex = 0; playerIndex < this.players.size(); playerIndex++) {
+        for (playerIndex = 0; playerIndex < settings.getPlayers().size(); playerIndex++) {
         	// Display score
         	this.notifyObservers(Events.DisplayScoreForPlayerOnRow);
         }
-        
+
         this.notifyObservers(Events.DisplaySimpleFooter);
-    }
-    
-
-    /**
-     * Returns the selected layout
-     * @return The selected layout
-     */
-    public Layout getLayout() {
-    	return this.layout;
-    }
-
-    /**
-     * Returns the selected variant
-     * @return The selected variant
-     */
-    public Variant getVariant() {
-    	return this.variant;
     }
 }

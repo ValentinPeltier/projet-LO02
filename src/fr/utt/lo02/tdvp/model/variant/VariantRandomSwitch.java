@@ -3,6 +3,7 @@ package fr.utt.lo02.tdvp.model.variant;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.layout.Location;
 import fr.utt.lo02.tdvp.model.player.Player;
@@ -34,7 +35,7 @@ public class VariantRandomSwitch extends Variant {
      * Executes the variant
      */
     public void execute(Player player) {
-        Layout layout = GameManager.getInstance().getLayout();
+        Layout layout = Settings.getInstance().getLayout();
 
         // Get 2 random distinct locations
         Location location1 = layout.getRandomLocation();
@@ -57,6 +58,6 @@ public class VariantRandomSwitch extends Variant {
 	@Override
 	public void makeChange() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
