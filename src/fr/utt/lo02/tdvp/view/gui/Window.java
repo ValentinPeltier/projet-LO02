@@ -11,7 +11,7 @@ import javafx.stage.WindowEvent;
 import fr.utt.lo02.tdvp.model.panel.*;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
 
-public class Window extends Application {
+public class Window extends Application implements Runnable {
     private static StackPane root;
 
     public static void setPanel(Pane panel) {
@@ -19,6 +19,11 @@ public class Window extends Application {
             root.getChildren().remove(1);
         }
         root.getChildren().add(panel);
+    }
+
+    @Override
+    public void run() {
+        initWindow();
     }
 
     public static void initWindow() {

@@ -20,7 +20,7 @@ import fr.utt.lo02.tdvp.view.cli.Input;
 import fr.utt.lo02.tdvp.view.gui.Window;
 
 public class GameManager extends Observable{
-	
+
     private static GameManager instance = new GameManager();
 
     private List<Player> players = new ArrayList<Player>();
@@ -30,8 +30,8 @@ public class GameManager extends Observable{
     private Layout layout;
 
     private LayoutVisitor layoutVisitor = new LayoutVisitor();
-    
-    
+
+
     //MVC NEED IT
     private int round;
     private int playerIndex;
@@ -45,40 +45,40 @@ public class GameManager extends Observable{
     public static GameManager getInstance() {
         return instance;
     }
-    
+
     @Override
     public void notifyObservers(Object arg){
     	this.setChanged();
         super.notifyObservers(arg);
     }
-    
+
     public int getRound() {
     	return this.round;
     }
-    
+
     public int getPlayerIndex()
     {
     	return this.playerIndex;
     }
-    
+
     public Player getPlayerAtIndex(int index)
     {
     	return this.players.get(index);
     }
-    
+
     public int getPlayersNumber()
     {
     	return this.players.size();
     }
-    
+
     public boolean isCardAjacent(int x, int y) {
-    	
+
     	boolean noAdjacentCard = !this.layout.isEmpty()
         && layout.getCardAt(x - 1, y) == null
         && layout.getCardAt(x + 1, y) == null
         && layout.getCardAt(x, y - 1) == null
         && layout.getCardAt(x, y + 1) == null;
-    	
+
     	return !noAdjacentCard;
     }
 
@@ -87,16 +87,16 @@ public class GameManager extends Observable{
      * Let the user choose the variant, the players and the desired layout.
      */
     public void initializeGame() {
-        Window.initWindow();
-        
+        (new Thread(new Window())).start();
+
     	this.notifyObservers(Events.DisplayGameSettingsHeader);
 
         // Initialize the variant
         this.notifyObservers(Events.AskVariant);
-        
+
         // Initialize the players
         this.initializePlayers();
-        
+
         // Initialize layout
         this.notifyObservers(Events.AskLayoutShape);
     }
@@ -119,7 +119,7 @@ public class GameManager extends Observable{
 					@Override
 					public void makeChange() {
 						// TODO Auto-generated method stub
-						
+
 					}
                 };
                 break;
@@ -132,18 +132,18 @@ public class GameManager extends Observable{
                 break;
         }
     }
-    
 
-    
+
+
     public void setPhysicalPlayers(int physicalPlayersCount) {
-    	
+
     	// Create physical players
         for (this.playerIndex = 0; this.playerIndex < physicalPlayersCount; this.playerIndex++) {
             this.players.add(new PhysicalPlayer());
             this.notifyObservers(Events.AskPlayerName);
         }
     }
-    
+
     public void setVirtualPlayer(int difficulty)
     {
     	// Create virtual player
@@ -156,18 +156,18 @@ public class GameManager extends Observable{
                 break;
         }
     }
-    
+
     public void setPlayerName(String name) {
     	this.players.get(this.playerIndex).setName(name);
     }
-    
+
     /**
      * Asks the user for the number of physical and virtual players and their names
      */
     public void initializePlayers() {
-        
+
     	this.notifyObservers(Events.AskPhysicalPlayersNumber);
-    	
+
     	this.notifyObservers(Events.AskVirtualPlayerSettings);
     }
 
@@ -233,9 +233,9 @@ public class GameManager extends Observable{
 
             // TODO: change start player
 
-            
+
             // Distribute points
-            
+
             for (Player player: this.players) {
             	// Get player current score
                 int playerScore = player.getScore();
@@ -251,9 +251,9 @@ public class GameManager extends Observable{
 
                 player.setScore(playerScore);
 
-                
+
             }
-            
+
             displayScores();
 
             // Reset stack, layout and variant at the end of each round
@@ -267,7 +267,7 @@ public class GameManager extends Observable{
             }
         }
     }
-    
+
     private void displayScores() {
     	//Display Scores
     	this.notifyObservers(Events.DisplayScoresHeader);
@@ -276,10 +276,10 @@ public class GameManager extends Observable{
         	// Display score
         	this.notifyObservers(Events.DisplayScoreForPlayerOnRow);
         }
-        
+
         this.notifyObservers(Events.DisplaySimpleFooter);
     }
-    
+
 
     /**
      * Returns the selected layout

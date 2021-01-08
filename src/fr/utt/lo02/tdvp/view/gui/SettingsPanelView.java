@@ -194,29 +194,29 @@ public class SettingsPanelView extends VBox implements Observer {
 
         settingsPane.getChildren().clear();
         settingsPane.getChildren().addAll(label, pane);
-        
-        if(arg instanceof Events && o instanceof GameManager)
-        {
-            switch ((Events) arg)
-            {
-            	//SETTINGS
-                case AskVariant:
-                	this.askVariant();
-                	break;
-                case AskPhysicalPlayersNumber:
-                	this.askPhysicalPlayersNumber();
-                	break;
-                case AskLayoutShape:
-                	this.askLayoutShape();
-                	break;
-                case AskPlayerName:
-                	this.askPhysicalPlayerName();
-                	break;
-                case AskVirtualPlayerSettings:
-                	this.askVirtualPlayersNumber();
-                	break;
-            }
-        }
+
+        // if(arg instanceof Events && o instanceof GameManager)
+        // {
+        //     switch ((Events) arg)
+        //     {
+        //     	//SETTINGS
+        //         case AskVariant:
+        //         	this.askVariant();
+        //         	break;
+        //         case AskPhysicalPlayersNumber:
+        //         	this.askPhysicalPlayersNumber();
+        //         	break;
+        //         case AskLayoutShape:
+        //         	this.askLayoutShape();
+        //         	break;
+        //         case AskPlayerName:
+        //         	this.askPhysicalPlayerName();
+        //         	break;
+        //         case AskVirtualPlayerSettings:
+        //         	this.askVirtualPlayersNumber();
+        //         	break;
+        //     }
+        // }
     }
 
     public VBox getSettingsPane() {
@@ -230,5 +230,5 @@ public class SettingsPanelView extends VBox implements Observer {
     public Button getNextButton() {
         return nextButton;
     }
-    
+
 }
