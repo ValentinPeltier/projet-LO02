@@ -4,4 +4,6 @@
 # .class files
 /bin/
 
+# project files
 .classpath
+.project
