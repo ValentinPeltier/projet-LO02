@@ -1,0 +1,11 @@
+fr.utt.lo02.tdvp
+fr.utt.lo02.tdvp.controller
+fr.utt.lo02.tdvp.model
+fr.utt.lo02.tdvp.model.layout
+fr.utt.lo02.tdvp.model.panel
+fr.utt.lo02.tdvp.model.player
+fr.utt.lo02.tdvp.model.variant
+fr.utt.lo02.tdvp.view
+fr.utt.lo02.tdvp.view.cli
+fr.utt.lo02.tdvp.view.gui
+fr.utt.lo02.tdvp.view.gui.utils
