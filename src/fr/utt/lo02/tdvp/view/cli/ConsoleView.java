@@ -518,7 +518,7 @@ public class ConsoleView implements Observer {
 	}
 
     /**
-     * According to the event value of arg
+     * Trigger an action according to the event value of arg.
      * @param o The observable object that called notifyObservers()
      * @param arg The argument passed in the notifyObservers() method. It will trigger an action if it is in the list of the supported events for this class.
      * @see Observer

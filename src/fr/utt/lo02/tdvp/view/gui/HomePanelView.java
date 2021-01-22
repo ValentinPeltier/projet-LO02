@@ -1,6 +1,5 @@
 package fr.utt.lo02.tdvp.view.gui;
 
-import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,15 +9,38 @@ import javafx.scene.layout.VBox;
 import javafx.scene.transform.Rotate;
 import javafx.scene.image.ImageView;
 
+import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
+
+/**
+ * Represents the view of a home panel in the MVC architecture.
+ * Displays a start screen with a "play" button.
+ * This class uses the singleton design pattern.
+ */
 public class HomePanelView extends HBox {
+    /**
+     * The unique instance of the class.
+     * @see #getInstance()
+     */
     private static HomePanelView instance = new HomePanelView();
 
+    /**
+     * The play button.
+     * @see #getPlayButton()
+     */
     private Button playButton;
 
+    /**
+     * Returns the unique instance of the class.
+     * @return The unique instance of the class
+     */
     public static HomePanelView getInstance() {
         return instance;
     }
 
+    /**
+     * Instantiate a new HomePanelView.
+     * Create and place all children elements.
+     */
     private HomePanelView() {
         ImageView leftCard = ImageUtil.getImageView("cards/TGF.png");
         ImageView rightCard = ImageUtil.getImageView("cards/SRF.png");
@@ -61,6 +83,10 @@ public class HomePanelView extends HBox {
         setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Returns the play button of the panel.
+     * @return The play button
+     */
     public Button getPlayButton() {
         return playButton;
     }

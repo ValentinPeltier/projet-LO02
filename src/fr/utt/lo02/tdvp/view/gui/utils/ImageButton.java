@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
  */
 public class ImageButton extends Button {
     /**
-     * Instanciate a new ImageButton with the specified image as a background.
+     * Instantiate a new ImageButton with the specified image as a background.
      * @param imageURI The URI of the image to display as background, relative to "/resources/" directory
      */
     public ImageButton(String imageURI) {

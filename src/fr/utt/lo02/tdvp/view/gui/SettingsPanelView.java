@@ -2,11 +2,6 @@ package fr.utt.lo02.tdvp.view.gui;
 
 import java.util.Observable;
 import java.util.Observer;
-
-import fr.utt.lo02.tdvp.controller.Events;
-import fr.utt.lo02.tdvp.model.GameManager;
-import fr.utt.lo02.tdvp.model.Settings;
-import fr.utt.lo02.tdvp.view.gui.utils.ImageButton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -15,26 +10,62 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import fr.utt.lo02.tdvp.controller.Events;
+import fr.utt.lo02.tdvp.model.GameManager;
+import fr.utt.lo02.tdvp.model.Settings;
+import fr.utt.lo02.tdvp.view.gui.utils.ImageButton;
+
+/**
+ * Represents the view of a settings panel in the MVC architecture.
+ * Displays a panel showing all possible game settings and where the user can choose them.
+ * This class uses the singleton design pattern.
+ */
 @SuppressWarnings("deprecation")
 public class SettingsPanelView extends VBox implements Observer {
+    /**
+     * The unique instance of the class.
+     * @see #getInstance()
+     */
     private static SettingsPanelView instance = new SettingsPanelView();
 
+    /**
+     * The settings pane where are displayed the available settings.
+     * @see #getSettingsPane()
+     */
     private VBox settingsPane;
+
+    /**
+     * The "back" button of the panel.
+     * Allows to go to the next panel step.
+     * @see #getBackButton()
+     */
     private Button backButton;
+
+    /**
+     * The "next" button of the panel.
+     * Allows to go back in the panel steps.
+     * @see #getNextButton()
+     */
     private Button nextButton;
 
+    /**
+     * The currently chosen input by the user.
+     * @see #getInput()
+     */
     private String input = null;
 
-    public String getInput() {
-        String tmp = input;
-        input = null;
-        return tmp;
-    }
-
+    /**
+     * Returns the unique instance of the class.
+     * @return The unique instance of the class
+     */
     public static SettingsPanelView getInstance() {
         return instance;
     }
 
+    /**
+     * Instantiate a new SettingsPanelView.
+     * Create and place all children elements.
+     */
     private SettingsPanelView() {
         GameManager.getInstance().addObserver(this);
 
@@ -65,6 +96,23 @@ public class SettingsPanelView extends VBox implements Observer {
         setSpacing(40);
     }
 
+    /**
+     * Returns the input of the user and clear the value, so it cannot be called twice to get the same input.
+     * @return The input of the user
+     */
+    public String getInput() {
+        String tmp = input;
+        input = null;
+        return tmp;
+    }
+
+    /**
+     * Trigger an action according to the event value of arg.
+     * @param o The observable object that called notifyObservers()
+     * @param arg The argument passed in the notifyObservers() method. It will trigger an action if it is in the list of the supported events for this class.
+     * @see Observer
+     * @see Observable
+     */
 	@Override
 	@SuppressWarnings("incomplete-switch")
     public void update(Observable o, Object arg) {
@@ -73,7 +121,7 @@ public class SettingsPanelView extends VBox implements Observer {
             label.setStyle("-fx-font-size: 40px; -fx-padding: 0 0 40px 0");
             HBox pane = new HBox();
             pane.setAlignment(Pos.CENTER);
-            
+
             switch ((Events) arg) {
             	//SETTINGS
                 case AskVariant:
@@ -104,18 +152,35 @@ public class SettingsPanelView extends VBox implements Observer {
         }
     }
 
+    /**
+     * Returns the settings pane of the panel.
+     * @return The settings pane.
+     */
     public VBox getSettingsPane() {
         return settingsPane;
     }
 
+    /**
+     * Returns the "back" button of the panel.
+     * @return The "back" button.
+     */
     public Button getBackButton() {
         return backButton;
     }
 
+    /**
+     * Returns the "next" button of the panel.
+     * @return The "next" button.
+     */
     public Button getNextButton() {
         return nextButton;
     }
 
+    /**
+     * Change the options in the settings pane so that the user can choose a game variant.
+     * @param label The label of the settings pane. Its text will change.
+     * @param pane The pane of the settings pane. Its content will change to display the available options.
+     */
     private void askVariant(Label label, HBox pane) {
         label.setText("Choix de la variante");
         ImageButton[] variantButtons = {
@@ -155,6 +220,11 @@ public class SettingsPanelView extends VBox implements Observer {
         pane.getChildren().addAll(variantButtons);
     }
 
+    /**
+     * Change the options in the settings pane so that the user can choose the number of physical players to play.
+     * @param label The label of the settings pane. Its text will change.
+     * @param pane The pane of the settings pane. Its content will change to display the available options.
+     */
     private void askPhysicalPlayersNumber(Label label, HBox pane) {
         label.setText("Nombre de joueurs réels");
         ImageButton[] physicalPlayersButtons = {
@@ -176,6 +246,11 @@ public class SettingsPanelView extends VBox implements Observer {
         pane.getChildren().addAll(physicalPlayersButtons);
     }
 
+    /**
+     * Change the options in the settings pane so that the user can choose the game board layout.
+     * @param label The label of the settings pane. Its text will change.
+     * @param pane The pane of the settings pane. Its content will change to display the available options.
+     */
     private void askLayoutShape(Label label, HBox pane) {
         label.setText("Choix du plateau");
         ImageButton[] layoutButtons = {
@@ -201,11 +276,23 @@ public class SettingsPanelView extends VBox implements Observer {
         pane.getChildren().addAll(layoutButtons);
     }
 
-    private void askPhysicalPlayerName(int i, Label label, HBox pane) {
-        label.setText("Nom du joueur " + (i + 1));
-        input = "test " + i;
+    /**
+     * Change the options in the settings pane so that the user can choose the name of a physical player.
+     * This method should be called on a physical player only but it will not check this condition.
+     * @param playerIndex The index of the player to set the name.
+     * @param label The label of the settings pane. Its text will change.
+     * @param pane The pane of the settings pane. Its content will change to display the available options.
+     */
+    private void askPhysicalPlayerName(int playerIndex, Label label, HBox pane) {
+        label.setText("Nom du joueur " + (playerIndex + 1));
+        input = "test " + playerIndex;
     }
 
+    /**
+     * Change the options in the settings pane so that the user can choose the number of virtual players to play.
+     * @param label The label of the settings pane. Its text will change.
+     * @param pane The pane of the settings pane. Its content will change to display the available options.
+     */
     private void askVirtualPlayersNumber(Label label, HBox pane) {
         label.setText("Nombre de joueurs virtuels");
         ImageButton[] virtualPlayersButtons = {

@@ -1,18 +1,7 @@
 package fr.utt.lo02.tdvp.view.gui;
 
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
-import fr.utt.lo02.tdvp.controller.Actions;
-import fr.utt.lo02.tdvp.controller.Controller;
-import fr.utt.lo02.tdvp.model.GameManager;
-import fr.utt.lo02.tdvp.model.Settings;
-import fr.utt.lo02.tdvp.model.player.Player;
-import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
-import fr.utt.lo02.tdvp.view.cli.Input;
-import fr.utt.lo02.tdvp.view.gui.utils.ImageButton;
-import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -22,20 +11,54 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
+import fr.utt.lo02.tdvp.model.Settings;
+import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
+import fr.utt.lo02.tdvp.view.gui.utils.ImageButton;
+import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
+
+/**
+ * Represents the view of a game panel in the MVC architecture.
+ * Displays the game interface.
+ * This class uses the singleton design pattern.
+ */
 @SuppressWarnings("deprecation")
 public class GamePanelView extends GridPane implements Observer {
+    /**
+     * The unique instance of the class.
+     * @see #getInstance()
+     */
     private static GamePanelView instance = new GamePanelView();
-    private Controller controller = Controller.getInstance();
 
-    private TilePane layoutPane;
+    /**
+     * The "move" action button.
+     * @see #getActionButtonMove()
+     */
     private ImageButton actionButtonMove;
+
+    /**
+     * The "display victory card" button.
+     * @see #getActionButtonDisplayVictoryCard()
+     */
     private ImageButton actionButtonDisplayVictoryCard;
+
+    /**
+     * The "change victory card" button.
+     * @see #getActionButtonChangeVictoryCard()
+     */
     private ImageButton actionButtonChangeVictoryCard;
 
+    /**
+     * Returns the unique instance of the class.
+     * @return The unique instance of the class
+     */
     public static GamePanelView getInstance() {
         return instance;
     }
 
+    /**
+     * Instantiate a new GamePanelView.
+     * Create and place all children elements.
+     */
     private GamePanelView() {
         Settings.getInstance().addObserver(this);
 
@@ -65,11 +88,11 @@ public class GamePanelView extends GridPane implements Observer {
         // Player label
         Label playerLabel = new Label("À Valentin de jouer");
         playerLabel.setStyle("-fx-background-color: #98d2ff29;" +
-        "-fx-background-radius: 500px;" +
-        "-fx-border-width: 3px;" +
-        "-fx-border-color: #98d2ff;" +
-        "-fx-border-radius: 500px;" +
-        "-fx-padding: 16px 50px");
+            "-fx-background-radius: 500px;" +
+            "-fx-border-width: 3px;" +
+            "-fx-border-color: #98d2ff;" +
+            "-fx-border-radius: 500px;" +
+            "-fx-padding: 16px 50px");
         GridPane.setHalignment(playerLabel, HPos.CENTER);
 
         // Stack button
@@ -80,7 +103,7 @@ public class GamePanelView extends GridPane implements Observer {
         actionsPane.setStyle("-fx-padding: 120px 44px 0px 44px; -fx-background-image: url(\"/resources/panels/game.png\"); -fx-background-repeat: no-repeat");
 
         // Layout pane
-        layoutPane = new TilePane(cards);
+        TilePane layoutPane = new TilePane(cards);
         layoutPane.setPrefColumns(5);
 
         // Round label
@@ -112,11 +135,21 @@ public class GamePanelView extends GridPane implements Observer {
         setAlignment(Pos.CENTER);
     }
 
+    /**
+     * Check if the variant has changed and update the actions buttons according to it.
+     * @param o The observable object that called notifyObservers()
+     * @param arg The argument passed in the notifyObservers() method. It will be ignored here.
+     * @see Observer
+     * @see Observable
+     */
     @Override
-    public void update(Observable gamePanel, Object arg) {
+    public void update(Observable o, Object arg) {
         updateActionButtonChangeVictoryCard();
     }
 
+    /**
+     * Check if the variant is "second chance" and display or hide the "change victory card" according to it.
+     */
     public void updateActionButtonChangeVictoryCard() {
         if (Settings.getInstance().getVariant() instanceof VariantSecondChance) {
             actionButtonChangeVictoryCard.setVisible(true);
@@ -126,82 +159,27 @@ public class GamePanelView extends GridPane implements Observer {
         }
     }
 
+    /**
+     * Returns the "move" button of the game panel.
+     * @return The "move" button
+     */
     public ImageButton getActionButtonMove() {
         return actionButtonMove;
     }
 
+    /**
+     * Returns the "display victory card" of the panel.
+     * @return The "display victory card" button
+     */
     public ImageButton getActionButtonDisplayVictoryCard() {
         return actionButtonDisplayVictoryCard;
     }
 
+    /**
+     * Returns the "change victory card" button of the panel.
+     * @return The "change victory card" button
+     */
     public ImageButton getActionButtonChangeVictoryCard() {
         return actionButtonChangeVictoryCard;
     }
-
-    private String actionEnumToString(Actions action)
-	{
-		switch(action)
-		{
-			case PlaceCard:
-				return "Poser ma carte";
-			case MoveCards:
-				return "Deplacer une carte";
-			case ChangeVictoryCard:
-				return "Changer de Victory Card";
-			case SeeVictoryCard:
-				return "Voir ma Victory Card";
-			case MoveLayout:
-				return "Bouger le Plateau";
-			case EndTurn:
-				return "Terminer le Tour";
-			default:
-				return "";
-		}
-	}
-
-    public void askPlayerToPlay() {
-		Player playingPlayer = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
-		List<Actions> availableActions = playingPlayer.getAvailableOptions();
-
-		if (availableActions.size()>0)
-		{
-			//Generate answers
-			String[] answers = new String[availableActions.size()];
-
-			for(int i = 0; i < availableActions.size(); i++)
-			{
-				answers[i] = actionEnumToString(availableActions.get(i));
-			}
-
-			final int answer = Input.promptChoice(
-	                "Tour de jeu",
-	                answers,
-	                "Que veux-tu faire ?"
-	            );
-
-			Actions actionToMake = availableActions.get(answer-1);
-
-			switch(actionToMake) {
-				case PlaceCard:
-					controller.askPlaceCard();
-					break;
-				case MoveCards:
-					controller.askMoveCard();
-					break;
-				case ChangeVictoryCard:
-					break;
-				case SeeVictoryCard:
-					// this.displayVictoryCard();
-					break;
-				case MoveLayout:
-					// this.askToMoveLayout();
-					break;
-				case EndTurn:
-					controller.endTurn();
-					break;
-				default:
-					break;
-			}
-		}
-	}
 }
