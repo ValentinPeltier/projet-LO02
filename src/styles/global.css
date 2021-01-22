@@ -1,12 +1,12 @@
 /** Font **/
 @font-face {
     font-family: "Retron2000";
-    src: url("/assets/fonts/Retron2000.ttf");
+    src: url("/resources/fonts/Retron2000.ttf");
 }
 
 /** Root **/
 .root {
-    -fx-background-image: url("/assets/background.png");
+    -fx-background-image: url("/resources/background.png");
     -fx-background-size: cover;
     -fx-background-position: 50% 50%;
     -fx-background-repeat: no-repeat;
@@ -55,7 +55,7 @@
 
 /** Settings panel **/
 .settings-panel {
-    -fx-background-image: url("/assets/panels/settings.png");
+    -fx-background-image: url("/resources/panels/settings.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: contain;
     -fx-background-position: center;

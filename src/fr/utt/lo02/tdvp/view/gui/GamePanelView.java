@@ -77,7 +77,7 @@ public class GamePanelView extends GridPane implements Observer {
 
         // Actions pane
         VBox actionsPane = new VBox(actionButtonMove, actionButtonDisplayVictoryCard, actionButtonChangeVictoryCard);
-        actionsPane.setStyle("-fx-padding: 120px 44px 0px 44px; -fx-background-image: url(\"/assets/panels/game.png\"); -fx-background-repeat: no-repeat");
+        actionsPane.setStyle("-fx-padding: 120px 44px 0px 44px; -fx-background-image: url(\"/resources/panels/game.png\"); -fx-background-repeat: no-repeat");
 
         // Layout pane
         layoutPane = new TilePane(cards);
