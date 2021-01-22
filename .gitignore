@@ -7,3 +7,6 @@
 # project files
 .classpath
 .project
+
+# misc
+jar-in-jar-loader.zip
