@@ -10,7 +10,7 @@ public enum Events {
 
 	//DISPLAY
 	DisplayGameSettingsHeader,DisplayStartGameMsg, DisplayRoundNumber, DisplayNameAtTurn,
-	DisplayVariantRandomSwitch,DisplayVariantSeconChance,AskVariantSecondChance,
+	DisplayVariantRandomSwitch,DisplayVariantSecondChance,AskVariantSecondChance,
 
 	DisplayScoresHeader,DisplayScoreForPlayerOnRow,
 

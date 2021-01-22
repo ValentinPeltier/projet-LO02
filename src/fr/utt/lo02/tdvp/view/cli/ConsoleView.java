@@ -1,4 +1,4 @@
-package fr.utt.lo02.tdvp.view;
+package fr.utt.lo02.tdvp.view.cli;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,18 +17,34 @@ import fr.utt.lo02.tdvp.model.layout.Location;
 import fr.utt.lo02.tdvp.model.player.Player;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
-import fr.utt.lo02.tdvp.view.cli.Input;
 
+/**
+ * Represents the command-line interface.
+ * The methods beginning with "ask" ask the user to make a choice, check its validity and inform the controller of this choice.
+ * The methods beginning with "display" simply display corresponding information to the console.
+ */
 @SuppressWarnings("deprecation")
 public class ConsoleView implements Observer {
+    /**
+     * The instance of the main game controller.
+     */
+    private Controller controller = Controller.getInstance();
 
+    /**
+     * The instance of the class that handle the settings.
+     */
+    private Settings settings = Settings.getInstance();
+
+    /**
+     * The class constructor.
+     * Does nothing.
+     */
 	public ConsoleView() {}
 
-    Controller controller = Controller.getInstance();
-    Settings settings = Settings.getInstance();
-
-	public void askVariant()
-	{
+    /**
+     * Asks the user to choose a variant between the two available.
+     */
+	public void askVariant() {
 		// Ask the user for a variant
         final int answer = Input.promptChoice("Choix de la variante", new String[] {
             "Aucune",
@@ -39,8 +55,10 @@ public class ConsoleView implements Observer {
         controller.setVariant(answer);
 	}
 
-	public void askLayoutShape()
-	{
+    /**
+     * Asks the user to choose a layout shape between the two available.
+     */
+	public void askLayoutShape() {
 		// Ask the user
         final int answer = Input.promptChoice(
             "Choix du plateau de jeu",
@@ -53,6 +71,10 @@ public class ConsoleView implements Observer {
         controller.setLayoutShape(answer);
 	}
 
+    /**
+     * Asks the user to choose the number of physical players.
+     * It can be between 1 and 3 and will define the minimum and maximum number of virtual players.
+     */
 	public void askPhysicalPlayersNumber() {
 		// Ask for the number of physical players
         final int answer = Input.promptChoice(
@@ -64,11 +86,23 @@ public class ConsoleView implements Observer {
         controller.setPhysicalPlayersNumber(answer);
 	}
 
-	public void askPhysicalPlayerName(int i) {
-        final String answer = Input.promptString("Choisis un nom pour le joueur " + (i+1) + " :");
-        controller.setPlayerName(i, answer);
+    /**
+     * Asks the user to choose a name for a physical player.
+     * It should not be used on a virtual player but it is not forbidden.
+     * @param playerIndex The index of the player (starting to 0) in the settings
+     */
+	public void askPhysicalPlayerName(int playerIndex) {
+        final String answer = Input.promptString("Choisis un nom pour le joueur " + (playerIndex+1) + " :");
+        controller.setPlayerName(playerIndex, answer);
 	}
 
+    /**
+     * Asks the user to choose the number of virtual players.
+     * There should be at least one physical player in the players attribute of the Settings instance.
+     * The available options will depend on the number of physical players.
+     * If the number of available options is equal to 1, then the user will not be asked and the option will be automatically selected.
+     * @see Settings
+     */
 	public void askVirtualPlayersNumber() {
 		int physicalPlayersCount = settings.getPhysicalPlayersCount();
 
@@ -90,38 +124,33 @@ public class ConsoleView implements Observer {
             );
 
             for (int i = 0; i < virtualPlayersCount; i++) {
-                // Ask for the difficulty
-                // final int difficulty = Input.promptChoice(
-                //     "Difficulte du joueur virtuel " + (i + 1),
-                //     new String[] { "Facile", "Difficile" },
-                //     "Quelle sera la difficulte du joueur virtuel " + (i + 1) + " ?");
-
                 controller.setVirtualPlayer(1);
             }
         }
 	}
 
-	//PLAY
+	/**
+     * Asks the player to play its turn according to its available actions, listed in the enumeration Actions.
+     * @see Actions
+     */
 	public void askPlayerToPlay() {
 
 		Player playingPlayer = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
 		List<Actions> availableActions = playingPlayer.getAvailableOptions();
 
-		if (availableActions.size()>0)
-		{
+		if (availableActions.size() > 0) {
 			//Generate answers
 			String[] answers = new String[availableActions.size()];
 
-			for(int i = 0; i < availableActions.size(); i++)
-			{
+			for(int i = 0; i < availableActions.size(); i++) {
 				answers[i] = actionEnumToString(availableActions.get(i));
 			}
 
 			final int answer = Input.promptChoice(
-	                "Tour de jeu",
-	                answers,
-	                "Que veux-tu faire ?"
-	            );
+                "Tour de jeu",
+                answers,
+                "Que veux-tu faire ?"
+            );
 
 			Actions actionToMake = availableActions.get(answer-1);
 
@@ -150,10 +179,13 @@ public class ConsoleView implements Observer {
 
 	}
 
-	private String actionEnumToString(Actions action)
-	{
-		switch(action)
-		{
+    /**
+     * Returns the string representation of an action
+     * @param action The action to execute
+     * @return The string representation of the action. It returns an empty string if the action is not valid.
+     */
+	private String actionEnumToString(Actions action) {
+		switch(action) {
 			case PlaceCard:
 				return "Poser ma carte";
 			case MoveCards:
@@ -171,14 +203,12 @@ public class ConsoleView implements Observer {
 		}
 	}
 
-
-
-
-	public void askToPlaceCard()
-	{
+    /**
+     * Asks the user to place the card that he/she drawn, until it is a suitable location.
+     */
+	public void askToPlaceCard() {
 		Player playingPlayer = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
 		Card card = playingPlayer.getDrawnCard();
-
 
 		Layout layout = settings.getLayout();
 
@@ -200,8 +230,7 @@ public class ConsoleView implements Observer {
             else if (layout.getCardAt(x, y) != null) {
                 System.out.println("Il y a deja une carte ici !\n");
             }
-            else if (
-            		!settings.getLayout().isCardAjacent(x,y))
+            else if (!settings.getLayout().isCardAjacent(x,y))
             {
                 System.out.println("Il faut que ta carte soit adjacente a une autre !\n");
             }
@@ -215,9 +244,10 @@ public class ConsoleView implements Observer {
         }
 	}
 
-
-	public void askToMoveCards()
-	{
+    /**
+     * Asks the user to choose two locations until they are suitable and swap these cards (or simply move a card if the second location is empty).
+     */
+	public void askToMoveCards() {
 		Layout layout = settings.getLayout();
 		// Ask for the card to move
         while (true) {
@@ -284,6 +314,9 @@ public class ConsoleView implements Observer {
         }
 	}
 
+    /**
+     * Asks the user to move the game board in any suitable direction.
+     */
 	public void askToMoveLayout() {
 		int answer2 = 0;
     	do {
@@ -316,68 +349,89 @@ public class ConsoleView implements Observer {
         			break;
         	}
 
-        	if(!result)
+        	if (!result)
         		System.out.println("Impossible de d�placer le Layout ici");
 
-    	}while(answer2 != 5);
+    	} while(answer2 != 5);
 	}
 
-	public void askVariantSecondChance()
-	{
+    /**
+     * Asks the user if he/she wants to draw a card to replace its current victory card.
+     */
+	public void askVariantSecondChance() {
 		final int drawNewVictoryCard = Input.promptChoice(
-	            "[Variante] Repiocher une Victory Card",
-	            new String[] { "Non", "Oui" },
-	            "Souhaites-tu repiocher une Victory Card et remettre la tienne (" + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getVictoryCard() + ") dans la pioche ?",
-	            0
-	        );
+            "[Variante] Repiocher une Victory Card",
+            new String[] { "Non", "Oui" },
+            "Souhaites-tu repiocher une Victory Card et remettre la tienne (" + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getVictoryCard() + ") dans la pioche ?",
+            0
+        );
 
 		if (drawNewVictoryCard == 1)
-				controller.variantSecondChance();
+            controller.variantSecondChance();
 	}
 
+    /*-------------------DISPLAY-------------------------*/
 
-
-	/*-------------------DISPLAY-------------------------*/
+    /**
+     * Displays the game settings header to the console.
+     */
 	public void displayGameSettingsHeader() {
 		System.out.println("###############################");
         System.out.println("### Parametres de la partie ###");
         System.out.println("###############################\n");
 	}
 
+    /**
+     * Displays the game beginning message to the console.
+     */
 	public void displayStartGameMsg() {
 		System.out.println("################################");
         System.out.println("### Que la partie commence ! ###");
         System.out.println("################################\n");
 	}
 
-	public void displayRoundNumber(int round) {
+    /**
+     * Displays the round number to the console.
+     * @param roundIndex The round index, so roundIndex+1 will be displayed.
+     */
+	public void displayRoundNumber(int roundIndex) {
 		System.out.println("#################");
-        System.out.println("### Round " + (round + 1) + " ! ###");
+        System.out.println("### Round " + (roundIndex + 1) + " ! ###");
         System.out.println("#################\n");
 	}
 
-	public void displayNameAtTurn()
-	{
+    /**
+     * Displays the turn message with the name of the currently playing player to the console.
+     */
+	public void displayNameAtTurn() {
 		System.out.println("### A " + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getName() + " de jouer ! ###\n");
 	}
 
-	public void displayVictoryCard()
-	{
-		// Display victory card
+    /**
+     * Displays the victory card of the currently playing player to the console.
+     */
+	public void displayVictoryCard() {
         System.out.println("Ta Victory Card est : " + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getVictoryCard() + "\n");
 	}
 
+    /**
+     * Displays the random switch variant message to the console.
+     */
 	public void displayVariantRandomSwitch(){
 		System.out.println("[Variante] 2 cartes aleatoires ont ete echangees !\n");
 	}
 
-	public void displayVariantSeconChance()
-	{
+    /**
+     * Displays the second chance variant message to the console.
+     */
+	public void displayVariantSecondChance() {
 		System.out.println("Tu as pioche ta nouvelle Victory Card : " + GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex()).getVictoryCard() + "\n");
 	}
 
-	public void displayLayout()
-	{
+    /**
+     * Displays the game board with every card and empty slots to the console.
+     */
+	public void displayLayout() {
 		Layout layout = settings.getLayout();
 
 		int minX = 0, minY = 0, maxX = 0, maxY = 0;
@@ -434,33 +488,46 @@ public class ConsoleView implements Observer {
         System.out.println("\n");
 	}
 
-
-
+    /**
+     * Displays the score header to the console.
+     */
 	public void displayScoresHeader() {
 		System.out.println("### Scores ###");
 	}
 
-	public void displayScoreForPlayerOnRow()
-	{
+    /**
+     * Displays the currently playing player's name and its score on the same row on the console.
+     */
+	public void displayScoreForPlayerOnRow() {
 		Player player = GameManager.getInstance().getPlayerAtIndex(GameManager.getInstance().getPlayerIndex());
 		System.out.println("### " + player.getName() + " : " + player.getScore() + " points");
 	}
 
-	public void displaySimpleFooter()
-	{
+    /**
+     * Displays a newline character to the console.
+     */
+	public void displaySimpleFooter() {
 		System.out.println();
 	}
 
+    /**
+     * Displays "An error occured" to the console.
+     */
 	public void logError() {
 		System.out.println("Une erreur est survenue...\n");
 	}
 
+    /**
+     * According to the event value of arg
+     * @param o The observable object that called notifyObservers()
+     * @param arg The argument passed in the notifyObservers() method. It will trigger an action if it is in the list of the supported events for this class.
+     * @see Observer
+     * @see Observable
+     */
 	@Override
 	public void update(Observable o, Object arg) {
-		if(arg instanceof Events && o instanceof GameManager)
-        {
-            switch ((Events) arg)
-            {
+		if(arg instanceof Events && o instanceof GameManager) {
+            switch ((Events) arg) {
             	//SETTINGS
                 case AskVariant:
                 	this.askVariant();
@@ -521,8 +588,8 @@ public class ConsoleView implements Observer {
                 case DisplayVariantRandomSwitch:
                 	displayVariantRandomSwitch();
                 	break;
-                case DisplayVariantSeconChance:
-                	displayVariantSeconChance();
+                case DisplayVariantSecondChance:
+                	displayVariantSecondChance();
                 	break;
 
                 case DisplayScoresHeader:
@@ -530,8 +597,7 @@ public class ConsoleView implements Observer {
                 	break;
                 case DisplayScoreForPlayerOnRow:
                 	displayScoreForPlayerOnRow();
-                	break;
-
+                    break;
 
                 case DisplaySimpleFooter:
                 	displaySimpleFooter();

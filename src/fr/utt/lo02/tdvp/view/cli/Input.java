@@ -2,9 +2,21 @@ package fr.utt.lo02.tdvp.view.cli;
 
 import java.util.Scanner;
 
+/**
+ * This class is an util for handling CLI-based inputs.
+ */
 public abstract class Input {
+    /**
+     * The single instance of a Scanner that reads from System.in
+     * @see Scanner
+     */
     private static Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Asks the user to type in the console a string and returns it.
+     * @param question The question to display to the console
+     * @return The string typed in the console by the user
+     */
     public static String promptString(String question) {
         System.out.print("> " + question + " ");
         String input = scanner.nextLine();

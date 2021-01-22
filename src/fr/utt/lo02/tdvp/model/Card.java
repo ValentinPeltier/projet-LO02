@@ -68,8 +68,8 @@ public class Card {
     }
 
     /**
-     * Parse the card to a string defining the card
-     * @return a string defining the card
+     * Returns a string representation of the card
+     * @return a string representation of the card
      */
     @Override
     public String toString() {

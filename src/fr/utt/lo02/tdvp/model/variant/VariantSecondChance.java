@@ -78,6 +78,6 @@ public class VariantSecondChance extends Variant {
         // Draw a new victory card
         player.drawVictoryCard();
 
-        GameManager.getInstance().notifyObservers(Events.DisplayVariantSeconChance);
+        GameManager.getInstance().notifyObservers(Events.DisplayVariantSecondChance);
     }
 }

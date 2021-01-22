@@ -28,6 +28,10 @@ public class Location {
         this.y = y;
     }
 
+    /**
+     * Returns a string representation of the location
+     * @return a string representation of the location
+     */
     @Override
     public String toString() {
         return (char)(this.x + 'A') + "" + this.y;
