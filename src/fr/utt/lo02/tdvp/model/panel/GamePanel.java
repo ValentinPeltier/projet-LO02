@@ -5,6 +5,7 @@ import java.util.Observable;
 import fr.utt.lo02.tdvp.controller.GamePanelController;
 import fr.utt.lo02.tdvp.view.gui.GamePanelView;
 
+@SuppressWarnings("deprecation")
 public class GamePanel extends Observable {
     private static GamePanel instance = new GamePanel();
 

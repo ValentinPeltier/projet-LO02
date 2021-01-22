@@ -2,20 +2,12 @@ package fr.utt.lo02.tdvp.model.player;
 
 import fr.utt.lo02.tdvp.controller.Actions;
 import fr.utt.lo02.tdvp.controller.Events;
-import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.Stack;
 import fr.utt.lo02.tdvp.model.layout.Layout;
-import fr.utt.lo02.tdvp.view.cli.Input;
 
 public class PhysicalPlayer extends Player {
-    /**
-     * Count the number of initialized physical players
-     */
-    private static int initializedCount = 0;
-
-
     public void placeCard() {
 
     	//Cannot place card anymore

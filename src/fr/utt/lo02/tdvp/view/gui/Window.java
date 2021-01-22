@@ -8,7 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import fr.utt.lo02.tdvp.controller.SettingsPanelController;
+
 import fr.utt.lo02.tdvp.model.panel.*;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
 

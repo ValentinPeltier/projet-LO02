@@ -1,15 +1,13 @@
 package fr.utt.lo02.tdvp.model;
 
 import java.util.Observable;
-import java.awt.EventQueue;
 
 import fr.utt.lo02.tdvp.controller.Events;
-import fr.utt.lo02.tdvp.controller.SettingsPanelController;
 import fr.utt.lo02.tdvp.model.layout.LayoutVisitor;
 import fr.utt.lo02.tdvp.model.player.Player;
-import fr.utt.lo02.tdvp.view.gui.SettingsPanelView;
 import fr.utt.lo02.tdvp.view.gui.Window;
 
+@SuppressWarnings("deprecation")
 public class GameManager extends Observable {
 
     private static GameManager instance = new GameManager();

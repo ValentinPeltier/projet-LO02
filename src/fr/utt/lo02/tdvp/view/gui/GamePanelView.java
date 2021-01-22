@@ -9,22 +9,20 @@ import fr.utt.lo02.tdvp.controller.Controller;
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.player.Player;
-import fr.utt.lo02.tdvp.model.variant.Variant;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageButton;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageUtil;
-import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
+@SuppressWarnings("deprecation")
 public class GamePanelView extends GridPane implements Observer {
     private static GamePanelView instance = new GamePanelView();
     private Controller controller = Controller.getInstance();

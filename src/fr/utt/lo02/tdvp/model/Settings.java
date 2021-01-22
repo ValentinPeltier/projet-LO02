@@ -15,6 +15,7 @@ import fr.utt.lo02.tdvp.model.variant.Variant;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 
+@SuppressWarnings("deprecation")
 public class Settings extends Observable {
     private static Settings instance = new Settings();
 

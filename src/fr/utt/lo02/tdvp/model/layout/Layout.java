@@ -1,7 +1,6 @@
 package fr.utt.lo02.tdvp.model.layout;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Random;
@@ -9,8 +8,8 @@ import java.util.Random;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
-import fr.utt.lo02.tdvp.model.Settings;
 
+@SuppressWarnings("deprecation")
 public abstract class Layout extends Observable {
     public static enum Name {
         Circle,

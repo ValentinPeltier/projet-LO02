@@ -8,11 +8,11 @@ import java.util.Observer;
 
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Settings;
-import fr.utt.lo02.tdvp.model.panel.SettingsPanel;
 import fr.utt.lo02.tdvp.view.gui.HomePanelView;
 import fr.utt.lo02.tdvp.view.gui.SettingsPanelView;
 import fr.utt.lo02.tdvp.view.gui.Window;
 
+@SuppressWarnings("deprecation")
 public class SettingsPanelController implements Observer {
     private static SettingsPanelController instance = new SettingsPanelController();
 
@@ -23,12 +23,13 @@ public class SettingsPanelController implements Observer {
         return instance;
     }
 
-    private SettingsPanelController() {
+	private SettingsPanelController() {
         GameManager.getInstance().addObserver(this);
         settings.addObserver(this);
     }
 
-    public void update(Observable o, Object arg) {
+    @SuppressWarnings("incomplete-switch")
+	public void update(Observable o, Object arg) {
         if (arg instanceof Events) {
             switch((Events) arg) {
                 case AskVariant:

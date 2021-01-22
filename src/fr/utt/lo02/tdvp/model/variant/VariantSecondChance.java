@@ -6,7 +6,6 @@ import fr.utt.lo02.tdvp.model.Settings;
 import fr.utt.lo02.tdvp.model.Stack;
 import fr.utt.lo02.tdvp.model.layout.Layout;
 import fr.utt.lo02.tdvp.model.player.Player;
-import fr.utt.lo02.tdvp.view.cli.Input;
 
 public class VariantSecondChance extends Variant {
     static final String name = "Seconde chance";

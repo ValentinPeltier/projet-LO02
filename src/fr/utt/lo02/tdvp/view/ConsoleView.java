@@ -19,6 +19,7 @@ import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 import fr.utt.lo02.tdvp.view.cli.Input;
 
+@SuppressWarnings("deprecation")
 public class ConsoleView implements Observer {
 
 	public ConsoleView() {}

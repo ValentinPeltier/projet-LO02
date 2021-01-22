@@ -6,8 +6,6 @@ import java.util.Observer;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.GameManager;
 import fr.utt.lo02.tdvp.model.Settings;
-import fr.utt.lo02.tdvp.model.layout.Layout;
-import fr.utt.lo02.tdvp.model.variant.Variant;
 import fr.utt.lo02.tdvp.view.gui.utils.ImageButton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+@SuppressWarnings("deprecation")
 public class SettingsPanelView extends VBox implements Observer {
     private static SettingsPanelView instance = new SettingsPanelView();
 
@@ -66,14 +65,15 @@ public class SettingsPanelView extends VBox implements Observer {
         setSpacing(40);
     }
 
-    @Override
+	@Override
+	@SuppressWarnings("incomplete-switch")
     public void update(Observable o, Object arg) {
         if(arg instanceof Events && o instanceof GameManager) {
             Label label = new Label("");
             label.setStyle("-fx-font-size: 40px; -fx-padding: 0 0 40px 0");
             HBox pane = new HBox();
             pane.setAlignment(Pos.CENTER);
-
+            
             switch ((Events) arg) {
             	//SETTINGS
                 case AskVariant:
