@@ -12,22 +12,53 @@ import fr.utt.lo02.tdvp.view.gui.HomePanelView;
 import fr.utt.lo02.tdvp.view.gui.SettingsPanelView;
 import fr.utt.lo02.tdvp.view.gui.Window;
 
+/**
+ * Represents the controller of the settings panel.
+ * It assign action listeners to the buttons.
+ * This class uses the singleton design pattern.
+ */
 @SuppressWarnings("deprecation")
 public class SettingsPanelController implements Observer {
+    /**
+     * The unique instance of the class.
+     * @see #getInstance()
+     */
     private static SettingsPanelController instance = new SettingsPanelController();
 
-    SettingsPanelView view = SettingsPanelView.getInstance();
-    Settings settings = Settings.getInstance();
+    /**
+     * The instance of the settings panel view.
+     */
+    private SettingsPanelView view = SettingsPanelView.getInstance();
 
+    /**
+     * The instance of the settings.
+     */
+    private Settings settings = Settings.getInstance();
+
+    /**
+     * Returns the unique instance of the class.
+     * @return The unique instance of the class
+     */
     public static SettingsPanelController getInstance() {
         return instance;
     }
 
+    /**
+     * Instantiates a new SettingsPanelController object.
+     * Start observing appropriate objects.
+     */
 	private SettingsPanelController() {
         GameManager.getInstance().addObserver(this);
         settings.addObserver(this);
     }
 
+    /**
+     * Change the action listener of "back" and "next" buttons according to the event value of arg.
+     * @param o The observable object that called notifyObservers()
+     * @param arg The argument passed in the notifyObservers() method
+     * @see Observer
+     * @see Observable
+     */
     @SuppressWarnings("incomplete-switch")
 	public void update(Observable o, Object arg) {
         if (arg instanceof Events) {
@@ -90,6 +121,9 @@ public class SettingsPanelController implements Observer {
         }
     }
 
+    /**
+     * Initialize the settings panel by adding action listeners to the view.
+     */
     public void init() {
         // Handle back button action
         view.getBackButton().setOnAction(new EventHandler<ActionEvent>() {

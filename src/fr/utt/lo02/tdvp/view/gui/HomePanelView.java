@@ -38,7 +38,7 @@ public class HomePanelView extends HBox {
     }
 
     /**
-     * Instantiate a new HomePanelView.
+     * Instantiates a new HomePanelView.
      * Create and place all children elements.
      */
     private HomePanelView() {

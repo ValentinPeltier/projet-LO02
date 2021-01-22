@@ -5,22 +5,48 @@ import java.util.Observable;
 import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.layout.LayoutVisitor;
 import fr.utt.lo02.tdvp.model.player.Player;
+import fr.utt.lo02.tdvp.view.gui.HomePanelView;
 import fr.utt.lo02.tdvp.view.gui.Window;
+
+/**
+ * The main class of the game, it handle turns and rounds
+ * The class extends a Observable class to communicate with the view
+ * @see Observable
+ */
 
 @SuppressWarnings("deprecation")
 public class GameManager extends Observable {
 
+	 /**
+     * The instance of the game manager, in order to make the singleton work
+     */
     private static GameManager instance = new GameManager();
+    
+    /**
+     * Instance of the Settings Singleton class, in order to get all the infos of the game
+     */
     private Settings settings = Settings.getInstance();
 
-
+    /**
+     * Instance of a Layout Visitor from the Visitor design pattern, to count point
+     */
     private LayoutVisitor layoutVisitor = new LayoutVisitor();
 
 
-    //MVC NEED IT
+    /**
+     * The round index
+     */
     private int round;
+    
+    /**
+     * The index of the player currently playing in the game
+     */
     private int playerIndex;
+    
 
+    /**
+     * Constructor of the class
+     */
     private GameManager() {}
 
     /**
@@ -31,20 +57,36 @@ public class GameManager extends Observable {
         return instance;
     }
 
+    /**
+     * Override the notifyObserver method, in order to call setChanged method every time we notify Observers 
+     */
     @Override
     public void notifyObservers(Object arg){
     	this.setChanged();
         super.notifyObservers(arg);
     }
 
+    /**
+     * Return a player at a given index
+     * @param index of the player
+     * @return the Player at the index given in parameter, in to the player List
+     */
     public Player getPlayerAtIndex(int i) {
         return settings.getPlayers().get(i);
     }
 
+    /**
+     * Method used by other class, in order to get current round
+     * @return return the current round
+     */
     public int getRound() {
     	return this.round;
     }
 
+    /**
+     * Method used by other class, in order to get the Index of the player currently playing
+     * @return return currently playing Player index
+     */
     public int getPlayerIndex() {
         return playerIndex;
     }
@@ -138,8 +180,11 @@ public class GameManager extends Observable {
         }
     }
 
+    /**
+     * This method displays scores
+     */
     private void displayScores() {
-    	//Display Scores
+    	
     	this.notifyObservers(Events.DisplayScoresHeader);
 
         for (playerIndex = 0; playerIndex < settings.getPlayers().size(); playerIndex++) {

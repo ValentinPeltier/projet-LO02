@@ -5,15 +5,34 @@ import java.util.Map;
 
 import fr.utt.lo02.tdvp.model.Card;
 
+/**
+ * The LayoutVistor class, used for counting points
+ **/
+
 public class LayoutVisitor {
 
+	/**
+	 * Points set by parameters (shape, color and filled)
+	 * There are stored in a map where the key is the parameter and the value is the points for this parameter
+	 **/
 	Map<String,Integer> pointsByParameter = new HashMap<String,Integer>();
+	
+	/**
+	 * The current number of adjacent card of the same parameter, by parameter
+	 **/
 	Map<String,Integer> currentParamaterChain = new HashMap<String,Integer>();
 
+	/**
+	 * Class constructor
+	 **/
 	public LayoutVisitor() {
 
 	}
 
+	/**
+	 * Make the points count, for any type of Layout
+	 * @param the layout 
+	 **/
 	public void countPointsVisit(Layout layout)
 	{
 
@@ -194,7 +213,14 @@ public class LayoutVisitor {
 
 
 	}
-
+	
+	
+	/**
+	 * Return points for a given parameter for a series of cards
+	 * @param the given parameter
+	 * @param the number of adjacent cards for the given parameter
+	 * @return the number of points
+	 **/
 	private int getPointsFor(String parameter, int chainSize)
 	{
 		switch(parameter)
@@ -231,6 +257,9 @@ public class LayoutVisitor {
 		}
 	}
 
+	/**
+	 * Ask and update of the points for each parameter
+	 **/
 	private void updatePoints() {
 		int tmp;
 		//COLOR
@@ -257,6 +286,9 @@ public class LayoutVisitor {
 		}
 	}
 
+	/**
+	 *If a card adjacent to another don't share the current parameter, we break the chain of adjacent cards sharing this parameter
+	 **/
 	private void resetChains()
 	{
 		currentParamaterChain.replace("red",0);
@@ -269,6 +301,9 @@ public class LayoutVisitor {
 		currentParamaterChain.replace("filled",0);
 	}
 
+	/**
+	 * @return points by category
+	 **/
 	public Map<String,Integer> getPoints() {
 			return this.pointsByParameter;
 	}

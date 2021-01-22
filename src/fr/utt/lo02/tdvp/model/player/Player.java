@@ -7,23 +7,53 @@ import fr.utt.lo02.tdvp.controller.Actions;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.Stack;
 
+/**
+ * The Player class, that stores all the player infos and defines all the different abstract methods
+ **/
+
 public abstract class Player {
+	
+	/**
+	 * The Players name
+	 **/
     protected String name;
 
+    /**
+     * The Player's score
+     **/
     protected int score = 0;
 
+    /**
+     * The Player's victory card
+     **/
     protected Card victoryCard;
     
+    /**
+     * The last card the player has drawn
+     **/
     protected Card drawnCard;
     
+    /**
+     * The Player's available actions, stored as a List of Actions (of Enum type)
+     **/
     protected List<Actions> availableOptions = new ArrayList<Actions>();
     
+    /**
+     * Tells if the turn is over or not
+     **/
     protected boolean isTurnOver;
     
+    
+    /**
+     * @return the last drawn Card by the player
+     **/
     public Card getDrawnCard() {
     	return this.drawnCard;
     }
     
+    /**
+     * End the player's Turn
+     **/
     public void endTurn()
     {
     	for(int i = 0; i< availableOptions.size(); i++)
@@ -34,6 +64,9 @@ public abstract class Player {
     	isTurnOver = true;
     }
     
+    /**
+     * @return the available options for the player. Tells what the player can do 
+     **/
     public List<Actions> getAvailableOptions(){
     	return this.availableOptions;	
     }
@@ -93,10 +126,26 @@ public abstract class Player {
 
     protected abstract void initName();
 
+    /**
+     * Determines the player play turn
+     * Ask the options for the physical player
+     * Call the play method for the IA
+     **/
     public abstract void play();
     
+    /**
+     * Ask the player to place a card
+     **/
     public abstract void placeCard();
+    
+    /**
+     * Ask the player to move a card
+     **/
     public abstract void moveCard();
     
+    /**
+     * Set the player's Name 
+     * @param the given name for this player
+     **/
     public abstract void setName(String name);
 }

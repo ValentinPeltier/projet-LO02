@@ -45,7 +45,7 @@ public class PopupPanelView extends VBox {
     }
 
     /**
-     * Instantiate a new PopupPanelView.
+     * Instantiates a new PopupPanelView.
      * Create and place all children elements.
      */
     private PopupPanelView() {
@@ -69,7 +69,7 @@ public class PopupPanelView extends VBox {
     }
 
     /**
-     * Set the title and the content of the popup panel.
+     Sets the title and the content of the popup panel.
      * @param title The title of the popup panel
      * @param content The content of the popup panel
      */

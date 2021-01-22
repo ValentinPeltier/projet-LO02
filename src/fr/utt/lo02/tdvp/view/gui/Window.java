@@ -29,7 +29,7 @@ public class Window extends Application implements Runnable {
     private static StackPane root;
 
     /**
-     * Set the panel displayed in the window, below the popup.
+     Sets the panel displayed in the window, below the popup.
      * @param panel The panel to display in the window.
      */
     public static void setPanel(Pane panel) {

@@ -2,13 +2,28 @@ package fr.utt.lo02.tdvp.model;
 
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Observable;
 import java.util.Collections;
 
+/**
+* The class is the stack of the game, containing all the unused cards...
+*/
+
 public class Stack {
+	
+	/**
+     * The instance of the stack, in order to make the singleton work
+     */
     private static Stack instance = new Stack();
 
+    /**
+     * The actual stack
+     */
     private LinkedList<Card> cards = new LinkedList<Card>();
 
+    /**
+     * Constructor of the class
+     */
     private Stack() {
         // Initialize the stack
         this.reset();
@@ -31,6 +46,10 @@ public class Stack {
         return this.cards.pop();
     }
 
+    /**
+     * Place a card in the stack, and shuffle the cards
+     * @param Card to place in the stack
+     **/
     public void put(Card card) {
         this.cards.push(card);
 

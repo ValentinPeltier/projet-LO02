@@ -56,7 +56,7 @@ public class GamePanelView extends GridPane implements Observer {
     }
 
     /**
-     * Instantiate a new GamePanelView.
+     * Instantiates a new GamePanelView.
      * Create and place all children elements.
      */
     private GamePanelView() {

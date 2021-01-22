@@ -9,17 +9,43 @@ import fr.utt.lo02.tdvp.controller.Events;
 import fr.utt.lo02.tdvp.model.Card;
 import fr.utt.lo02.tdvp.model.GameManager;
 
+/**
+ * The mother class of the differents layouts
+ * The class extends a Observable class
+ * @see Observable
+ */
+
 @SuppressWarnings("deprecation")
 public abstract class Layout extends Observable {
+	
+	/**
+	 * DIfferent types of layouts
+	 */
     public static enum Name {
         Circle,
         Rectangle,
     }
 
+    /**
+     * The actual layout
+     */
     protected Map<Location, Card> locations = new HashMap<Location, Card>();
+    
+    /**
+     * x index of the layout
+     **/
     protected int x;
+    /**
+     * y index of the layout
+     **/
     protected int y;
 
+    /**
+     * Check if the given position have an adjacent card
+     * @return {@code false} if the card is Adjacent to another {@code true} otherwise
+     * @param x, is the x position of the given card
+     * @param y, is the y position of the given card
+     **/
     public boolean isCardAjacent(int x, int y) {
     	boolean noAdjacentCard = !isEmpty()
         && getCardAt(x - 1, y) == null
@@ -29,7 +55,12 @@ public abstract class Layout extends Observable {
 
     	return !noAdjacentCard;
     }
-
+    
+    
+    /**
+     * Give a random location on the board
+     * @return A random Location
+     **/
     public Location getRandomLocation() {
         Location randomLocation;
         Random randomGenerator = new Random();
@@ -72,15 +103,32 @@ public abstract class Layout extends Observable {
         return getCardAt(location);
     }
 
+    /**
+     * Returns the card placed at the specified (x, y) coordinates of a given Location
+     * A null value will be returned if the location doesn't exists or if no card is placed at these coordinates.
+     * @param a given location
+     * @return The card at the specified coordinates
+     */
     public Card getCardAt(Location location) {
         return this.locations.get(location);
     }
 
+    /**
+     * Set a Card at the specified x and y 
+     * @param x X coordinate of the specified location
+     * @param y Y coordinate of the specified location
+     * @return The card to put at the specified coordinates
+     */
     public boolean setCardAt(int x, int y, Card card) {
         Location location = new Location(x, y);
         return setCardAt(location, card);
     }
 
+    /**
+     * Set a Card at a specified Location
+     * @param the specified Location
+     * @return The card to put at the specified Location
+     */
     public boolean setCardAt(Location location, Card card) {
         // If specified location is on the layout
         if (this.locations.containsKey(location)) {
@@ -140,10 +188,17 @@ public abstract class Layout extends Observable {
         return true;
     }
 
+    /**
+     * Display the Board Properly
+     */
     public void display() {
         GameManager.getInstance().notifyObservers(Events.DisplayLayout);
     }
 
+    /**
+     * Count the number of cards on the board
+     * @return the number of cards on the board
+     */
     public int countCards() {
         int count = 0;
 
@@ -156,31 +211,57 @@ public abstract class Layout extends Observable {
         return count;
     }
 
+    /**
+     * Check if the board is empty
+     * @return {@code true} there is no card on the board, {@code false} otherwise
+     */
     public boolean isEmpty() {
         return countCards() == 0;
     }
 
+    /**
+     * Check if the board is full
+     * @return {@code true} the Board is full, {@code false} otherwise
+     */
     public boolean isFull() {
         return countCards() == this.locations.size();
     }
 
     //Accept Visitor => CountPoints
+    
+    /**
+     * Accept the layout visitor in order to count points
+     * @param The layout visiotr singleton
+     **/
     public void countPointsAccept(LayoutVisitor visitor) {
     	visitor.countPointsVisit(this);
     }
 
+    /**
+     * Return the last used x
+     * @return the current x
+     **/
     public int getX() {
     	return this.x;
     }
 
+    /**
+     * Return the last used y
+     * @return the current y
+     **/
     public int getY() {
     	return this.y;
     }
 
+    /**
+     * Return the actual board
+     * @return the board, a Map of Locations and cards
+     **/
     public Map<Location,Card> getLocations() {
     	return this.locations;
     }
 
+    /**Reset the layout**/
     public abstract void reset();
 
     /**

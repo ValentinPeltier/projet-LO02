@@ -63,7 +63,7 @@ public class SettingsPanelView extends VBox implements Observer {
     }
 
     /**
-     * Instantiate a new SettingsPanelView.
+     * Instantiates a new SettingsPanelView.
      * Create and place all children elements.
      */
     private SettingsPanelView() {

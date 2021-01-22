@@ -15,20 +15,51 @@ import fr.utt.lo02.tdvp.model.variant.Variant;
 import fr.utt.lo02.tdvp.model.variant.VariantRandomSwitch;
 import fr.utt.lo02.tdvp.model.variant.VariantSecondChance;
 
+/**
+* The class that ask and contains all the informations on the game 
+* Is Called by different classes to get different parameters as variant, layout, players...
+* @see Observable
+*/
+
 @SuppressWarnings("deprecation")
 public class Settings extends Observable {
+	
+	/**
+     * The single instance of the settings class, in order to make the singleton work
+     */
     private static Settings instance = new Settings();
 
+    /**
+     * The chosen variant for the game
+     */
     private Variant variant;
+    
+    /**
+     * The Board of the game
+     */
     private Layout layout;
+    
+    /**
+     * The players List of the game
+     */
     private List<Player> players = new ArrayList<Player>();
 
+    /**
+     * @return return the instance the settings class, in order to make the singleton work
+     */
     public static Settings getInstance() {
         return instance;
     }
 
+    /**
+     * Constructor of the class
+     */
     private Settings() {}
 
+    /**
+     * Get the number of physical player, already set by the user
+     * @return the current number of physical player
+     */
     public int getPhysicalPlayersCount() {
         int count = 0;
         for (int i = 0; i < players.size(); i++) {
@@ -39,22 +70,39 @@ public class Settings extends Observable {
         return count;
     }
 
+    /**
+     * Get the number of virtual player
+     * @return the number of virtual player
+     */
     public int getVirtualPlayersCount() {
         return players.size() - getPhysicalPlayersCount();
     }
 
+    /**
+     * @return the Players List
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * @return the game Variant
+     */
     public Variant getVariant() {
         return variant;
     }
 
+    /**
+     * @return the Game Layout
+     */
     public Layout getLayout() {
         return layout;
     }
 
+    /**
+     * Set the variant of the game, depending on the choice of the user, set in the view
+     * @param the variant number, set by the user 
+     */
     public void setVariant(int variant) {
         // Set the variant
         switch (variant) {
@@ -81,6 +129,10 @@ public class Settings extends Observable {
         GameManager.getInstance().notifyObservers(Events.AskPhysicalPlayersNumber);
     }
 
+    /**
+     * Set the different Physical players and ask their names in the view
+     * @param the number of players set by the user
+     */
     public void setPhysicalPlayers(int count) {
         // Create physical players
         for (int i = 0; i < count; i++) {
@@ -90,6 +142,11 @@ public class Settings extends Observable {
         GameManager.getInstance().notifyObservers(Events.AskPlayerName1);
     }
 
+    /**
+     * Set the Player name, depending on the playerIndex
+     * @param the index of the player in the Players List
+     * @param the name of the player 
+     */
     public void setPlayerName(int playerIndex, String name) {
         players.get(playerIndex).setName(name);
 
@@ -104,6 +161,10 @@ public class Settings extends Observable {
         }
     }
 
+    /**
+     * Set the different Virtual Players of the game
+     * @param the number of players set by the user
+     */
     public void setVirtualPlayers(int count) {
         for (int i = 0; i < count; i++) {
             players.add(new VirtualPlayerEasy());
@@ -112,6 +173,10 @@ public class Settings extends Observable {
         GameManager.getInstance().notifyObservers(Events.AskLayoutShape);
     }
 
+    /**
+     * Set the shape of the layout of the game
+     * @param the number of the choice set by the user, defining the layout shape
+     */
     public void setLayoutShape(int layoutShape) {
         // Create the layout
         switch (layoutShape) {

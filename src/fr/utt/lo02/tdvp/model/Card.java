@@ -1,5 +1,12 @@
 package fr.utt.lo02.tdvp.model;
 
+import fr.utt.lo02.tdvp.view.gui.HomePanelView;
+
+/**
+ * The Card class represents the card model to make card objects
+ * It contains three parameters : Shape, Color, And Filled
+ */
+
 public class Card {
     /**
      * The possible shapes of a card
