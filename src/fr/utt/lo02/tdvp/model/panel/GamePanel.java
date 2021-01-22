@@ -19,6 +19,5 @@ public class GamePanel extends Observable {
     }
 
     public void init() {
-        // TODO
     }
 }

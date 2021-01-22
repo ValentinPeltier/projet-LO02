@@ -178,7 +178,5 @@ public class VirtualPlayerEasy extends VirtualPlayer {
 
 	@Override
 	public void placeCard() {
-		// TODO Auto-generated method stub
-
 	}
 }

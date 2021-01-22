@@ -107,11 +107,7 @@ public class GameManager extends Observable {
             // Count Points
             settings.getLayout().countPointsAccept(this.layoutVisitor);
 
-            // TODO: change start player
-
-
             // Distribute points
-
             for (Player player: settings.getPlayers()) {
             	// Get player current score
                 int playerScore = player.getScore();
@@ -126,8 +122,6 @@ public class GameManager extends Observable {
                 playerScore += this.layoutVisitor.getPoints().get(player.getVictoryCard().getFilled().toString().toLowerCase());
 
                 player.setScore(playerScore);
-
-
             }
 
             displayScores();

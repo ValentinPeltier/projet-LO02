@@ -57,7 +57,5 @@ public class VariantRandomSwitch extends Variant {
 
 	@Override
 	public void makeChange() {
-		// TODO Auto-generated method stub
-
 	}
 }

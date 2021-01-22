@@ -114,7 +114,6 @@ public class GamePanelView extends GridPane implements Observer {
 
     @Override
     public void update(Observable gamePanel, Object arg) {
-        // TODO
         updateActionButtonChangeVictoryCard();
     }
 

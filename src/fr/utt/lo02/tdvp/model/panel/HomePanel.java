@@ -15,6 +15,5 @@ public class HomePanel {
     }
 
     public void init() {
-        // TODO
     }
 }
